@@ -3,7 +3,6 @@ package com.football_manager;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.*;
 
+import com.components.*;
 import org.springframework
         .security
         .crypto
@@ -18,90 +18,133 @@ import org.springframework
         .BCrypt;
 
 public class LoginFrame extends JFrame implements ActionListener {
-    JTextField usernameField;
-    JPasswordField passwordField;
-    JButton button;
+    MyFormField usernameField;
+    MyPasswordField passwordField;
+    MyButton loginButton;
+    Font fontPrimary = new MyFont().getFontPrimary();
 
     public LoginFrame() {
 //        Header
         JLabel header = new JLabel();
-        header.setText("Login");
-        header.setForeground(new Color(0x6930C3));
-        header.setFont(new Font("Arial", Font.BOLD, 40));
+        header.setText("LOGIN");
+        header.setForeground(new Color(0x289672));
+        header.setFont(fontPrimary.deriveFont(40f));
+        header.setHorizontalAlignment(SwingConstants.CENTER);
 
-//        Username Field
-        usernameField = new JTextField();
-        usernameField.setPreferredSize(new Dimension(200, 50));
+//        Username Form
+        usernameField = new MyFormField("Username");
 
-//        Password Field
-        passwordField = new JPasswordField();
-        passwordField.setPreferredSize(new Dimension(200, 50));
+//        Password Form
+        passwordField = new MyPasswordField("Password");
+
 
 //        Button
-        button = new JButton();
-        button.setText("Login");
-        button.setFont(new Font("Arial", Font.PLAIN, 20));
-        button.addActionListener(this);
-        button.setFocusable(false);
-        button.setBackground(new Color(0x6930c3));
-        button.setBorder(BorderFactory.createCompoundBorder(new EtchedBorder(), new EmptyBorder(10, 10, 10, 10)));
-        button.setCursor(new Cursor(12));
+        loginButton = new MyButton("Login");
+        loginButton.addActionListener(this);
 
-//        Frame Icon
+        //        Frame Icon
         BufferedImage image = null;
 
         try {
-            image = ImageIO.read(getClass().getResource("/resources/images/frame_icon.png"));
+            image = ImageIO.read(getClass().getResource("/resources/images/logo.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // Logo Label
+        JLabel logoLabel = new JLabel();
+        logoLabel.setIcon(new ImageIcon(image.getScaledInstance(400, 200, Image.SCALE_FAST)));
+        logoLabel.setFont(fontPrimary.deriveFont(40f));
+        logoLabel.setVerticalAlignment(SwingConstants.CENTER);
+        logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Left Panel -> for Logo
+
+        JPanel leftPanel = new JPanel();
+        leftPanel.setBackground(new MyColor().getBackgroundColor());
+        leftPanel.setLayout(new BorderLayout());
+        leftPanel.add(logoLabel, BorderLayout.CENTER);
+
+        // Right Panel -> for login form
+
+        JPanel rightPanel = new JPanel();
+        rightPanel.setBackground(new MyColor().getBackgroundColor());
+        rightPanel.setLayout(new GridBagLayout());
+
+        // Grid Bag Layout for Right Panel
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(50, 50, 50, 50);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        rightPanel.add(header, gbc);
+
+        gbc.gridwidth = 1;
+        gbc.gridy = 1;
+        gbc.gridx = 0;
+        rightPanel.add(usernameField.getInputLabel(), gbc);
+        gbc.gridy = 1;
+        gbc.gridx = 1;
+        rightPanel.add(usernameField.getInputField(), gbc);
+
+        gbc.gridy = 2;
+        gbc.gridx = 0;
+        rightPanel.add(passwordField.getInputLabel(), gbc);
+        gbc.gridy = 2;
+        gbc.gridx = 1;
+        rightPanel.add(passwordField.getInputField(), gbc);
+
+        gbc.gridwidth = 2;
+        gbc.gridy = 3;
+        gbc.gridx = 0;
+        rightPanel.add(loginButton, gbc);
+
+
+//        Wrapper
+        JPanel wrapper = new JPanel();
+        wrapper.setLayout(new GridLayout(1, 2));
+        wrapper.add(leftPanel);
+        wrapper.add(rightPanel);
+        wrapper.setBorder(new EmptyBorder(100, 100, 100, 100));
+        wrapper.setBackground(new MyColor().getBackgroundColor());
+
+        //        Scrollable Wrapper
+        JScrollPane scrollable = new JScrollPane(wrapper);
 
 
 //        Frame
         this.setTitle("Login");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLayout(new GridBagLayout());
-        this.setSize(1000, 500);
-        this.getContentPane().setBackground(new Color(0x252525));
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 10, 0);
-
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        this.add(header, gbc);
-
-        gbc.gridy = 1;
-        this.add(usernameField, gbc);
-
-        gbc.gridy = 2;
-        this.add(passwordField, gbc);
-
-        gbc.gridy = 3;
-        this.add(button, gbc);
-
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setSize(screenSize.width, screenSize.height);
+        this.add(scrollable);
         this.setIconImage(image);
         this.setVisible(true);
     }
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == button) {
-            String username = usernameField.getText();
-            String password = String.valueOf(passwordField.getPassword());
+        if (e.getSource() == loginButton) {
+            String username = usernameField.getInputField().getText();
+            String password = String.valueOf(passwordField.getInputField().getPassword());
 
             // Check user existence
             if (checkUsername(username)) {
                 // Check password
-                if(checkPassword(username,password)) {
-                    System.out.println("correct");
-                }
-                else {
+                if (checkPassword(username, password)) {
+                    System.out.println(username + " authenticated");
+                    this.dispose();
+                    new DashboardFrame();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Invalid Username/Password", "Authentication Failed", JOptionPane.WARNING_MESSAGE);
                     System.out.println("wrongpwd");
                 }
 
             } else {
                 // User doesn't exists
+                JOptionPane.showMessageDialog(this, "Invalid Username/Password", "Authentication Failed", JOptionPane.WARNING_MESSAGE);
                 System.out.println("wronguser");
             }
 
@@ -143,7 +186,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 
             while (rs.next()) {
                 // Check correct user and password hash
-                if (rs.getString("username").equals(username) && verifyPasswordHash(password,rs.getString("password"))) {
+                if (rs.getString("username").equals(username) && verifyPasswordHash(password, rs.getString("password"))) {
                     return true;
                 }
             }
