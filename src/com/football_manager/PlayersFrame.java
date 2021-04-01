@@ -7,12 +7,7 @@ import com.components.MyImage;
 import com.football_manager.filter_dialog.PositionDialog;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +16,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashMap;
+import java.util.*;
+import java.util.Map.*;
 
 public class PlayersFrame extends JFrame implements ActionListener {
 
@@ -29,20 +25,25 @@ public class PlayersFrame extends JFrame implements ActionListener {
     JButton countryButton;
     JButton teamButton;
     JButton ageButton;
+    JButton applyFilter;
 
-    HashMap<String, Boolean> filters;
+    JTable table;
+
+    HashMap<String, Boolean> filtersPositionMap;
+
+    MyColor myColor = new MyColor();
+    MyFont myFont = new MyFont();
 
     public PlayersFrame() {
 
         // Initialization
-        filters = new HashMap<String, Boolean>();
-        filters.put("Forwards", false);
-        filters.put("Midfielders", true);
-        filters.put("Defenders", false);
-        filters.put("Goalkeepers", true);
+        filtersPositionMap = new HashMap<String, Boolean>();
+        filtersPositionMap.put("Forwards", false);
+        filtersPositionMap.put("Midfielders", true);
+        filtersPositionMap.put("Defenders", false);
+        filtersPositionMap.put("Goalkeepers", true);
 
-        // Top Panel Filler
-
+        // Top Panel Buttons
         positionButton = new MyButton("Position", "/resources/images/icon_position.png");
         positionButton.addActionListener(this);
         countryButton = new MyButton("Country", "/resources/images/icon_country_black.png");
@@ -51,73 +52,37 @@ public class PlayersFrame extends JFrame implements ActionListener {
         teamButton.addActionListener(this);
         ageButton = new MyButton("Age", "/resources/images/icon_age_black.png");
         ageButton.addActionListener(this);
+        applyFilter = new MyButton("Apply Filter");
+        applyFilter.addActionListener(this);
 
-
-        JLabel fillerLabel = new JLabel();
-        fillerLabel.setText("Filter Forms");
-        fillerLabel.setFont(new MyFont().getFontPrimary().deriveFont(40f));
-        fillerLabel.setForeground(new MyColor().getTextColor());
 
         //        Top Panel
         JPanel topPanel = new JPanel();
-        topPanel.setBackground(new MyColor().getBackgroundColor());
+        topPanel.setBackground(new MyColor().getBackgroundColor()); //set background for panel
 
-        GridLayout gridLayout = new GridLayout(1, 4);
-        gridLayout.setHgap(25);
-        topPanel.setLayout(gridLayout);
-
-//        topPanel.add(fillerLabel);
+        GridLayout gridLayout = new GridLayout(1, 5); //using gridlayout -> 1 row,5 columns
+        gridLayout.setHgap(25);// horizontal gap between buttons
+        topPanel.setLayout(gridLayout);// setting gridlayout for panel
 
         topPanel.add(positionButton);
         topPanel.add(teamButton);
         topPanel.add(countryButton);
         topPanel.add(ageButton);
+        topPanel.add(applyFilter);
 
         // Botttom Panel Table
+        table = new JTable();// creating jtable (view in MVC)
+        table.setModel(getPlayers()); // setting model to table (model in MVC)
 
-        // Icons
-        Icon redCard = new ImageIcon(new MyImage().getImage("/resources/images/icon_red_card.png").getScaledInstance(20, 20, Image.SCALE_SMOOTH));
-        Icon yellowCard = new ImageIcon(new MyImage().getImage("/resources/images/icon_yellow_card.png").getScaledInstance(20, 20, Image.SCALE_SMOOTH));
-        Icon goal = new ImageIcon(new MyImage().getImage("/resources/images/icon_goal.png").getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+        // Table Styling
+        DefaultTableModel tableModel = (DefaultTableModel) table.getModel(); // get table model from table
+        TableColumnModel columnModel = table.getColumnModel(); // get column model from table
 
-        // Column Names
-        String[] columnHeaders = {"Player ID", "Name", "Team", "Country", "Position", "Shirt Number", "Age", "Matches Played", "", "", ""};
+        table.getTableHeader().setBackground(myColor.getBackgroundColor()); // set background color to table header
+        table.getTableHeader().setForeground(myColor.getTextColor()); // set font color to table headers
+        table.getTableHeader().setFont(myFont.getFontMedium().deriveFont(22f)); // set font to table headers
 
-        DefaultTableModel tableModel = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
-        JTable table = new JTable(tableModel);
-
-        for (int i = 0; i < columnHeaders.length; i++) {
-            tableModel.addColumn(columnHeaders[i]);
-        }
-
-        // Icon instead of Column Names
-        Border headerBorder = UIManager.getBorder("TableHeader.cellBorder");
-
-        JLabel redCardLabel = getTableHeaderLabel(columnHeaders[columnHeaders.length - 1], redCard, headerBorder);
-        JLabel yellowCardLabel = getTableHeaderLabel(columnHeaders[columnHeaders.length - 2], yellowCard, headerBorder);
-        JLabel goalLabel = getTableHeaderLabel(columnHeaders[columnHeaders.length - 3], goal, headerBorder);
-
-        TableCellRenderer renderer = new JComponentTableCellRenderer();
-
-        TableColumnModel columnModel = table.getColumnModel();
-
-        TableColumn redCardColumn = getTableColumn(renderer, columnModel, redCardLabel, columnModel.getColumnCount() - 1);
-        TableColumn yellowCardColumn = getTableColumn(renderer, columnModel, yellowCardLabel, columnModel.getColumnCount() - 2);
-        TableColumn goalsScoredColumn = getTableColumn(renderer, columnModel, goalLabel, columnModel.getColumnCount() - 3);
-
-//        table.getTableHeader().setOpaque(false);
-        table.getTableHeader().setBackground(Color.CYAN);
-        table.getTableHeader().setBorder(new EmptyBorder(20, 0, 20, 0));
-        table.getTableHeader().setFont(new MyFont().getFontPrimary().deriveFont(20f));
-
-        // Get player details from DB
-        getPlayers(tableModel);
+        table.setBackground(Color.white); // set background color to table rows
 
         // Adjusting row width wrt content
         for (int i = 0; i < columnModel.getColumnCount(); i++) {
@@ -133,26 +98,23 @@ public class PlayersFrame extends JFrame implements ActionListener {
             columnModel.getColumn(i).setPreferredWidth(width);
         }
 
-
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         table.setFillsViewportHeight(true);
         table.setRowHeight(table.getRowHeight() + 20);
-//        table.setMinimumSize(new Dimension(1000, 1000));
 
 
 //        Bottom Panel
-        JScrollPane bottomPanel = new JScrollPane(table);
+        JScrollPane bottomPanel = new JScrollPane(table); // adding table to Jscrollpane
         bottomPanel.setHorizontalScrollBarPolicy(
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         bottomPanel.setVerticalScrollBarPolicy(
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        bottomPanel.setBackground(Color.BLUE);
-        bottomPanel.setPreferredSize(new Dimension(1150, 400));
+        bottomPanel.setPreferredSize(new Dimension(1150, 400));// set dimension to jscrollpane
 
 //        Wrapper
-        JPanel wrapper = new JPanel();
-        wrapper.setLayout(new GridBagLayout());
-        wrapper.setBackground(new MyColor().getBackgroundColor());
+        JPanel wrapper = new JPanel(); // wrapper for all components in frame
+        wrapper.setLayout(new GridBagLayout()); // set gridbaglayout
+        wrapper.setBackground(new MyColor().getBackgroundColor());// set background color for wrapper
 
         GridBagConstraints wrapperGBC = new GridBagConstraints();
         wrapperGBC.insets = new Insets(50, 0, 50, 0);
@@ -165,7 +127,6 @@ public class PlayersFrame extends JFrame implements ActionListener {
         wrapperGBC.gridy = 1;
         wrapper.add(bottomPanel, wrapperGBC);
 
-
 //        Frame
         this.setTitle("Players");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -173,71 +134,81 @@ public class PlayersFrame extends JFrame implements ActionListener {
         this.setSize(screenSize.width, screenSize.height);
         this.add(wrapper);
         this.setIconImage(new MyImage().getLogo());
-
         this.setVisible(true);
     }
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Position Filter Button
         if (e.getSource() == positionButton) {
-            System.out.println("POSITION");
-            new PositionDialog(this, "Filter by Position", true, filters);
+            new PositionDialog(this, "Filter by Position", true, filtersPositionMap);
             this.setEnabled(false);
+        }
 
+        // Team Filter Button
+        else if (e.getSource() == teamButton) {
 
-        } else if (e.getSource() == teamButton) {
-            System.out.println("TEAM" + filters);
-        } else if (e.getSource() == countryButton) {
-            System.out.println("COUNTRY");
-        } else if (e.getSource() == ageButton) {
-            System.out.println("AGE");
+        }
+
+        // Country Filter Button
+        else if (e.getSource() == countryButton) {
+        }
+
+        // Age Filter Button
+        else if (e.getSource() == ageButton) {
+        }
+
+        // Apply Filter Button
+        else if (e.getSource() == applyFilter) {
+            table.setModel(getPlayers());
         }
     }
 
-    public JLabel getTableHeaderLabel(String columnName, Icon icon, Border headerBorder) {
-        JLabel label = new JLabel(columnName, icon, JLabel.CENTER);
-        label.setBorder(headerBorder);
-        return label;
-    }
+    public DefaultTableModel getPlayers() {
 
-    public TableColumn getTableColumn(TableCellRenderer renderer, TableColumnModel columnModel, JLabel label, int columnIndex) {
-        TableColumn column = columnModel.getColumn(columnIndex);
-        column.setHeaderRenderer(renderer);
-        column.setHeaderValue(label);
-        return column;
-    }
+        DefaultTableModel tableModel = new DefaultTableModel(0, 0) { //create default table model
+            // Override default editable cell to uneditable
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
-    class JComponentTableCellRenderer implements TableCellRenderer {
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                                                       boolean hasFocus, int row, int column) {
-            return (JComponent) value;
-        }
-    }
-
-    public void getPlayers(DefaultTableModel tableModel) {
+        String[] columnHeaders = {"Player ID", "Name", "Team", "Country", "Position", "Shirt Number", "Age"}; //column names
+        tableModel.setColumnIdentifiers(columnHeaders);// set column names to table model
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
                     "PaarShanDB0408");
 
-            PreparedStatement pst = con.prepareStatement("select p.player_id,p.name,t.name as team,p.country,p.position,p.shirt_number,p.age,p.matches_played,p.goals_scored,p.red_cards,p.yellow_cards from players as p inner join teams as t on p.team_id=t.team_id order by p.player_id asc limit 0,?;");
+            // Format string for SQL IN operator
+            StringBuilder positionIn = new StringBuilder();
+            Iterator<Entry<String, Boolean>> it = filtersPositionMap.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<String, Boolean> set = (Map.Entry<String, Boolean>) it.next();
+                if (set.getValue()) {
+                    positionIn.append("'");
+                    positionIn.append(set.getKey());
+                    positionIn.append("',");
+                }
+            }
+            positionIn.deleteCharAt(positionIn.length() - 1);
+
+
+            String sql = "select p.player_id,p.name,t.name as team,p.country,p.position,p.shirt_number,p.age,p.matches_played,p.goals_scored,p.red_cards,p.yellow_cards from players as p inner join teams as t on p.team_id=t.team_id and p.position in (?) order by p.name asc limit 0,?;";
+            sql = sql.replace("(?)", "(" + positionIn + ")"); // replace (?) with formatted string for SQL IN
+
+            PreparedStatement pst = con.prepareStatement(sql);
+
             pst.setInt(1, 20);
+
             ResultSet rs = pst.executeQuery();
 
-            if (!rs.isBeforeFirst()) {
+            if (!rs.isBeforeFirst()) {// If resultset is empty
                 System.out.println("EMPTY");
-            } else {
-
-//                DefaultTableModel tableModel = new DefaultTableModel();
-//                JTable table = new JTable(tableModel);
-
-//                String[] columnHeaders = {"Player ID", "Name", "Team", "Country", "Position", "Shirt Number", "Age", "Matches Played", "", "", ""};
-//
-//                for (int i = 0; i < columnHeaders.length; i++) {
-//                    tableModel.addColumn(columnHeaders[i]);
-//                }
-
+            } else {// If resultset is not empty
                 while (rs.next()) {
                     BigInteger player_id = BigInteger.valueOf(rs.getLong("player_id"));
                     String name = rs.getString("name");
@@ -251,17 +222,13 @@ public class PlayersFrame extends JFrame implements ActionListener {
                     int red_cards = rs.getInt("red_cards");
                     int yellow_cards = rs.getInt("yellow_cards");
 
-
-//                    System.out.println(player_id + " - " + name + " - " + team + " - " + country + " - " + position + " - " + shirt_number + " - " + age + " - " + matches_played + " - " + goals_scored + " - " + yellow_cards + " - " + red_cards);
-
-                    tableModel.addRow(new Object[]{player_id, name, team, country, position, shirt_number, age, matches_played, goals_scored, red_cards, yellow_cards});
+                    tableModel.addRow(new Object[]{player_id, name, team, country, position, shirt_number, age});// add row to table model
                 }
             }
-
-
         } catch (Exception ex) {
             System.out.println(ex);
+        } finally {
+            return tableModel;
         }
-
     }
 }

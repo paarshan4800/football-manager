@@ -53,7 +53,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 
         // Logo Label
         JLabel logoLabel = new JLabel();
-        logoLabel.setIcon(new ImageIcon(image.getScaledInstance(400, 200, Image.SCALE_FAST)));
+        logoLabel.setIcon(new ImageIcon(new MyImage().getLogo().getScaledInstance(400, 200, Image.SCALE_FAST)));
         logoLabel.setFont(fontPrimary.deriveFont(40f));
         logoLabel.setVerticalAlignment(SwingConstants.CENTER);
         logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -119,7 +119,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(screenSize.width, screenSize.height);
         this.add(scrollable);
-        this.setIconImage(image);
+        this.setIconImage(new MyImage().getLogo());
         this.setVisible(true);
     }
 

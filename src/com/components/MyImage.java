@@ -12,7 +12,7 @@ public class MyImage {
     }
 
     public BufferedImage getLogo() {
-        return getImage("/resources/images/logo.png");
+        return getImage("/resources/images/pl_logo_original.png");
     }
 
     public BufferedImage getImage(String filePath) {

@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class PositionDialog extends JDialog implements ItemListener {
 
@@ -32,9 +33,9 @@ public class PositionDialog extends JDialog implements ItemListener {
 
         // Header
         JLabel dialogLabel = new JLabel();
-        dialogLabel.setText("Filter by Position");
-        dialogLabel.setForeground(myColor.getTextColor());
-        dialogLabel.setFont(myFont.getFontPrimary().deriveFont(20f));
+        dialogLabel.setText(("Filter by Position").toUpperCase());
+        dialogLabel.setForeground(myColor.getPrimaryColor());
+        dialogLabel.setFont(myFont.getFontPrimary().deriveFont(30f));
 
         // Filter Options
         forward = getCheckBox("Forward",filters.get("Forwards"));
@@ -107,7 +108,7 @@ public class PositionDialog extends JDialog implements ItemListener {
         jCheckBox.setText(text);
         jCheckBox.setFocusable(false);
         jCheckBox.setFont(myFont.getFontPrimary().deriveFont(18f));
-        jCheckBox.setForeground(myColor.getPrimaryColor());
+        jCheckBox.setForeground(myColor.getTextColor());
         jCheckBox.setBorder(new EmptyBorder(10, 0, 10, 0));
         jCheckBox.setSelected(filterIncluded);
         return jCheckBox;
