@@ -8,23 +8,29 @@ import com.components.MyImage;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.HashMap;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.math.BigInteger;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.*;
 
-public class PositionDialog extends JDialog implements ItemListener {
+public class TeamDialog extends JDialog implements ItemListener {
 
-    JButton applyFilterBtn;
     MyColor myColor = new MyColor();
     MyFont myFont = new MyFont();
 
-    JCheckBox forward;
-    JCheckBox midfield;
-    JCheckBox defender;
-    JCheckBox goalkeeper;
+    JButton applyFilterBtn;
 
+    ArrayList<JCheckBox> teamCheckBox;
+    ArrayList<String> teams;
     HashMap<String, Boolean> filters;
 
-    public PositionDialog(JFrame owner, String dialogTitle, boolean modality, HashMap<String,Boolean> filters) {
+    public TeamDialog(JFrame owner, String dialogTitle, boolean modality, HashMap<String, Boolean> filters) {
 
         this.filters = filters;
 
@@ -35,28 +41,28 @@ public class PositionDialog extends JDialog implements ItemListener {
         dialogLabel.setFont(myFont.getFontPrimary().deriveFont(30f));
 
         // Filter Options
-        forward = getCheckBox("Forward",filters.get("Forwards"));
-        forward.addItemListener(this);
-        midfield = getCheckBox("Midfield",filters.get("Midfielders"));
-        midfield.addItemListener(this);
-        defender = getCheckBox("Defender",filters.get("Defenders"));
-        defender.addItemListener(this);
-        goalkeeper = getCheckBox("Goalkeeper",filters.get("Goalkeepers"));
-        goalkeeper.addItemListener(this);
+        teams = new ArrayList<>(filters.keySet());
+        Collections.sort(teams);
+        teamCheckBox = new ArrayList<>();
 
+        for (int i = 0; i < teams.size(); i++) {
+            String team = teams.get(i);
+            teamCheckBox.add(getCheckBox(team, filters.get(team)));
+            teamCheckBox.get(i).addItemListener(this);
+        }
 
         // Filter Panel
         JPanel filterPanel = new JPanel();
         filterPanel.setBackground(myColor.getBackgroundColor());
-        filterPanel.setLayout(new GridLayout(4, 1));
-        filterPanel.add(forward);
-        filterPanel.add(midfield);
-        filterPanel.add(defender);
-        filterPanel.add(goalkeeper);
+        filterPanel.setLayout(new GridLayout(10, 2));
+
+        for (int i = 0; i < teamCheckBox.size(); i++) {
+            filterPanel.add(teamCheckBox.get(i));
+        }
 
         applyFilterBtn = new MyButton("Apply");
 
-//        Wrapper
+        //        Wrapper
         JPanel wrapper = new JPanel();
         wrapper.setBackground(myColor.getBackgroundColor());
         wrapper.setBorder(new EmptyBorder(50, 50, 50, 50));
@@ -97,9 +103,17 @@ public class PositionDialog extends JDialog implements ItemListener {
                 }
             }
         });
+
     }
 
-    public JCheckBox getCheckBox(String text,boolean filterIncluded) {
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        JCheckBox source = (JCheckBox) e.getSource();
+        filters.put(source.getText(),!filters.get(source.getText()));
+        System.out.println(source.getText() + " - " + source.isSelected());
+    }
+
+    public JCheckBox getCheckBox(String text, boolean filterIncluded) {
         JCheckBox jCheckBox = new JCheckBox();
         jCheckBox.setBackground(myColor.getBackgroundColor());
         jCheckBox.setText(text);
@@ -109,25 +123,5 @@ public class PositionDialog extends JDialog implements ItemListener {
         jCheckBox.setBorder(new EmptyBorder(10, 0, 10, 0));
         jCheckBox.setSelected(filterIncluded);
         return jCheckBox;
-    }
-
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-        if (e.getSource() == forward) {
-            filters.put("Forwards",!filters.get("Forwards"));
-            System.out.println("Checked Forward" + filters);
-        }
-        else if (e.getSource() == midfield) {
-            filters.put("Midfielders",!filters.get("Midfielders"));
-            System.out.println("Checked Midfield" + filters);
-        }
-        else if (e.getSource() == defender) {
-            filters.put("Defenders",!filters.get("Defenders"));
-            System.out.println("Checked Defender" + filters);
-        }
-        else if (e.getSource() == goalkeeper) {
-            filters.put("Goalkeepers",!filters.get("Goalkeepers"));
-            System.out.println("Checked Goalkeeper" + filters);
-        }
     }
 }
