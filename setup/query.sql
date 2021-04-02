@@ -37,6 +37,8 @@ create table players (
     goals_scored int,
     yellow_cards int,
     red_cards int,
+    username varchar(255),
+    password varchar(255),
     PRIMARY KEY (player_id),
     FOREIGN KEY (team_id) REFERENCES teams(team_id)
 );
