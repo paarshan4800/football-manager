@@ -20,13 +20,11 @@ import org.springframework
         .BCrypt;
 
 public class TopScorers extends JFrame {
-    public ArrayList<String> name=new ArrayList<String>();
-    public ArrayList<Integer> goals_scored=new ArrayList<Integer>();
-    public Object[][] data=new Object[][]{};
+    public ArrayList<String> name = new ArrayList<String>();
+    public ArrayList<Integer> goals_scored = new ArrayList<Integer>();
+    public Object[][] data = new Object[][]{};
+
     public TopScorers() {
-
-
-
 
 
         try {
@@ -37,20 +35,20 @@ public class TopScorers extends JFrame {
             PreparedStatement pst = con.prepareStatement("select name,goals_scored from players order by goals_scored desc;");
             ResultSet rs = pst.executeQuery();
 
-            while(rs.next()) {
+            while (rs.next()) {
 
                 name.add(rs.getString(1));
                 goals_scored.add(rs.getInt(2));
 
             }
 
-                System.out.println(name);
+            System.out.println(name);
 
 
             //Object[] data={name,goals_scored};
             //JTable jTable=new JTable(rs.next(),column_names);
 
-                con.close();
+            con.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -58,29 +56,26 @@ public class TopScorers extends JFrame {
 //create table model with data
 
 
-
-
-       // table.setModel(model);
-        JTable table = new JTable(tableModel);
+        // table.setModel(model);
+        JTable table = new JTable(getTableModel());
         this.setTitle("TopScorers");
         this.setSize(500, 500);
         this.setVisible(true);
     }
 
-    public DefaultTableModel tableModel() {
-        DefaultTableModel model = new DefaultTableModel(0, 0){
-
+    public DefaultTableModel getTableModel() {
+        DefaultTableModel tableModel = new DefaultTableModel(0, 0) {
 
 
             @Override
             public boolean isCellEditable(int row, int column) {
-            return false;
-        }
+                return false;
+            }
 
 
         };
-        String[] column_names={"name","goals_scored"};
-        model.setColumnIdentifiers(column_names);
+        String[] column_names = {"name", "goals_scored"};
+        tableModel.setColumnIdentifiers(column_names);
 
 
         return tableModel;
