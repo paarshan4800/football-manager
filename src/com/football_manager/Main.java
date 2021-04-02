@@ -6,6 +6,7 @@ public class Main {
 	// write your code here
 //        LoginFrame loginFrame = new LoginFrame();
 //        new DashboardFrame();
-        new PlayersFrame();
+        //new PlayersFrame();
+        new TopScorers();
     }
 }
