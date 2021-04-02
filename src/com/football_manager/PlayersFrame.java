@@ -5,6 +5,7 @@ import com.components.MyColor;
 import com.components.MyFont;
 import com.components.MyImage;
 import com.football_manager.filter_dialog.AgeDialog;
+import com.football_manager.filter_dialog.CountryDialog;
 import com.football_manager.filter_dialog.PositionDialog;
 import com.football_manager.filter_dialog.TeamDialog;
 
@@ -152,6 +153,8 @@ public class PlayersFrame extends JFrame implements ActionListener {
 
         // Country Filter Button
         else if (e.getSource() == countryButton) {
+            new CountryDialog(this, "Filter by Country", true, filters.country);
+            this.setEnabled(false);
         }
 
         // Age Filter Button
@@ -180,7 +183,14 @@ public class PlayersFrame extends JFrame implements ActionListener {
                 string.append("',");
             }
         }
-        string.deleteCharAt(string.length() - 1);
+        try {
+            string.deleteCharAt(string.length() - 1);
+        }
+        catch (StringIndexOutOfBoundsException ex) {
+            System.out.println(ex);
+            System.out.println("came here");
+        }
+
         return string;
     }
 
@@ -204,26 +214,21 @@ public class PlayersFrame extends JFrame implements ActionListener {
 
             // Format string for SQL IN operator
             StringBuilder positionIn = getINOperatorFormatted(filters.position);
-//            Iterator<Entry<String, Boolean>> it = filters.position.entrySet().iterator();
-//            while (it.hasNext()) {
-//                Map.Entry<String, Boolean> set = (Map.Entry<String, Boolean>) it.next();
-//                if (set.getValue()) {
-//                    positionIn.append("'");
-//                    positionIn.append(set.getKey());
-//                    positionIn.append("',");
-//                }
-//            }
-//            positionIn.deleteCharAt(positionIn.length() - 1);
+            StringBuilder teamIN = getINOperatorFormatted(filters.team);
+            StringBuilder countryIN = getINOperatorFormatted(filters.country);
 
 
-            String sql = "select p.player_id,p.name,t.name as team,p.country,p.position,p.shirt_number,p.age,p.matches_played,p.goals_scored,p.red_cards,p.yellow_cards from players as p inner join teams as t on p.team_id=t.team_id and p.position in (?) and p.age >= ? and p.age <= ? order by p.name asc;";
-            sql = sql.replace("(?)", "(" + positionIn + ")"); // replace (?) with formatted string for SQL IN
+            String sql = "select p.player_id,p.name,t.name as team,p.country,p.position,p.shirt_number,p.age,p.matches_played,p.goals_scored,p.red_cards,p.yellow_cards from players as p inner join teams as t on p.team_id=t.team_id and p.position in (position) and t.name in (team) and p.country in (country) and p.age >= ? and p.age <= ? order by p.name asc;";
+            sql = sql.replace("(position)", "(" + positionIn + ")"); // replace (position) with formatted string for SQL IN
+            sql = sql.replace("(team)", "(" + teamIN + ")"); // replace (team) with formatted string for SQL IN
+            sql = sql.replace("(country)", "(" + countryIN + ")"); // replace (country) with formatted string for SQL IN
 
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, filters.age.get("minimumAge"));
             pst.setInt(2, filters.age.get("maximumAge"));
 
-//            pst.setInt(1, 20);
+            System.out.println(pst.toString());
+
 
             ResultSet rs = pst.executeQuery();
 

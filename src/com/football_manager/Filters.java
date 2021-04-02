@@ -17,7 +17,10 @@ public class Filters {
     HashMap<String, Integer> age = new HashMap<>();
 
     // Teams
-    HashMap<String, Boolean> team = new HashMap<>();
+    HashMap<String, Boolean> team;
+
+    // Filters
+    HashMap<String, Boolean> country;
 
     public Filters() {
 
@@ -31,48 +34,45 @@ public class Filters {
         age.put("maximumAge", 35);
 
         // Initialization for teams
-        team = getAllTeams();
+        team = getFilterData("select name from teams order by name asc;","name");
+
+        // Initialization for country
+        country = getFilterData("select distinct country from players order by country asc;","country");
+
     }
 
-    private HashMap<String, Boolean> getAllTeams() {
-
-        HashMap<String, Boolean> teamHash = new HashMap<>();
+    private HashMap<String, Boolean> getFilterData(String sql, String columnName) {
+        HashMap<String, Boolean> hash = new HashMap<>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
                     "PaarShanDB0408");
 
-
-            String sql = "select name from teams order by name asc;";
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 
             if (!rs.isBeforeFirst()) {// If resultset is empty
-                System.out.println("EMPTY");
+                System.out.println("EMPTY,Hello");
             } else {// If resultset is not empty
-                boolean firstTeam = true;
+//                boolean firstTeam = true;
                 while (rs.next()) {
-                    String team = rs.getString("name");
+                    String team = rs.getString(columnName);
 
-                    if(firstTeam) {
-                        teamHash.put(team,true);
-                        firstTeam = false;
-                    }
-                    else {
-                        teamHash.put(team,false);
-                    }
-
-
+//                    if(firstTeam) {
+//                        hash.put(team,true);
+//                        firstTeam = false;
+//                    }
+//                    else {
+                        hash.put(team,false);
+//                    }
                 }
             }
         } catch (Exception ex) {
-            System.out.println("Hello");
             System.out.println(ex);
         } finally {
-            return teamHash;
+            return hash;
         }
     }
-
 
 }

@@ -1,9 +1,6 @@
 package com.football_manager.filter_dialog;
 
-import com.components.MyButton;
-import com.components.MyColor;
-import com.components.MyFont;
-import com.components.MyImage;
+import com.components.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,11 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.*;
 
 public class TeamDialog extends JDialog implements ItemListener {
@@ -114,14 +106,6 @@ public class TeamDialog extends JDialog implements ItemListener {
     }
 
     public JCheckBox getCheckBox(String text, boolean filterIncluded) {
-        JCheckBox jCheckBox = new JCheckBox();
-        jCheckBox.setBackground(myColor.getBackgroundColor());
-        jCheckBox.setText(text);
-        jCheckBox.setFocusable(false);
-        jCheckBox.setFont(myFont.getFontPrimary().deriveFont(18f));
-        jCheckBox.setForeground(myColor.getTextColor());
-        jCheckBox.setBorder(new EmptyBorder(10, 0, 10, 0));
-        jCheckBox.setSelected(filterIncluded);
-        return jCheckBox;
+        return new MyCheckBox(text,filterIncluded);
     }
 }
