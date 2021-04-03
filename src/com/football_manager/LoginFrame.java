@@ -139,13 +139,11 @@ public class LoginFrame extends JFrame implements ActionListener {
                     new DashboardFrame();
                 } else {
                     JOptionPane.showMessageDialog(this, "Invalid Username/Password", "Authentication Failed", JOptionPane.WARNING_MESSAGE);
-                    System.out.println("wrongpwd");
                 }
 
             } else {
                 // User doesn't exists
                 JOptionPane.showMessageDialog(this, "Invalid Username/Password", "Authentication Failed", JOptionPane.WARNING_MESSAGE);
-                System.out.println("wronguser");
             }
 
         }

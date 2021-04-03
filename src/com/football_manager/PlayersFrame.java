@@ -183,10 +183,20 @@ public class PlayersFrame extends JFrame implements ActionListener {
                 string.append("',");
             }
         }
+
+        if (string.length() == 0) {
+            it = filters.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<String, Boolean> set = (Map.Entry<String, Boolean>) it.next();
+                string.append("'");
+                string.append(set.getKey());
+                string.append("',");
+            }
+        }
+
         try {
             string.deleteCharAt(string.length() - 1);
-        }
-        catch (StringIndexOutOfBoundsException ex) {
+        } catch (StringIndexOutOfBoundsException ex) {
             System.out.println(ex);
             System.out.println("came here");
         }
@@ -227,13 +237,10 @@ public class PlayersFrame extends JFrame implements ActionListener {
             pst.setInt(1, filters.age.get("minimumAge"));
             pst.setInt(2, filters.age.get("maximumAge"));
 
-            System.out.println(pst.toString());
-
-
             ResultSet rs = pst.executeQuery();
 
             if (!rs.isBeforeFirst()) {// If resultset is empty
-                System.out.println("EMPTY");
+                JOptionPane.showMessageDialog(this, "No players found!", "No players found", JOptionPane.WARNING_MESSAGE);
             } else {// If resultset is not empty
                 while (rs.next()) {
                     BigInteger player_id = BigInteger.valueOf(rs.getLong("player_id"));
