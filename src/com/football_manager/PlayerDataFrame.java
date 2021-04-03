@@ -1,11 +1,10 @@
 package com.football_manager;
 
-import com.components.MyButton;
-import com.components.MyColor;
-import com.components.MyFont;
-import com.components.MyImage;
+import com.components.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,6 +15,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class PlayerDataFrame extends JDialog implements ActionListener {
 
@@ -24,41 +24,93 @@ public class PlayerDataFrame extends JDialog implements ActionListener {
 
     JButton transferBtn;
     JButton closeBtn;
+    ArrayList<JLabel> playerDataLabels;
 
-    public PlayerDataFrame(String playerID) {
+    public PlayerDataFrame(JFrame owner, BigInteger playerID) {
 
-        Player player = getPlayerData(BigInteger.valueOf(46307885));
+        Player player = getPlayerData(playerID
+        );
 
         // Team Logo
         JLabel teamLabel = new JLabel();
-        teamLabel.setText("Manchester United");
+        teamLabel.setText(player.team);
         teamLabel.setHorizontalTextPosition(JLabel.CENTER);
-        teamLabel.setVerticalAlignment(JLabel.BOTTOM);
+        teamLabel.setVerticalTextPosition(JLabel.BOTTOM);
         teamLabel.setForeground(myColor.getTextColor());
         teamLabel.setFont(myFont.getFontPrimary().deriveFont(20f));
+        teamLabel.setIcon(new ImageIcon(new MyImage().getImageFromURL(player.badge)));
+        teamLabel.setIconTextGap(25);
 
         // Button
         transferBtn = new MyButton("Transfer");
         transferBtn.addActionListener(this);
+        transferBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == transferBtn) {
+                    owner.setEnabled(true);
+                    dispose();
+                }
+            }
+        });
         closeBtn = new MyButton("Close");
         closeBtn.addActionListener(this);
+        closeBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == closeBtn) {
+                    owner.setEnabled(true);
+                    dispose();
+                }
+            }
+        });
 
         // Data
-        JLabel playerIDLabel = getPlayerDataLabel(playerID.toString(),"/resources/images/icon_id.png","Player ID");
+        playerDataLabels = new ArrayList<>();
+        playerDataLabels.add(new MyDataLabel(player.player_id.toString(), "/resources/images/icon_id.png", "Player ID"));
+        playerDataLabels.add(new MyDataLabel(player.name, "/resources/images/icon_name.png", "Player Name"));
+        playerDataLabels.add(new MyDataLabel(player.country, "/resources/images/icon_country.png", "Country"));
+        playerDataLabels.add(new MyDataLabel(player.position, "/resources/images/icon_position.png", "Position"));
+        playerDataLabels.add(new MyDataLabel(String.valueOf(player.shirt_number), "/resources/images/icon_shirt_number.png", "Shirt Number"));
+        playerDataLabels.add(new MyDataLabel(String.valueOf(player.age), "/resources/images/icon_age.png", "Age"));
+        playerDataLabels.add(new MyDataLabel(String.valueOf(player.matches_played), "/resources/images/icon_matches_played.png", "Matches Played"));
+        playerDataLabels.add(new MyDataLabel(String.valueOf(player.goals_scored), "/resources/images/icon_goals_scored.png", "Goals Scored"));
+        playerDataLabels.add(new MyDataLabel(String.valueOf(player.yellow_cards), "/resources/images/icon_yellow_card.png", "Yellow Cards"));
+        playerDataLabels.add(new MyDataLabel(String.valueOf(player.red_cards), "/resources/images/icon_red_card.png", "Red Cards"));
 
-        teamLabel.setIcon(new ImageIcon(new MyImage().getImageFromURL("https://apiv2.apifootball.com/badges/2627_manchester-united.png")));
+
+        //  Team Logo Panel
+        JPanel teamLogoPanel = new JPanel();
+        teamLogoPanel.setBackground(myColor.getBackgroundColor());
+        teamLogoPanel.add(teamLabel);
 
         // Button Panel
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(2, 1));
-
+        buttonPanel.setBackground(myColor.getBackgroundColor());
+        GridLayout buttonPanelLayout = new GridLayout(2,1);
+        buttonPanelLayout.setVgap(20);
+        buttonPanel.setLayout(buttonPanelLayout);
         buttonPanel.add(transferBtn);
         buttonPanel.add(closeBtn);
+
+        // Team and Button Panel
+        JPanel teamButtonPanel = new JPanel();
+        teamButtonPanel.setBackground(myColor.getBackgroundColor());
+        GridLayout teamButtonPanelLayout = new GridLayout(2,1);
+        teamButtonPanelLayout.setVgap(50);
+        teamButtonPanel.setLayout(teamButtonPanelLayout);
+        teamButtonPanel.add(teamLogoPanel);
+        teamButtonPanel.add(buttonPanel);
 
         // Data Panel
         JPanel dataPanel = new JPanel();
         dataPanel.setBackground(myColor.getBackgroundColor());
-        dataPanel.add(playerIDLabel);
+        dataPanel.setLayout(new GridLayout(10,1));
+
+        for(int i=0;i<playerDataLabels.size();i++) {
+            dataPanel.add(playerDataLabels.get(i));
+        }
+
 
         //        Wrapper
         JPanel wrapper = new JPanel();
@@ -69,7 +121,7 @@ public class PlayerDataFrame extends JDialog implements ActionListener {
         wrapper.setLayout(new GridBagLayout());
         GridBagConstraints wrapperGBC = new GridBagConstraints();
 
-        wrapperGBC.insets = new Insets(20, 0, 20, 0);
+        wrapperGBC.insets = new Insets(20, 50, 20, 50);
 
         wrapperGBC.gridx = 0;
         wrapperGBC.gridy = 0;
@@ -77,20 +129,19 @@ public class PlayerDataFrame extends JDialog implements ActionListener {
 
         wrapperGBC.gridx = 1;
         wrapperGBC.gridy = 0;
-        wrapper.add(teamLabel, wrapperGBC);
+        wrapper.add(teamButtonPanel, wrapperGBC);
 
-        wrapperGBC.gridx = 1;
-        wrapperGBC.gridy = 1;
-        wrapper.add(buttonPanel, wrapperGBC);
 
         // Dialog
-        this.setTitle("Player");
+        this.setTitle(player.name);
         this.getContentPane().setBackground(myColor.getBackgroundColor());
         this.add(wrapper);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setIconImage(new MyImage().getLogo());
         this.pack();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
+        this.setModalityType(ModalityType.APPLICATION_MODAL);
     }
 
     @Override
@@ -98,7 +149,7 @@ public class PlayerDataFrame extends JDialog implements ActionListener {
 
     }
 
-    private class Player {
+    protected class Player {
         BigInteger player_id;
         String name;
         int shirt_number;

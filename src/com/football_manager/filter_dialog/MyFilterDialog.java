@@ -79,6 +79,7 @@ public class MyFilterDialog extends JDialog {
         this.setIconImage(new MyImage().getLogo());
         this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.setVisible(true);
+        this.setModalityType(ModalityType.APPLICATION_MODAL);
 
     }
 

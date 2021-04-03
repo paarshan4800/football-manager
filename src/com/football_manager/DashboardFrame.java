@@ -1,17 +1,13 @@
 package com.football_manager;
 
 import com.components.MyColor;
+import com.components.MyDataLabel;
 import com.components.MyFont;
 import com.components.MyImage;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,31 +16,39 @@ import java.util.ArrayList;
 
 public class DashboardFrame extends JFrame {
 
+    MyColor myColor = new MyColor();
+    MyFont myFont = new MyFont();
+    
+    ArrayList<JLabel> managerDataLabels;
+    
     public DashboardFrame() {
-
-
-//        Manager Details
-        ArrayList<JLabel> managerDetails = getManagerDetails("hello");
-
+        
+        Manager manager = getManagerDetails("hello");
 
         // Left Panel -> Details
+        managerDataLabels = new ArrayList<>();
+        managerDataLabels.add(new MyDataLabel(String.valueOf(manager.manager_id), "/resources/images/icon_id.png", "Manager ID"));
+        managerDataLabels.add(new MyDataLabel(manager.name, "/resources/images/icon_name.png", "Name"));
+        managerDataLabels.add(new MyDataLabel(manager.country, "/resources/images/icon_country.png", "Country"));
+        managerDataLabels.add(new MyDataLabel(String.valueOf(manager.age), "/resources/images/icon_age.png", "Age"));
+
+
 
         JPanel leftPanel = new JPanel();
-        leftPanel.setBackground(new MyColor().getBackgroundColor());
+        leftPanel.setBackground(myColor.getBackgroundColor());
         leftPanel.setLayout(new GridBagLayout());
-//        leftPanel.setBackground(Color.BLUE);
         GridBagConstraints leftGBC = new GridBagConstraints();
 
-        for (int i = 0; i < managerDetails.size(); i++) {
+        for (int i = 0; i < managerDataLabels.size(); i++) {
             leftGBC.gridx = 0;
             leftGBC.gridy = i;
-            leftPanel.add(managerDetails.get(i), leftGBC);
+            leftPanel.add(managerDataLabels.get(i), leftGBC);
         }
 
         // Right Panel -> Standings and Top Scorers
 
         JPanel rightPanel = new JPanel();
-        rightPanel.setBackground(new MyColor().getBackgroundColor());
+        rightPanel.setBackground(myColor.getBackgroundColor());
         rightPanel.setLayout(new GridBagLayout());
 
         //        Wrapper
@@ -53,7 +57,7 @@ public class DashboardFrame extends JFrame {
         wrapper.add(leftPanel);
         wrapper.add(rightPanel);
         wrapper.setBorder(new EmptyBorder(100, 100, 100, 100));
-        wrapper.setBackground(new MyColor().getBackgroundColor());
+        wrapper.setBackground(myColor.getBackgroundColor());
 
         //        Scrollable Wrapper
         JScrollPane scrollable = new JScrollPane(wrapper);
@@ -70,34 +74,26 @@ public class DashboardFrame extends JFrame {
 
     }
 
-    public JLabel getLabel(String key, String tooltipText, String iconPath, ResultSet rs) {
-        JLabel label = new JLabel();
-        try {
-            label.setText(rs.getString(key));
-            label.setFont(new MyFont().getFontPrimary().deriveFont(25f));
-            label.setForeground(new MyColor().getTextColor());
-            label.setToolTipText(tooltipText);
-            BufferedImage image = null;
-            try {
-                image = ImageIO.read(getClass().getResource("/resources/images/" + iconPath));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            label.setIcon(new ImageIcon(image.getScaledInstance(30, 30,
-                    Image.SCALE_SMOOTH)));
-            Border margin = new EmptyBorder(10,0,10,0);
-            label.setBorder(new CompoundBorder(label.getBorder(),margin));
-        } catch (Exception ex) {
-            System.out.println(ex);
+    private class Manager {
+
+        int manager_id;
+        String name;
+        String country;
+        int age;
+
+        Manager(int _manager_id, String _name, String _country, int _age) {
+            manager_id = _manager_id;
+            name = _name;
+            country = _country;
+            age = _age;
         }
 
-        return label;
+
     }
 
-    public ArrayList<JLabel> getManagerDetails(String username) {
 
-        ArrayList<JLabel> managerDetails = new ArrayList<JLabel>();
-
+    public Manager getManagerDetails(String username) {
+        Manager manager = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
@@ -108,28 +104,19 @@ public class DashboardFrame extends JFrame {
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-//                Manager ID
-                JLabel labelMangerID = getLabel("manager_id","Manager ID","icon_id.png",rs);
-                managerDetails.add(labelMangerID);
+                int manager_id = rs.getInt("manager_id");
+                String name = rs.getString("name");
+                String country = rs.getString("country");
+                int age = rs.getInt("age");
 
-//                Manager Name
-                JLabel labelName = getLabel("name","Manager Name","icon_name.png",rs);
-                managerDetails.add(labelName);
-
-//                Country
-                JLabel labelCountry = getLabel("country","Country","icon_country.png",rs);
-                managerDetails.add(labelCountry);
-
-//                Age
-                JLabel labelAge = getLabel("age","Age","icon_age.png",rs);
-                managerDetails.add(labelAge);
+                manager = new Manager(manager_id, name, country, age);
             }
 
         } catch (Exception ex) {
             System.out.println(ex);
         }
 
-        return managerDetails;
+        return manager;
     }
 
 }

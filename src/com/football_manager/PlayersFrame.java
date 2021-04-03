@@ -91,6 +91,8 @@ public class PlayersFrame extends JFrame implements ActionListener {
                 JTable source = (JTable) e.getSource();
                 int row = source.getSelectedRow();
                 System.out.println(source.getValueAt(row, 0));
+                new PlayerDataFrame(getThisFrame(), (BigInteger) source.getValueAt(row, 0));
+                disableFrame();
             }
         });
 
@@ -135,6 +137,14 @@ public class PlayersFrame extends JFrame implements ActionListener {
         this.add(wrapper);
         this.setIconImage(new MyImage().getLogo());
         this.setVisible(true);
+    }
+
+    public void disableFrame() {
+        this.setEnabled(false);
+    }
+
+    public JFrame getThisFrame() {
+        return this;
     }
 
     @Override
@@ -198,7 +208,6 @@ public class PlayersFrame extends JFrame implements ActionListener {
             string.deleteCharAt(string.length() - 1);
         } catch (StringIndexOutOfBoundsException ex) {
             System.out.println(ex);
-            System.out.println("came here");
         }
 
         return string;

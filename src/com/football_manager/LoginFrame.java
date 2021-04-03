@@ -1,13 +1,10 @@
 package com.football_manager;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.sql.*;
 
 import com.components.*;
@@ -18,6 +15,10 @@ import org.springframework
         .BCrypt;
 
 public class LoginFrame extends JFrame implements ActionListener {
+
+    MyFont myFont = new MyFont();
+    MyColor myColor = new MyColor();
+
     MyFormField usernameField;
     MyPasswordField passwordField;
     MyButton loginButton;
@@ -27,8 +28,8 @@ public class LoginFrame extends JFrame implements ActionListener {
 //        Header
         JLabel header = new JLabel();
         header.setText("LOGIN");
-        header.setForeground(new Color(0x289672));
-        header.setFont(fontPrimary.deriveFont(40f));
+        header.setForeground(myColor.getPrimaryColor());
+        header.setFont(myFont.getFontBold().deriveFont(40f));
         header.setHorizontalAlignment(SwingConstants.CENTER);
 
 //        Username Form
@@ -42,33 +43,25 @@ public class LoginFrame extends JFrame implements ActionListener {
         loginButton = new MyButton("Login");
         loginButton.addActionListener(this);
 
-        //        Frame Icon
-        BufferedImage image = null;
-
-        try {
-            image = ImageIO.read(getClass().getResource("/resources/images/logo.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         // Logo Label
         JLabel logoLabel = new JLabel();
         logoLabel.setIcon(new ImageIcon(new MyImage().getLogo().getScaledInstance(400, 200, Image.SCALE_FAST)));
-        logoLabel.setFont(fontPrimary.deriveFont(40f));
+        logoLabel.setFont(myFont.getFontPrimary().deriveFont(40f));
         logoLabel.setVerticalAlignment(SwingConstants.CENTER);
         logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Left Panel -> for Logo
 
         JPanel leftPanel = new JPanel();
-        leftPanel.setBackground(new MyColor().getBackgroundColor());
+        leftPanel.setBackground(myColor.getBackgroundColor());
         leftPanel.setLayout(new BorderLayout());
         leftPanel.add(logoLabel, BorderLayout.CENTER);
 
         // Right Panel -> for login form
 
         JPanel rightPanel = new JPanel();
-        rightPanel.setBackground(new MyColor().getBackgroundColor());
+        rightPanel.setBackground(myColor.getBackgroundColor());
         rightPanel.setLayout(new GridBagLayout());
 
         // Grid Bag Layout for Right Panel
@@ -107,7 +100,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         wrapper.add(leftPanel);
         wrapper.add(rightPanel);
         wrapper.setBorder(new EmptyBorder(100, 100, 100, 100));
-        wrapper.setBackground(new MyColor().getBackgroundColor());
+        wrapper.setBackground(myColor.getBackgroundColor());
 
         //        Scrollable Wrapper
         JScrollPane scrollable = new JScrollPane(wrapper);
