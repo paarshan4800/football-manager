@@ -7,6 +7,6 @@ public class Main {
 //        LoginFrame loginFrame = new LoginFrame();
 //        new DashboardFrame();
         //new PlayersFrame();
-        new TopScorers();
+        //new TopScorers();
     }
 }

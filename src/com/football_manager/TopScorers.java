@@ -19,14 +19,38 @@ import org.springframework
         .bcrypt
         .BCrypt;
 
-public class TopScorers extends JFrame {
-    public ArrayList<String> name = new ArrayList<String>();
-    public ArrayList<Integer> goals_scored = new ArrayList<Integer>();
-    public Object[][] data = new Object[][]{};
+class TopScorers {
+    private String name;
+    private int goals_scored;
 
-    public TopScorers() {
+    public TopScorers(String _name, int _goals_scored) {
+        this.name = _name;
+        this.goals_scored = _goals_scored;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public int getGoals_scored() {
+        return this.goals_scored;
+    }
+
+}
+public class Frame extends JFrame {
+    //create table model with data
+    // table.setModel(model);
+    public Frame() {
+        this.setTitle("TopScorers");
+        this.setSize(500, 500);
+        this.setVisible(true);
+    }
+}
 
 
+static ArrayList<TopScorers> getTopScorers() {
+        ArrayList<TopScorers> data = new ArrayList<TopScorers>();
+        TopScorers ts;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
@@ -34,50 +58,40 @@ public class TopScorers extends JFrame {
 
             PreparedStatement pst = con.prepareStatement("select name,goals_scored from players order by goals_scored desc;");
             ResultSet rs = pst.executeQuery();
-
             while (rs.next()) {
-
-                name.add(rs.getString(1));
-                goals_scored.add(rs.getInt(2));
-
+                ts = new TopScorers(
+                        rs.getString(1),
+                        rs.getInt(2)
+                );
+                data.add(ts);
             }
-
-            System.out.println(name);
-
-
-            //Object[] data={name,goals_scored};
-            //JTable jTable=new JTable(rs.next(),column_names);
-
             con.close();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             System.out.println(ex);
         }
-
-//create table model with data
-
-
-        // table.setModel(model);
-        JTable table = new JTable(getTableModel());
-        this.setTitle("TopScorers");
-        this.setSize(500, 500);
-        this.setVisible(true);
-    }
-
-    public DefaultTableModel getTableModel() {
-        DefaultTableModel tableModel = new DefaultTableModel(0, 0) {
+        return data;
+}
 
 
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
 
 
-        };
+
+public static void main(String args[]){
+        JTable table = new JTable();
+        DefaultTableModel tableModel = new DefaultTableModel();
         String[] column_names = {"name", "goals_scored"};
         tableModel.setColumnIdentifiers(column_names);
+        Object[] rowData = new Object[2];
 
-
-        return tableModel;
-    }
+        for (int i = 0; i <getTopScorers().size(); i++) {
+            rowData[0] = getTopScorers().get(i).getName();
+            rowData[1] = getTopScorers().get(i).getGoals_scored();
+            tableModel.addRow(rowData);
+            }
+        table.setModel(tableModel);
+        Frame window =new Frame();
 }
+
+
+
