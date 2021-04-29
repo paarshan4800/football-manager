@@ -67,16 +67,16 @@ public class PlayerDataFrame extends JDialog implements ActionListener {
 
         // Data
         playerDataLabels = new ArrayList<>();
-        playerDataLabels.add(new MyDataLabel(player.player_id.toString(), "/resources/images/icon_id.png", "Player ID"));
-        playerDataLabels.add(new MyDataLabel(player.name, "/resources/images/icon_name.png", "Player Name"));
-        playerDataLabels.add(new MyDataLabel(player.country, "/resources/images/icon_country.png", "Country"));
-        playerDataLabels.add(new MyDataLabel(player.position, "/resources/images/icon_position.png", "Position"));
-        playerDataLabels.add(new MyDataLabel(String.valueOf(player.shirt_number), "/resources/images/icon_shirt_number.png", "Shirt Number"));
-        playerDataLabels.add(new MyDataLabel(String.valueOf(player.age), "/resources/images/icon_age.png", "Age"));
-        playerDataLabels.add(new MyDataLabel(String.valueOf(player.matches_played), "/resources/images/icon_matches_played.png", "Matches Played"));
-        playerDataLabels.add(new MyDataLabel(String.valueOf(player.goals_scored), "/resources/images/icon_goals_scored.png", "Goals Scored"));
-        playerDataLabels.add(new MyDataLabel(String.valueOf(player.yellow_cards), "/resources/images/icon_yellow_card.png", "Yellow Cards"));
-        playerDataLabels.add(new MyDataLabel(String.valueOf(player.red_cards), "/resources/images/icon_red_card.png", "Red Cards"));
+        playerDataLabels.add(new MyDataLabel(player.player_id.toString(), "/icons/color/icon_id.png", "Player ID"));
+        playerDataLabels.add(new MyDataLabel(player.name, "/icons/color/icon_name.png", "Player Name"));
+        playerDataLabels.add(new MyDataLabel(player.country, "/icons/color/icon_country.png", "Country"));
+        playerDataLabels.add(new MyDataLabel(player.position, "/icons/color/icon_position.png", "Position"));
+        playerDataLabels.add(new MyDataLabel(String.valueOf(player.shirt_number), "/icons/color/icon_shirt_number.png", "Shirt Number"));
+        playerDataLabels.add(new MyDataLabel(String.valueOf(player.age), "/icons/color/icon_age.png", "Age"));
+        playerDataLabels.add(new MyDataLabel(String.valueOf(player.matches_played), "/icons/color/icon_matches_played.png", "Matches Played"));
+        playerDataLabels.add(new MyDataLabel(String.valueOf(player.goals_scored), "/icons/color/icon_goals_scored.png", "Goals Scored"));
+        playerDataLabels.add(new MyDataLabel(String.valueOf(player.yellow_cards), "/icons/icon_yellow_card.png", "Yellow Cards"));
+        playerDataLabels.add(new MyDataLabel(String.valueOf(player.red_cards), "/icons/icon_red_card.png", "Red Cards"));
 
 
         //  Team Logo Panel

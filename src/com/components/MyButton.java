@@ -27,7 +27,7 @@ public class MyButton extends JButton {
 
         // If filepath is not null
         if (filePath != null) {
-            setIcon(new ImageIcon(new MyImage().getImage(filePath).getScaledInstance(30, 30, Image.SCALE_FAST))); // set icon to button
+            setIcon(new ImageIcon(new MyImage().getImage(filePath).getScaledInstance(30, 30, Image.SCALE_SMOOTH))); // set icon to button
         }
 
     }

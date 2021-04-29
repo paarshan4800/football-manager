@@ -6,22 +6,22 @@ import java.io.InputStream;
 
 public class MyFont {
 
-    String filePath = "/resources/fonts/";
+    String filePath = "/resources/fonts/Montserrat/";
 
     public MyFont() {
 
     }
 
     public Font getFontPrimary() {
-        return getFont(filePath + "Spotify/GothamMedium.ttf");
+        return getFont(filePath + "Regular.ttf");
     }
 
     public Font getFontMedium() {
-        return getFont(filePath + "Spotify/Gotham-Bold.otf");
+        return getFont(filePath + "Medium.ttf");
     }
 
     public Font getFontBold() {
-        return getFont(filePath + "Spotify/Gotham-Black.otf");
+        return getFont(filePath + "Bold.ttf");
     }
 
     private Font getFont(String filePath) {

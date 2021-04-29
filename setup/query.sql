@@ -42,3 +42,40 @@ create table players (
     PRIMARY KEY (player_id),
     FOREIGN KEY (team_id) REFERENCES teams(team_id)
 );
+
+create table transfers (
+    transfer_id BIGINT NOT NULL auto_increment,
+    player_id BIGINT,
+    fromTeam_id BIGINT,
+    toTeam_id BIGINT,
+    status int,
+    type ENUM('permanenttransfers', 'playerexchangetransfers', 'loantransfers') NOT NULL,
+    PRIMARY KEY (transfer_id),
+    FOREIGN KEY (player_id) REFERENCES players(player_id),
+    FOREIGN KEY (fromTeam_id) REFERENCES teams(team_id),
+    FOREIGN KEY (toTeam_id) REFERENCES teams(team_id)
+);
+
+create table permanentTransfers (
+    transfer_id BIGINT,
+    transfer_fee DOUBLE,
+    PRIMARY KEY (transfer_id),
+    FOREIGN KEY (transfer_id) REFERENCES transfers(transfer_id)
+);
+
+create table playerExchangeTransfers (
+    transfer_id BIGINT,
+    exchangePlayer_id BIGINT,
+    exchangePlayerTeam_id BIGINT,
+    PRIMARY KEY (transfer_id),
+    FOREIGN KEY (transfer_id) REFERENCES permanentTransfers(transfer_id),
+    FOREIGN KEY (exchangePlayerTeam_id) REFERENCES transfers(toTeam_id)
+);
+
+create table loanTransfers (
+    transfer_id BIGINT,
+    wage_split int,
+    duration_inMonths int,
+    PRIMARY KEY (transfer_id),
+    FOREIGN KEY (transfer_id) REFERENCES transfers(transfer_id)
+);

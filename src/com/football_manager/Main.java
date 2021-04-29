@@ -1,5 +1,7 @@
 package com.football_manager;
 
+import javax.swing.*;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -7,6 +9,6 @@ public class Main {
 //        LoginFrame loginFrame = new LoginFrame();
         new DashboardFrame();
 //        new PlayersFrame();
-//        new PlayerDataFrame("1234");
+//        new PlayerDataFrame(new JFrame(),1234);
     }
 }

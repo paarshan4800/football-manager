@@ -4,6 +4,7 @@ import com.components.MyButton;
 import com.components.MyColor;
 import com.components.MyFont;
 import com.components.MyImage;
+import com.components.menu.MyMenuBar;
 import com.football_manager.filter_dialog.AgeDialog;
 import com.football_manager.filter_dialog.CountryDialog;
 import com.football_manager.filter_dialog.PositionDialog;
@@ -39,20 +40,18 @@ public class PlayersFrame extends JFrame implements ActionListener {
 
     MyColor myColor = new MyColor();
     MyFont myFont = new MyFont();
-
-    private int hoveredRow = -1;
-    private int hoveredColumn = -1;
+    MyMenuBar menuBar = new MyMenuBar(this);
 
     public PlayersFrame() {
 
         // Top Panel Buttons
-        positionButton = new MyButton("Position", "/resources/images/icon_position.png");
+        positionButton = new MyButton("Position", "/icons/black/icon_position.png");
         positionButton.addActionListener(this);
-        countryButton = new MyButton("Country", "/resources/images/icon_country_black.png");
+        countryButton = new MyButton("Country", "/icons/black/icon_country.png");
         countryButton.addActionListener(this);
-        teamButton = new MyButton("Team", "/resources/images/icon_team.png");
+        teamButton = new MyButton("Team", "/icons/black/icon_team.png");
         teamButton.addActionListener(this);
-        ageButton = new MyButton("Age", "/resources/images/icon_age_black.png");
+        ageButton = new MyButton("Age", "/icons/black/icon_age.png");
         ageButton.addActionListener(this);
         applyFilter = new MyButton("Apply Filter");
         applyFilter.addActionListener(this);
@@ -130,6 +129,7 @@ public class PlayersFrame extends JFrame implements ActionListener {
         wrapper.add(bottomPanel, wrapperGBC);
 
 //        Frame
+        this.setJMenuBar(menuBar);
         this.setTitle("Players");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

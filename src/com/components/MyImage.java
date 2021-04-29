@@ -8,6 +8,7 @@ import java.net.URL;
 
 public class MyImage {
 
+    private final static String basePath = "/resources/images";
 
     public MyImage() {
 
@@ -21,7 +22,7 @@ public class MyImage {
         BufferedImage image = null;
 
         try {
-            image = ImageIO.read(getClass().getResource(filePath));
+            image = ImageIO.read(getClass().getResource(basePath + filePath));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
