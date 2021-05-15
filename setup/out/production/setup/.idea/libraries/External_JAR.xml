@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="External JAR">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/External JAR/json-20210307.jar!/" />
+      <root url="jar://$PROJECT_DIR$/External JAR/mysql-connector-java-8.0.23.jar!/" />
+      <root url="jar://$PROJECT_DIR$/External JAR/spring-security-crypto-5.4.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

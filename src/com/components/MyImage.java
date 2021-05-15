@@ -29,6 +29,22 @@ public class MyImage {
             return image;
         }
     }
+    public BufferedImage getImageFromURL(String _url) {
+        BufferedImage image = null;
+
+        try {
+            URL url = new URL(_url);
+            try {
+                image = ImageIO.read(url);
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
+        } catch (MalformedURLException ex) {
+            System.out.println(ex);
+        } finally {
+            return image;
+        }
+    }
 
     public BufferedImage getImageFromURL(String _url) {
         BufferedImage image = null;

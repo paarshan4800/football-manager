@@ -50,7 +50,7 @@ public class Managers {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                        "PaarShanDB0408");
+                        "14valentine");
 
                 PreparedStatement pst = con.prepareStatement(
                         "insert into managers (manager_id,name,country,age,username,password) values (?,?,?,?,?,?)");

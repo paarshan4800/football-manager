@@ -1,7 +1,5 @@
 package com.football_manager;
 
-import com.transfer_chat.view.view_requests_frame.IncomingTransfersFrame;
-import com.transfer_chat.view.view_requests_frame.OutgoingTransfersFrame;
 
 public class Main {
 
