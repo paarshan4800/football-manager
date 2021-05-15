@@ -1,0 +1,44 @@
+
+‹
+java:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ÖœŒĞùÿÿÿÿ
+k	java:S117!"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¦û×ßüÿÿÿÿ
+k	java:S117#"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.( èãıÿÿÿÿ
+f	java:S117$"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ñÅ˜ã
+k	java:S117%"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(™ß¦‹úÿÿÿÿ
+k	java:S117&"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ä¸´Şúÿÿÿÿ
+f	java:S117'"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œƒŸ
+f	java:S117("QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(•ˆ©…
+a
+java:S1128"FRemove this unused import 'com.football_manager.LeagueStandingsFrame'.(µÒ€üÿÿÿÿ
+E
+java:S6212"/Declare this local variable with "var" instead.(®òÄ¹
+J
+java:S6212"/Declare this local variable with "var" instead.(¨ÚÔıÿÿÿÿ
+X
+java:S1854+"BRemove this useless assignment to local variable "leagueStanding".(ê“Äñ
+E
+java:S6212"/Declare this local variable with "var" instead.(œœóš
+E
+java:S6212"/Declare this local variable with "var" instead.(ƒŒ•‰
+J
+java:S6212"/Declare this local variable with "var" instead.(ˆĞ…ÿÿÿÿÿ
+J
+java:S6212!"/Declare this local variable with "var" instead.(¦û×ßüÿÿÿÿ
+J
+java:S6212""/Declare this local variable with "var" instead.(ğµ°¥øÿÿÿÿ
+J
+java:S6212#"/Declare this local variable with "var" instead.( èãıÿÿÿÿ
+E
+java:S6212$"/Declare this local variable with "var" instead.(ñÅ˜ã
+J
+java:S6212%"/Declare this local variable with "var" instead.(™ß¦‹úÿÿÿÿ
+J
+java:S6212&"/Declare this local variable with "var" instead.(Ä¸´Şúÿÿÿÿ
+E
+java:S6212'"/Declare this local variable with "var" instead.(œƒŸ
+E
+java:S6212("/Declare this local variable with "var" instead.(•ˆ©…
+J
+java:S6212)"/Declare this local variable with "var" instead.(¢¯¯–şÿÿÿÿ
+I
+java:S1481+"3Remove this unused "leagueStanding" local variable.(ê“Äñ

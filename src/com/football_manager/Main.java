@@ -11,7 +11,7 @@ public class Main {
 
         // write your code here
 //        LoginFrame loginFrame = new LoginFrame();
-        new DashboardFrame();
+//        new DashboardFrame();
 //        new PlayersFrame();
 //        new PlayerDataFrame(new JFrame(),1234);
 
@@ -19,6 +19,7 @@ public class Main {
 //        new ViewTransfersRequestsTypeDialog();
 //        new IncomingTransfersFrame();
 //        new OutgoingTransfersFrame();
+        new LeagueStandingsFrame();
     }
 
 }

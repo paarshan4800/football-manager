@@ -159,7 +159,7 @@ public class LeagueStandingsFrame extends JFrame{
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                        "14valentine");
+                        "PaarShanDB0408");
 
                 PreparedStatement pst = con.prepareStatement("select overall_league_position,team_name,matches_played,matches_won,matches_drawn,matches_lost,goals_for,goals_against,overall_points from standings;");
                 ResultSet rs = pst.executeQuery();
