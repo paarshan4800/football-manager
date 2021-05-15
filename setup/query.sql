@@ -85,7 +85,7 @@ create table permanentTransfers
     transfer_id  BIGINT,
     transfer_fee DOUBLE,
     PRIMARY KEY (transfer_id),
-    FOREIGN KEY (transfer_id) REFERENCES transfers (transfer_id)
+    FOREIGN KEY (transfer_id) REFERENCES transfers (transfer_id) ON DELETE CASCADE
 );
 
 create table playerExchangeTransfers
@@ -94,7 +94,7 @@ create table playerExchangeTransfers
     exchangePlayer_id     BIGINT,
     exchangePlayerTeam_id BIGINT,
     PRIMARY KEY (transfer_id),
-    FOREIGN KEY (transfer_id) REFERENCES permanentTransfers (transfer_id),
+    FOREIGN KEY (transfer_id) REFERENCES permanentTransfers (transfer_id) ON DELETE CASCADE,
     FOREIGN KEY (exchangePlayerTeam_id) REFERENCES transfers (toTeam_id)
 );
 
@@ -104,7 +104,7 @@ create table loanTransfers
     wage_split        int,
     duration_inMonths int,
     PRIMARY KEY (transfer_id),
-    FOREIGN KEY (transfer_id) REFERENCES transfers (transfer_id)
+    FOREIGN KEY (transfer_id) REFERENCES transfers (transfer_id) ON DELETE CASCADE
 );
 
 
@@ -113,7 +113,7 @@ create table topScorers
     player_id    BIGINT NOT NULL,
     team_id      BIGINT NOT NULL,
     goals_scored int,
-    PRIMARY KEY (player_id,team_id),
+    PRIMARY KEY (player_id, team_id),
     FOREIGN KEY (player_id) REFERENCES players (player_id),
     FOREIGN KEY (team_id) REFERENCES teams (team_id)
 )

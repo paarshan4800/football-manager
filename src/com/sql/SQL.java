@@ -287,7 +287,7 @@ public class SQL {
             String sql = null;
 
             if (Objects.equals(type, "incoming")) {
-                sql = "select transfer_id,player_id,fromTeam_id,toTeam_id,status,type from transfers where fromTeam_id=?;";
+                sql = "select transfer_id,player_id,fromTeam_id,toTeam_id,status,type from transfers where fromTeam_id=? and status=1;";
             } else if (Objects.equals(type, "outgoing")) {
                 sql = "select transfer_id,player_id,fromTeam_id,toTeam_id,status,type from transfers where toTeam_id=?;";
             }
@@ -336,7 +336,7 @@ public class SQL {
         } catch (SQLException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }
-
+        System.out.println(transfers);
         return transfers;
 
     }

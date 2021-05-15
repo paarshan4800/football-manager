@@ -1,6 +1,8 @@
 package com.football_manager;
 
 
+import com.transfer_chat.view.view_requests_frame.OutgoingTransfersFrame;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -18,8 +20,8 @@ public class Main {
 //        new TransferRequestsFrame();
 //        new ViewTransfersRequestsTypeDialog();
 //        new IncomingTransfersFrame();
-//        new OutgoingTransfersFrame();
-        new LeagueStandingsFrame();
+        new OutgoingTransfersFrame();
+//        new LeagueStandingsFrame();
     }
 
 }

@@ -38,7 +38,7 @@ public class DashboardFrame extends JFrame implements ActionListener {
 
     public DashboardFrame() { // Manager should come from login
 
-        Manager manager = sql.getManagerGivenUsername("guardiolapep");
+        Manager manager = sql.getManagerGivenUsername("mourinhojose");
 
         // Left Panel -> Details
         managerDataLabels = new ArrayList<>();

@@ -39,6 +39,10 @@ public class ViewTransferRequestsFrame extends JFrame {
         headerLabel.setForeground(myColor.getTextColor());
         headerLabel.setFont(myFont.getFontMedium());
 
+//        // Refresh Label
+//        JLabel refreshLabel = new JLabel();
+//        refreshLabel.setIcon(myImage.getImage());
+
         // Header Panel
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(myColor.getBackgroundColor());

@@ -122,14 +122,18 @@ public class ViewTransferRequestDialog extends JDialog implements ActionListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String dialogMessage = null;
         if (e.getSource() == acceptTransferButton) {
             transfer.setStatus(Transfer.ACCEPTED);
+            dialogMessage = transfer.getPlayer().getName() + " has moved to " + transfer.getToTeam().getName() + " successfully";
         } else if (e.getSource() == rejectTransferButton) {
             transfer.setStatus(Transfer.REJECTED);
+            dialogMessage = "Transfer of " + transfer.getPlayer().getName() + " to " + transfer.getToTeam().getName() + " rejected";
         }
+
         if (sql.transferRequestAction(transfer)) {
             dispose();
-            JOptionPane.showMessageDialog(this, transfer.getPlayer().getName() + " has moved to " + transfer.getToTeam().getName() + " successfully", "Transfer Successful", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, dialogMessage, "Transfer Successful", JOptionPane.INFORMATION_MESSAGE);
             owner.dispose();
             new IncomingTransfersFrame();
         } else {

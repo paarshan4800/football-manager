@@ -3,6 +3,7 @@ package com.transfer_chat.view.view_requests_frame;
 import com.components.MyColor;
 import com.components.MyFont;
 import com.components.MyImage;
+import com.components.MyLoader;
 import com.components.menu.MyMenuBar;
 import com.models.LoanTransfer;
 import com.models.PermanentTransfer;
@@ -29,21 +30,33 @@ public class IncomingTransfersFrame extends ViewTransferRequestsFrame {
     public IncomingTransfersFrame() {
 
         super("Incoming Transfer Requests");
-        JLabel jLabel = new JLabel("testign loader");
-        dataPanel.add(jLabel);
+        transferTypeMapping.put(PermanentTransfer.class, "Permanent Transfer");
+        transferTypeMapping.put(LoanTransfer.class, "Loan Transfer");
+        transferTypeMapping.put(PlayerExchangeTransfer.class, "Player Exchange");
+//        JLabel jLabel = new JLabel("testign loader");
+        MyLoader myLoader = new MyLoader();
+        dataPanel.add(myLoader);
 
-        ArrayList<Transfer> incomingTransfers = sql.getAllTransfersGivenTeamIDOfManagerAndType(BigInteger.valueOf(2626), "incoming");
+        ArrayList<Transfer> incomingTransfers = sql.getAllTransfersGivenTeamIDOfManagerAndType(BigInteger.valueOf(2627), "incoming");
 
-        dataPanel.setLayout(new GridLayout(incomingTransfers.size() / 2, 3, 25, 25));
+        dataPanel.remove(myLoader);
 
-        dataPanel.remove(jLabel);
+        if (incomingTransfers.size() == 0) {
+            JLabel noTransfersLabel = new JLabel();
+            noTransfersLabel.setText("No incoming transfers.");
+            noTransfersLabel.setFont(myFont.getFontPrimary().deriveFont(16f));
+            noTransfersLabel.setForeground(myColor.getTextColor());
+            dataPanel.add(noTransfersLabel);
+        } else {
+            dataPanel.setLayout(new GridLayout(incomingTransfers.size() / 2, 3, 25, 25));
 
-        for (Transfer transfer : incomingTransfers) {
-            JPanel transferPanel = getTransferPanel(transfer);
-            dataPanel.add(transferPanel);
-            transferPanel.addMouseListener(new TransferListener(this,transfer, transferTypeMapping));
-
+            for (Transfer transfer : incomingTransfers) {
+                JPanel transferPanel = getTransferPanel(transfer);
+                transferPanel.addMouseListener(new TransferListener(this, transfer, transferTypeMapping));
+                dataPanel.add(transferPanel);
+            }
         }
+
         pack();
         setLocationRelativeTo(null);
     }
@@ -96,14 +109,15 @@ class TransferListener implements MouseListener {
 
     JFrame owner;
     Transfer transfer;
-    public static HashMap<Class, String> transferTypeMapping = new HashMap<Class, String>();
+    public HashMap<Class, String> transferTypeMapping;
 
     public TransferListener(JFrame owner, Transfer transfer, HashMap<Class, String> transferTypeMapping) {
         this.owner = owner;
         this.transfer = transfer;
-        transferTypeMapping.put(PermanentTransfer.class, "Permanent Transfer");
-        transferTypeMapping.put(LoanTransfer.class, "Loan Transfer");
-        transferTypeMapping.put(PlayerExchangeTransfer.class, "Player Exchange");
+        this.transferTypeMapping = transferTypeMapping;
+//        transferTypeMapping.put(PermanentTransfer.class, "Permanent Transfer");
+//        transferTypeMapping.put(LoanTransfer.class, "Loan Transfer");
+//        transferTypeMapping.put(PlayerExchangeTransfer.class, "Player Exchange");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.transfer_chat.view.view_requests_frame;
 
+import com.components.MyLoader;
 import com.models.Transfer;
 
 import javax.swing.*;
@@ -7,24 +8,38 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class OutgoingTransfersFrame extends ViewTransferRequestsFrame {
 
+    public HashMap<Integer, String> transferStatusMapping = new HashMap<>();
+
     public OutgoingTransfersFrame() {
         super("Outgoing Transfer Requests");
-        JLabel jLabel = new JLabel("testign loader");
-        dataPanel.add(jLabel);
 
-        ArrayList<Transfer> incomingTransfers = sql.getAllTransfersGivenTeamIDOfManagerAndType(BigInteger.valueOf(2612), "outgoing");
+        transferStatusMapping.put(1, "OPEN");
+        transferStatusMapping.put(2, "ACCEPTED");
+        transferStatusMapping.put(3, "REJECTED");
 
-        dataPanel.setLayout(new GridLayout(incomingTransfers.size() / 2, 3, 25, 25));
+        MyLoader myLoader = new MyLoader();
+        dataPanel.add(myLoader);
 
-        dataPanel.remove(jLabel);
+        ArrayList<Transfer> outgoingTransfers = sql.getAllTransfersGivenTeamIDOfManagerAndType(BigInteger.valueOf(2628), "outgoing");
 
-        for (Transfer transfer : incomingTransfers) {
-            JPanel transferPanel = getTransferPanel(transfer);
-            dataPanel.add(transferPanel);
-            transferPanel.addMouseListener(new TransferListener(this,transfer, transferTypeMapping));
+        dataPanel.remove(myLoader);
+
+        if (outgoingTransfers.size() == 0) {
+            JLabel noTransfersLabel = new JLabel();
+            noTransfersLabel.setText("No outgoing transfers.");
+            noTransfersLabel.setFont(myFont.getFontPrimary().deriveFont(16f));
+            noTransfersLabel.setForeground(myColor.getTextColor());
+            dataPanel.add(noTransfersLabel);
+        } else {
+            dataPanel.setLayout(new GridLayout(outgoingTransfers.size() / 2, 3, 25, 25));
+            for (Transfer transfer : outgoingTransfers) {
+                JPanel transferPanel = getTransferPanel(transfer);
+                dataPanel.add(transferPanel);
+            }
         }
 
         pack();
@@ -46,6 +61,11 @@ public class OutgoingTransfersFrame extends ViewTransferRequestsFrame {
         transferTypeLabel.setText(transferTypeMapping.get(transfer.getClass()));
         transferTypeLabel.setFont(myFont.getFontPrimary().deriveFont(16f));
         transferTypeLabel.setForeground(myColor.getTextColor());
+
+        JLabel transferStatusLabel = new JLabel();
+        transferStatusLabel.setText(transferStatusMapping.get(transfer.getStatus()));
+        transferStatusLabel.setFont(myFont.getFontPrimary().deriveFont(16f));
+        transferStatusLabel.setForeground(myColor.getTextColor());
 
         JPanel transferPanel = new JPanel();
         transferPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -69,6 +89,11 @@ public class OutgoingTransfersFrame extends ViewTransferRequestsFrame {
         gbc.gridy = 0;
         gbc.gridheight = 2;
         transferPanel.add(playersTeamLabel, gbc);
+
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.gridheight = 2;
+        transferPanel.add(transferStatusLabel, gbc);
 
         return transferPanel;
     }
