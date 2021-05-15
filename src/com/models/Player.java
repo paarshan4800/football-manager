@@ -15,6 +15,13 @@ public class Player {
     private int yellowCards;
     private int redCards;
 
+    public Player(BigInteger playerID, Team team, String name, String position) {
+        this.playerID = playerID;
+        this.team = team;
+        this.name = name;
+        this.position = position;
+    }
+
     public Player(BigInteger playerID, Team team, String name, int shirtNumber, String country, String position, int age, int matchesPlayed, int goalsScored, int yellowCards, int redCards) {
         this.playerID = playerID;
         this.team = team;

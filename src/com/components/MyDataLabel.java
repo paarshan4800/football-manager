@@ -21,6 +21,8 @@ public class MyDataLabel extends JLabel {
         Border margin = new EmptyBorder(10,0,10,0);
         this.setBorder(new CompoundBorder(this.getBorder(),margin));
         this.setIconTextGap(15);
+
+        setHorizontalAlignment(SwingConstants.CENTER);
     }
 
 }

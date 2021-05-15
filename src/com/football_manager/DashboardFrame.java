@@ -3,6 +3,8 @@ package com.football_manager;
 import com.components.*;
 import com.components.menu.MyMenuBar;
 import com.models.Manager;
+import com.sql.SQL;
+import com.transfer_chat.view.ViewTransfersRequestsTypeDialog;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -32,9 +34,11 @@ public class DashboardFrame extends JFrame implements ActionListener {
 
     MyMenuBar menuBar = new MyMenuBar(this);
 
-    public DashboardFrame() {
+    SQL sql = new SQL();
 
-        Manager manager = getManagerDetails("hello");
+    public DashboardFrame() { // Manager should come from login
+
+        Manager manager = sql.getManagerGivenUsername("guardiolapep");
 
         // Left Panel -> Details
         managerDataLabels = new ArrayList<>();
@@ -125,37 +129,38 @@ public class DashboardFrame extends JFrame implements ActionListener {
             new PlayersFrame();
             this.dispose();
         } else if (e.getSource() == transferRequestsButton) {
-
+            new ViewTransfersRequestsTypeDialog();
+            this.dispose();
         }
 
     }
 
-    public Manager getManagerDetails(String username) {
-        Manager manager = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                    "PaarShanDB0408");
-
-            PreparedStatement pst = con.prepareStatement("select * from managers where username=?");
-            pst.setString(1, "kloppjurgen");
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-                int manager_id = rs.getInt("manager_id");
-                String name = rs.getString("name");
-                String country = rs.getString("country");
-                int age = rs.getInt("age");
-
-                manager = new Manager(manager_id, name, country, age);
-            }
-
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-
-        return manager;
-    }
+//    public Manager getManagerDetails(String username) {
+//        Manager manager = null;
+//        try {
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
+//                    "PaarShanDB0408");
+//
+//            PreparedStatement pst = con.prepareStatement("select * from managers where username=?");
+//            pst.setString(1, "kloppjurgen");
+//            ResultSet rs = pst.executeQuery();
+//
+//            while (rs.next()) {
+//                int manager_id = rs.getInt("manager_id");
+//                String name = rs.getString("name");
+//                String country = rs.getString("country");
+//                int age = rs.getInt("age");
+//
+//                manager = new Manager(manager_id, name, country, age);
+//            }
+//
+//        } catch (Exception ex) {
+//            System.out.println(ex);
+//        }
+//
+//        return manager;
+//    }
 
 }
 
