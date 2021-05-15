@@ -19,7 +19,8 @@ public class Main {
 //        new ViewTransfersRequestsTypeDialog();
 //        new IncomingTransfersFrame();
 //        new OutgoingTransfersFrame();
-        new LeagueStandingsFrame();
+       new LeagueStandingsFrame();
+       // new TopScorersFrame();
     }
 
 }

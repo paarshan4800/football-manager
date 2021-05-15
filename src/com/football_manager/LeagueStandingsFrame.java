@@ -159,9 +159,9 @@ public class LeagueStandingsFrame extends JFrame{
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                        "PaarShanDB0408");
+                        "14valentine");
 
-                PreparedStatement pst = con.prepareStatement("select overall_league_position,team_name,matches_played,matches_won,matches_drawn,matches_lost,goals_for,goals_against,overall_points from standings;");
+                PreparedStatement pst = con.prepareStatement("select standings.position,teams.name,standings.matches_played,standings.matches_won,standings.matches_drawn,standings.matches_lost,standings.goals_for,standings.goals_against,standings.points from standings inner join teams on standings.team_id=teams.team_id order by points desc;");
                 ResultSet rs = pst.executeQuery();
                 while (rs.next()) {
                     ls = new LeagueStandings(
