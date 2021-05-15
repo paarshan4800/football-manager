@@ -1,5 +1,6 @@
 package com.football_manager;
 
+
 public class Main {
 
     public static void main(String[] args) {
@@ -7,6 +8,9 @@ public class Main {
 //        LoginFrame loginFrame = new LoginFrame();
 //        new DashboardFrame();
         //new PlayersFrame();
-        new TopScorersFrame();
+        //new TopScorersFrame();
+        //new LeagueStandingsFrame();
+        //new UpcomingMatchesFrame();
+        new FinishedMatchesFrame();
     }
 }

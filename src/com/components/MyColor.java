@@ -18,4 +18,6 @@ public class MyColor {
     public Color getBackgroundColor() {
         return new Color(0x252525);
     }
+
+    public Color getBoxColor(){return new Color(0x3F3F3F);}
 }

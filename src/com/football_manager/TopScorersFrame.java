@@ -17,10 +17,11 @@ class TopScorersFrame extends JFrame {
     // table.setModel(model);
     MyColor myColor=new MyColor();
     MyFont myFont=new MyFont();
-
+    JTable table;
     public TopScorersFrame() {
 
-        JTable table = new JTable(){
+        table = new JTable(){
+
             @Override
             public boolean isCellEditable(int data,int columns){
                 return false;
@@ -43,19 +44,7 @@ class TopScorersFrame extends JFrame {
         table.setForeground(myColor.getTextColor());
 
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel(); // get table model from table
-        TableColumnModel columnModel = table.getColumnModel(); // get column model from table
-        for (int i = 0; i < columnModel.getColumnCount(); i++) {
-            int width = 40;
-            for (int j = 0; j < tableModel.getRowCount(); j++) {
-                TableCellRenderer renderer1 = table.getCellRenderer(j, i);
-                Component comp = table.prepareRenderer(renderer1, j, i);
-                width = Math.max(comp.getPreferredSize().width + 1, width);
-            }
-            if (width > 300) {
-                width = 300;
-            }
-            columnModel.getColumn(i).setPreferredWidth(width);
-        }
+
         String[] column_names = {"Name", "Goals Scored"};
         tableModel.setColumnIdentifiers(column_names);
         Object[] rowData = new Object[2];
@@ -68,7 +57,7 @@ class TopScorersFrame extends JFrame {
             tableModel.addRow(rowData);
         }
         table.setModel(tableModel);
-
+        fitColumnSizeToContent();
         JScrollPane scrollPane = new JScrollPane(table);
 
         this.add(scrollPane);
@@ -107,8 +96,7 @@ class TopScorersFrame extends JFrame {
         TopScorers ts;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                    "14valentine");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root", "14valentine");
 
             PreparedStatement pst = con.prepareStatement("select name,goals_scored from players order by goals_scored desc limit 20;");
             ResultSet rs = pst.executeQuery();
@@ -126,7 +114,22 @@ class TopScorersFrame extends JFrame {
         return data;
     }
 
-
+    public void fitColumnSizeToContent() {
+        DefaultTableModel tableModel = (DefaultTableModel) table.getModel(); // get table model from table
+        TableColumnModel columnModel = table.getColumnModel(); // get column model from table
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            int width = 40;
+            for (int j = 0; j < tableModel.getRowCount(); j++) {
+                TableCellRenderer renderer1 = table.getCellRenderer(j, i);
+                Component comp = table.prepareRenderer(renderer1, j, i);
+                width = Math.max(comp.getPreferredSize().width + 1, width);
+            }
+            if (width > 300) {
+                width = 300;
+            }
+            columnModel.getColumn(i).setPreferredWidth(width);
+        }
+    }
 
 }
 
