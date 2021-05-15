@@ -9,10 +9,9 @@ import com.football_manager.filter_dialog.AgeDialog;
 import com.football_manager.filter_dialog.CountryDialog;
 import com.football_manager.filter_dialog.PositionDialog;
 import com.football_manager.filter_dialog.TeamDialog;
+import com.models.Manager;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -36,6 +35,8 @@ public class PlayersFrame extends JFrame implements ActionListener {
 
     Filters filters = new Filters();
 
+    Manager manager;
+
 //    HashMap<String, Boolean> filtersPositionMap;
 
     MyColor myColor = new MyColor();
@@ -43,6 +44,8 @@ public class PlayersFrame extends JFrame implements ActionListener {
     MyMenuBar menuBar = new MyMenuBar(this);
 
     public PlayersFrame() {
+
+
 
         // Top Panel Buttons
         positionButton = new MyButton("Position", "/icons/black/icon_position.png");
@@ -90,7 +93,7 @@ public class PlayersFrame extends JFrame implements ActionListener {
                 JTable source = (JTable) e.getSource();
                 int row = source.getSelectedRow();
                 System.out.println(source.getValueAt(row, 0));
-                new PlayerDataFrame(getThisFrame(), (BigInteger) source.getValueAt(row, 0));
+                new PlayerDataDialog(getThisFrame(), (BigInteger) source.getValueAt(row, 0));
                 disableFrame();
             }
         });
@@ -100,7 +103,9 @@ public class PlayersFrame extends JFrame implements ActionListener {
 
         table.getTableHeader().setReorderingAllowed(false);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        table.setFillsViewportHeight(true);
+//        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        table.setPreferredScrollableViewportSize(table.getPreferredSize());
+        table.setFillsViewportHeight(false);
         table.setRowHeight(table.getRowHeight() + 20);
 
 
