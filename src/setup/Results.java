@@ -22,7 +22,7 @@ public class Results {
     public Results() {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String toDate = LocalDateTime.now().minusDays(1).format(dateTimeFormatter);
+        String toDate = LocalDateTime.now().minusMinutes(90).format(dateTimeFormatter);
         String fromDate = LocalDateTime.now().minusMonths(2).format(dateTimeFormatter);
 
         String url = String.format("http://api.football-data.org/v2/competitions/2021/matches?dateFrom=%s&dateTo=%s", fromDate, toDate);
@@ -95,7 +95,5 @@ public class Results {
                 System.out.println(ex);
             }
         }
-
-
     }
 }

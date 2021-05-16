@@ -6,6 +6,9 @@ public class Manager {
     private String country;
     private int age;
 
+    public Manager() {
+    }
+
     public Manager(int managerID, String name, String country, int age) {
         this.managerID = managerID;
         this.name = name;

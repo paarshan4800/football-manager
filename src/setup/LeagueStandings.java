@@ -67,7 +67,7 @@ public class LeagueStandings {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                        "PaarShanDB0408");
+                        "14valentine");
 
                 PreparedStatement pst = con.prepareStatement("insert into standings (team_id,position,matches_played,matches_won,matches_drawn,matches_lost,goals_for,goals_against,points) values (?,?,?,?,?,?,?,?,?)");
                 pst.setBigDecimal(1, new BigDecimal(leagueStanding.getTeam_id()));

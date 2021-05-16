@@ -1,6 +1,7 @@
 package com.football_manager.table_frame;
 
 import com.models.LeagueStandings;
+import com.models.Manager;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -10,10 +11,9 @@ import java.util.ArrayList;
 public class LeagueStandingsFrame extends TableDataFrame {
 
 
-    public LeagueStandingsFrame() {
+    public LeagueStandingsFrame(Manager manager) {
 
-        super("League Standings");
-
+        super("League Standings", manager);
 
 //        Table
         table = new JTable() {
@@ -48,9 +48,7 @@ public class LeagueStandingsFrame extends TableDataFrame {
 
         for (int i = 0; i < leaguestandings.size(); i++) {
             rowData[0] = leaguestandings.get(i).getPosition();
-
             rowData[1] = leaguestandings.get(i).getTeam_name();
-
             rowData[2] = leaguestandings.get(i).getMatches_played();
             rowData[3] = leaguestandings.get(i).getMatches_won();
             rowData[4] = leaguestandings.get(i).getMatches_drawn();

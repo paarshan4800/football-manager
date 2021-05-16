@@ -99,7 +99,7 @@ public class SendTransferTypeDialog extends JDialog implements ActionListener {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                new PlayersFrame();
+                new PlayersFrame(manager);
             }
         });
 

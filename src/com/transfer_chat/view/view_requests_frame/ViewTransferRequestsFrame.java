@@ -7,6 +7,7 @@ import com.components.menu.MyMenuBar;
 import com.components.menu.MyRefreshLabel;
 import com.football_manager.DashboardFrame;
 import com.models.LoanTransfer;
+import com.models.Manager;
 import com.models.PermanentTransfer;
 import com.models.PlayerExchangeTransfer;
 import com.sql.SQL;
@@ -20,7 +21,7 @@ import java.util.HashMap;
 
 public class ViewTransferRequestsFrame extends JFrame {
 
-    MyMenuBar menuBar = new MyMenuBar(this);
+    MyMenuBar menuBar;
     public MyColor myColor = new MyColor();
     public MyFont myFont = new MyFont();
     public MyImage myImage = new MyImage();
@@ -31,6 +32,8 @@ public class ViewTransferRequestsFrame extends JFrame {
     public HashMap<Class, String> transferTypeMapping = new HashMap<Class, String>();
 
     public ViewTransferRequestsFrame(String title) {
+
+        menuBar = new MyMenuBar(this, new Manager());
 
         transferTypeMapping.put(PermanentTransfer.class, "Permanent Transfer");
         transferTypeMapping.put(LoanTransfer.class, "Loan Transfer");

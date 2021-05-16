@@ -5,10 +5,7 @@ import com.components.MyColor;
 import com.components.MyFont;
 import com.components.MyImage;
 import com.components.menu.MyMenuBar;
-import com.models.LoanTransfer;
-import com.models.PermanentTransfer;
-import com.models.PlayerExchangeTransfer;
-import com.models.Transfer;
+import com.models.*;
 import com.sql.SQL;
 
 import javax.swing.*;
@@ -22,7 +19,7 @@ import java.util.Objects;
 
 public class TransferRequestsFrame extends JFrame implements ActionListener {
 
-    MyMenuBar menuBar = new MyMenuBar(this);
+    MyMenuBar menuBar;
     MyColor myColor = new MyColor();
     MyFont myFont = new MyFont();
 
@@ -34,6 +31,7 @@ public class TransferRequestsFrame extends JFrame implements ActionListener {
 
     public TransferRequestsFrame() {
 
+        menuBar = new MyMenuBar(this, new Manager());
 
         JLabel testLabel = new JLabel();
         testLabel.setText("12345");
@@ -51,7 +49,7 @@ public class TransferRequestsFrame extends JFrame implements ActionListener {
         incomingRequestsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
             }
         });
         outgoingRequestsButton = new MyButton("Outgoing");
@@ -67,9 +65,6 @@ public class TransferRequestsFrame extends JFrame implements ActionListener {
         buttonPanel.add(incomingRequestsButton);
         buttonPanel.add(outgoingRequestsButton);
         buttonPanel.add(refreshButton);
-
-
-
 
 
         ArrayList<Transfer> transfers = sql.getAllTransfersGivenTeamIDOfManager(BigInteger.valueOf(2627));
@@ -129,7 +124,7 @@ class ButtonListener implements ActionListener {
     JFrame currentFrame;
     MyButton myButton;
 
-    public ButtonListener(JFrame currentFrame,MyButton myButton) {
+    public ButtonListener(JFrame currentFrame, MyButton myButton) {
         this.currentFrame = currentFrame;
         this.myButton = myButton;
     }
@@ -137,10 +132,10 @@ class ButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         MyButton sourceButton = (MyButton) e.getSource();
-        if (Objects.equals(sourceButton.getText(),"Incoming")) {
+        if (Objects.equals(sourceButton.getText(), "Incoming")) {
             System.out.println("incoming");
 //            currentFrame.getContentPane().remove();
-        } else if (Objects.equals(sourceButton.getText(),"Outgoing")) {
+        } else if (Objects.equals(sourceButton.getText(), "Outgoing")) {
             System.out.println("outgoing");
         }
     }
