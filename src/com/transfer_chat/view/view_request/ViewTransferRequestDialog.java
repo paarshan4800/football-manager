@@ -16,6 +16,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
+import static com.transfer_chat.view.send_request.SendPlayerExchangeTransferRequestDialog.transferRequestAction;
+
 public class ViewTransferRequestDialog extends JDialog implements ActionListener {
 
     public HashMap<Class, String> transferTypeMapping = new HashMap<Class, String>();
@@ -36,10 +38,13 @@ public class ViewTransferRequestDialog extends JDialog implements ActionListener
     public SQL sql = new SQL();
     JFrame owner;
 
-    public ViewTransferRequestDialog(JFrame owner,String dialogTitle, Transfer transfer) {
+    Manager manager;
+
+    public ViewTransferRequestDialog(JFrame owner, String dialogTitle, Transfer transfer, Manager manager) {
         this.owner = owner;
         this.transfer = transfer;
         this.player = transfer.getPlayer();
+        this.manager = manager;
 
         transferTypeMapping.put(PermanentTransfer.class, "Permanent Transfer");
         transferTypeMapping.put(LoanTransfer.class, "Loan Transfer");
@@ -131,11 +136,11 @@ public class ViewTransferRequestDialog extends JDialog implements ActionListener
             dialogMessage = "Transfer of " + transfer.getPlayer().getName() + " to " + transfer.getToTeam().getName() + " rejected";
         }
 
-        if (sql.transferRequestAction(transfer)) {
+        if (transferRequestAction(transfer)) {
             dispose();
             JOptionPane.showMessageDialog(this, dialogMessage, "Transfer Successful", JOptionPane.INFORMATION_MESSAGE);
             owner.dispose();
-            new IncomingTransfersFrame();
+            new IncomingTransfersFrame(manager);
         } else {
             JOptionPane.showMessageDialog(this, "Problem Occurred. Try again later!", "Transfer Successful", JOptionPane.WARNING_MESSAGE);
         }

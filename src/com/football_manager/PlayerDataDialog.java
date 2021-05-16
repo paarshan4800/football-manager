@@ -3,6 +3,7 @@ package com.football_manager;
 import com.components.*;
 import com.models.Manager;
 import com.models.Player;
+import com.sql.PlayerSQL;
 import com.sql.SQL;
 import com.transfer_chat.view.SendTransferTypeDialog;
 
@@ -13,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigInteger;
 import java.util.ArrayList;
+
+import static com.sql.ManagerSQL.getManagerGivenManagerID;
 
 public class PlayerDataDialog extends JDialog implements ActionListener {
 
@@ -29,8 +32,8 @@ public class PlayerDataDialog extends JDialog implements ActionListener {
 
     public PlayerDataDialog(JFrame owner, BigInteger playerID) {
 
-        player = sql.getPlayerGivenPlayerID(playerID);
-        manager = sql.getManagerGivenManagerID(1013);
+        player = PlayerSQL.getPlayerGivenPlayerID(playerID);
+        manager = getManagerGivenManagerID(1013);
 
         // Team Logo
         JLabel teamLabel = new JLabel();

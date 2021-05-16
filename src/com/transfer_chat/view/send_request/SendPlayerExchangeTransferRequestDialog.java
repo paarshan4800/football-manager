@@ -10,7 +10,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import static com.sql.PlayerSQL.getAllPlayersGivenTeamID;
+import static com.sql.SQL.getDBConnection;
+import static com.sql.TransferSQL.createTransfer;
 
 public class SendPlayerExchangeTransferRequestDialog extends SendTransferRequestDialog implements ActionListener, ItemListener {
 
@@ -31,7 +39,7 @@ public class SendPlayerExchangeTransferRequestDialog extends SendTransferRequest
 
         // Player to Exchange Dropdown
         // Get all current manager's player
-        ArrayList<Player> managersPlayers = sql.getAllPlayersGivenTeamID(managersTeam.getTeamID());
+        ArrayList<Player> managersPlayers = getAllPlayersGivenTeamID(managersTeam.getTeamID());
 
         comboBox = new JComboBox();
         comboBox.addItemListener(this);
@@ -88,7 +96,7 @@ public class SendPlayerExchangeTransferRequestDialog extends SendTransferRequest
                         playerToExchange.getTeam()
                 );
 
-                if (sql.createTransfer(playerExchangeTransfer)) {
+                if (createTransfer(playerExchangeTransfer)) {
                     dispose();
                     JOptionPane.showMessageDialog(this, "Sent Player Exchange Transfer request to " + player.getTeam().getManager().getName() + " for " + player.getName(), "Sent Request", JOptionPane.INFORMATION_MESSAGE);
                 } else {
@@ -102,5 +110,29 @@ public class SendPlayerExchangeTransferRequestDialog extends SendTransferRequest
             System.out.println(transferFee);
             System.out.println("SUB" + comboBox.getSelectedItem());
         }
+    }
+
+    // Accepting or rejecting transfer Request
+    public static boolean transferRequestAction(Transfer transfer) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = getDBConnection();
+            String sql = "update transfers set status=? where transfer_id=?;";
+
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setInt(1, transfer.getStatus());
+            ps.setBigDecimal(2, new BigDecimal(transfer.getTransferID()));
+
+
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected == 1) {
+                return true;
+            }
+        } catch (SQLException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 }

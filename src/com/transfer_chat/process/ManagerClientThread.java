@@ -1,9 +1,8 @@
 package com.transfer_chat.process;
 
 import com.models.Manager;
-import com.models.Player;
 import com.models.Team;
-import com.models.Transfer;
+import com.sql.TeamSQL;
 import com.sql.SQL;
 import com.transfer_chat.message.RequestMessage;
 import com.transfer_chat.message.ResponseMessage;
@@ -11,11 +10,11 @@ import com.transfer_chat.message.ResponseMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.math.BigInteger;
 import java.net.Socket;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Objects;
+
+import static com.sql.ManagerSQL.getManagerGivenManagerID;
 
 public class ManagerClientThread extends Thread {
 
@@ -37,7 +36,7 @@ public class ManagerClientThread extends Thread {
             objectInputStream = new ObjectInputStream(socket.getInputStream());
 
             int managerID = (int) objectInputStream.readObject();
-            this.manager = sql.getManagerGivenManagerID(managerID);
+            this.manager = getManagerGivenManagerID(managerID);
 
             System.out.println("Username is - " + managerID);
 
@@ -72,7 +71,7 @@ public class ManagerClientThread extends Thread {
             String message = requestMessage.getMessage();
 
             // populate these things for optimization
-            Team managersTeam = sql.getTeamGivenManagerID(manager.getManagerID());
+            Team managersTeam = TeamSQL.getTeamGivenManagerID(manager.getManagerID());
 
             // who is online?
             if (type == 1) {
@@ -86,7 +85,7 @@ public class ManagerClientThread extends Thread {
                 display(String.valueOf(manager.getManagerID()) + " logged off");
                 isClientRunning = false;
             } else if (type == 3) {
-                Manager playersManager = sql.getManagerGivenManagerID(requestMessage.getPlayersManagerID()); // player's manager object
+                Manager playersManager = getManagerGivenManagerID(requestMessage.getPlayersManagerID()); // player's manager object
                 int playersManagerIndex = isManagerActive(playersManager.getManagerID());
 
                 // Player's Manager is active
@@ -94,7 +93,7 @@ public class ManagerClientThread extends Thread {
                     // get player's manager client and send request received notification
                     ManagerClientThread playersManagerClient = server.getManagerClientThreads().get(playersManagerIndex);
                     playersManagerClient.sendMessage(new ResponseMessage(
-                            ResponseMessage.NORMAL,
+                            ResponseMessage.TRANSFER_REQUEST,
                             requestMessage.getMessage()
                     ));
                 }

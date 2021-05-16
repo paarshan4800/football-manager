@@ -67,9 +67,9 @@ public class ViewTransfersRequestsTypeDialog extends JDialog implements ActionLi
     public void actionPerformed(ActionEvent e) {
         dispose();
         if (e.getSource() == incomingTransfersButton) {
-            new IncomingTransfersFrame();
+            new IncomingTransfersFrame(manager);
         } else if (e.getSource() == outgoingTransfersButton) {
-            new OutgoingTransfersFrame();
+            new OutgoingTransfersFrame(manager);
         }
     }
 }

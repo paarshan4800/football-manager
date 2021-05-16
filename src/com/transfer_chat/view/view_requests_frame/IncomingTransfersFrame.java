@@ -1,15 +1,7 @@
 package com.transfer_chat.view.view_requests_frame;
 
-import com.components.MyColor;
-import com.components.MyFont;
-import com.components.MyImage;
 import com.components.MyLoader;
-import com.components.menu.MyMenuBar;
-import com.models.LoanTransfer;
-import com.models.PermanentTransfer;
-import com.models.PlayerExchangeTransfer;
-import com.models.Transfer;
-import com.sql.SQL;
+import com.models.*;
 import com.transfer_chat.view.view_request.ViewLoanTransferRequestDialog;
 import com.transfer_chat.view.view_request.ViewPermanentTransferRequestDialog;
 import com.transfer_chat.view.view_request.ViewPlayerExchangeTransferRequestDialog;
@@ -23,21 +15,23 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.sql.TransferSQL.getAllTransfersGivenTeamIDOfManagerAndType;
+
 public class IncomingTransfersFrame extends ViewTransferRequestsFrame {
 
     public HashMap<Class, String> transferTypeMapping = new HashMap<Class, String>();
 
-    public IncomingTransfersFrame() {
+    public IncomingTransfersFrame(Manager manager) {
 
-        super("Incoming Transfer Requests");
+        super("Incoming Transfer Requests", manager);
         transferTypeMapping.put(PermanentTransfer.class, "Permanent Transfer");
         transferTypeMapping.put(LoanTransfer.class, "Loan Transfer");
         transferTypeMapping.put(PlayerExchangeTransfer.class, "Player Exchange");
-//        JLabel jLabel = new JLabel("testign loader");
+
         MyLoader myLoader = new MyLoader();
         dataPanel.add(myLoader);
 
-        ArrayList<Transfer> incomingTransfers = sql.getAllTransfersGivenTeamIDOfManagerAndType(BigInteger.valueOf(2627), "incoming");
+        ArrayList<Transfer> incomingTransfers = getAllTransfersGivenTeamIDOfManagerAndType(BigInteger.valueOf(2627), "incoming");
 
         dataPanel.remove(myLoader);
 
@@ -52,7 +46,7 @@ public class IncomingTransfersFrame extends ViewTransferRequestsFrame {
 
             for (Transfer transfer : incomingTransfers) {
                 JPanel transferPanel = getTransferPanel(transfer);
-                transferPanel.addMouseListener(new TransferListener(this, transfer, transferTypeMapping));
+                transferPanel.addMouseListener(new TransferListener(this, transfer, transferTypeMapping, manager));
                 dataPanel.add(transferPanel);
             }
         }
@@ -110,25 +104,24 @@ class TransferListener implements MouseListener {
     JFrame owner;
     Transfer transfer;
     public HashMap<Class, String> transferTypeMapping;
+    Manager manager;
 
-    public TransferListener(JFrame owner, Transfer transfer, HashMap<Class, String> transferTypeMapping) {
+    public TransferListener(JFrame owner, Transfer transfer, HashMap<Class, String> transferTypeMapping, Manager manager) {
         this.owner = owner;
         this.transfer = transfer;
         this.transferTypeMapping = transferTypeMapping;
-//        transferTypeMapping.put(PermanentTransfer.class, "Permanent Transfer");
-//        transferTypeMapping.put(LoanTransfer.class, "Loan Transfer");
-//        transferTypeMapping.put(PlayerExchangeTransfer.class, "Player Exchange");
+        this.manager = manager;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
 //        owner.setEnabled(false);
         if (transfer.getClass() == PermanentTransfer.class) {
-            new ViewPermanentTransferRequestDialog(owner, transferTypeMapping.get(transfer.getClass()), transfer);
+            new ViewPermanentTransferRequestDialog(owner, transferTypeMapping.get(transfer.getClass()), transfer, manager);
         } else if (transfer.getClass() == LoanTransfer.class) {
-            new ViewLoanTransferRequestDialog(owner, transferTypeMapping.get(transfer.getClass()), transfer);
+            new ViewLoanTransferRequestDialog(owner, transferTypeMapping.get(transfer.getClass()), transfer, manager);
         } else if (transfer.getClass() == PlayerExchangeTransfer.class) {
-            new ViewPlayerExchangeTransferRequestDialog(owner, transferTypeMapping.get(transfer.getClass()), transfer);
+            new ViewPlayerExchangeTransferRequestDialog(owner, transferTypeMapping.get(transfer.getClass()), transfer, manager);
         }
 
 

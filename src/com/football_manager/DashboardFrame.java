@@ -7,7 +7,6 @@ import com.football_manager.matches_frame.UpcomingMatchesFrame;
 import com.football_manager.table_frame.LeagueStandingsFrame;
 import com.football_manager.table_frame.TopScorersFrame;
 import com.models.Manager;
-import com.sql.SQL;
 import com.transfer_chat.view.ViewTransfersRequestsTypeDialog;
 
 import javax.swing.*;
@@ -15,10 +14,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class DashboardFrame extends JFrame implements ActionListener {
@@ -38,7 +33,6 @@ public class DashboardFrame extends JFrame implements ActionListener {
 
     MyMenuBar menuBar;
 
-    SQL sql = new SQL();
     Manager manager;
 
     public DashboardFrame(Manager manager) { // Manager should come from login

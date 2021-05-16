@@ -37,6 +37,7 @@ public class SendTransferTypeDialog extends JDialog implements ActionListener {
 //        if (!client.startClient()) {
 //            return;
 //        }
+
         this.manager = manager;
         this.player = player;
 

@@ -1,4 +1,4 @@
-package com.sql;
+package com.api;
 
 import com.models.TopScorers;
 import com.models.LeagueStandings;

@@ -1,8 +1,10 @@
 package com.transfer_chat.process;
 
+import com.components.MyToast;
 import com.transfer_chat.message.RequestMessage;
 import com.transfer_chat.message.ResponseMessage;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -99,6 +101,11 @@ public class Client {
             while (true) {
                 try {
                     ResponseMessage responseMessage = (ResponseMessage) objectInputStream.readObject();
+                    if (responseMessage.getType() == ResponseMessage.TRANSFER_REQUEST) {
+                        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                        MyToast myToast = new MyToast(responseMessage.getMessage(), screenSize.width - 300, 50);
+                        myToast.showToast();
+                    }
                     System.out.println(responseMessage.getMessage());
                     System.out.print("==> ");
                 } catch (IOException ioException) {

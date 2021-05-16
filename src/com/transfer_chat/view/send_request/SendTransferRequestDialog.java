@@ -12,6 +12,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 
+import static com.sql.TeamSQL.getTeamGivenManagerID;
+
 public class SendTransferRequestDialog extends JDialog implements ActionListener, WindowListener {
 
     MyColor myColor = new MyColor();
@@ -30,7 +32,7 @@ public class SendTransferRequestDialog extends JDialog implements ActionListener
 
     public SendTransferRequestDialog(String dialogTitle, Player player, Manager manager) {
         this.manager = manager; // current manager
-        this.managersTeam = sql.getTeamGivenManagerID(manager.getManagerID()); // current manager's team
+        this.managersTeam = getTeamGivenManagerID(manager.getManagerID()); // current manager's team
         this.player = player; // player to buy
 
         // Header Label
@@ -102,7 +104,7 @@ public class SendTransferRequestDialog extends JDialog implements ActionListener
     }
 
     public void openTransferTypeDialog() {
-        new SendTransferTypeDialog(player,manager);
+        new SendTransferTypeDialog(player, manager);
     }
 
     @Override

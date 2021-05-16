@@ -1,6 +1,7 @@
 package setup;
 
 import com.models.Results;
+import com.sql.SQL;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -72,8 +73,7 @@ public class Fixtures {
         for (com.models.Fixtures fixture : fixtures) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                        "PaarShanDB0408");
+                Connection con = SQL.getDBConnection();
 
                 PreparedStatement pst = con.prepareStatement("insert into upcomingmatches (date,time,homeTeam,awayTeam) values (?,?,?,?);");
                 pst.setString(1, fixture.getDate());

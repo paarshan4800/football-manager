@@ -6,7 +6,7 @@ import com.components.MyImage;
 import com.components.menu.MyMenuBar;
 import com.components.menu.MyRefreshLabel;
 import com.models.Manager;
-import com.sql.API;
+import com.api.API;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

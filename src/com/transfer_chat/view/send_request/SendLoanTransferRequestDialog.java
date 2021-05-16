@@ -11,6 +11,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static com.sql.TransferSQL.createTransfer;
+
 public class SendLoanTransferRequestDialog extends SendTransferRequestDialog implements ActionListener, ChangeListener {
 
     JSlider wageSplitSlider;
@@ -86,7 +88,7 @@ public class SendLoanTransferRequestDialog extends SendTransferRequestDialog imp
                     durationInMonths
             );
 
-            if(sql.createTransfer(loanTransfer)) {
+            if(createTransfer(loanTransfer)) {
                 dispose();
                 JOptionPane.showMessageDialog(this, "Sent Loan Transfer request to " + player.getTeam().getManager().getName() + " for " + player.getName(), "Sent Request", JOptionPane.INFORMATION_MESSAGE);
             }

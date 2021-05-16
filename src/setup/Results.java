@@ -1,5 +1,6 @@
 package setup;
 
+import com.sql.SQL;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -78,8 +79,7 @@ public class Results {
         for (com.models.Results result : results) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                        "PaarShanDB0408");
+                Connection con = SQL.getDBConnection();
 
                 PreparedStatement pst = con.prepareStatement("insert into finishedMatches (date,time,homeTeam,awayTeam,homeTeamScore,awayTeamScore) values (?,?,?,?,?,?);");
                 pst.setString(1, result.getDate());

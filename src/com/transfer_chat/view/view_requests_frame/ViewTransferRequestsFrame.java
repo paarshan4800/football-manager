@@ -31,9 +31,11 @@ public class ViewTransferRequestsFrame extends JFrame {
     public Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     public HashMap<Class, String> transferTypeMapping = new HashMap<Class, String>();
 
-    public ViewTransferRequestsFrame(String title) {
+    public Manager manager;
 
-        menuBar = new MyMenuBar(this, new Manager());
+    public ViewTransferRequestsFrame(String title, Manager manager) {
+        this.manager = manager;
+        menuBar = new MyMenuBar(this, manager);
 
         transferTypeMapping.put(PermanentTransfer.class, "Permanent Transfer");
         transferTypeMapping.put(LoanTransfer.class, "Loan Transfer");
@@ -52,9 +54,9 @@ public class ViewTransferRequestsFrame extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 dispose();
                 if (title == "Outgoing Transfer Requests") {
-                    new OutgoingTransfersFrame();
+                    new OutgoingTransfersFrame(manager);
                 } else {
-                    new IncomingTransfersFrame();
+                    new IncomingTransfersFrame(manager);
                 }
             }
         });

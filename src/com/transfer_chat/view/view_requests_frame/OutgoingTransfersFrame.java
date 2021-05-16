@@ -1,6 +1,7 @@
 package com.transfer_chat.view.view_requests_frame;
 
 import com.components.MyLoader;
+import com.models.Manager;
 import com.models.Transfer;
 
 import javax.swing.*;
@@ -10,12 +11,14 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.sql.TransferSQL.getAllTransfersGivenTeamIDOfManagerAndType;
+
 public class OutgoingTransfersFrame extends ViewTransferRequestsFrame {
 
     public HashMap<Integer, String> transferStatusMapping = new HashMap<>();
 
-    public OutgoingTransfersFrame() {
-        super("Outgoing Transfer Requests");
+    public OutgoingTransfersFrame(Manager manager) {
+        super("Outgoing Transfer Requests",manager);
 
         transferStatusMapping.put(1, "OPEN");
         transferStatusMapping.put(2, "ACCEPTED");
@@ -24,7 +27,7 @@ public class OutgoingTransfersFrame extends ViewTransferRequestsFrame {
         MyLoader myLoader = new MyLoader();
         dataPanel.add(myLoader);
 
-        ArrayList<Transfer> outgoingTransfers = sql.getAllTransfersGivenTeamIDOfManagerAndType(BigInteger.valueOf(2628), "outgoing");
+        ArrayList<Transfer> outgoingTransfers = getAllTransfersGivenTeamIDOfManagerAndType(BigInteger.valueOf(2628), "outgoing");
 
         dataPanel.remove(myLoader);
 

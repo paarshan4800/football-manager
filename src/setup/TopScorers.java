@@ -1,6 +1,6 @@
 package setup;
 
-import com.sql.API;
+import com.sql.SQL;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,7 +11,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
@@ -54,14 +53,12 @@ public class TopScorers {
         for (com.models.TopScorers topScorer : topScorers) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                        "PaarShanDB0408");
+                Connection con = SQL.getDBConnection();
 
                 PreparedStatement pst = con.prepareStatement("insert into topScorers (player_id,goals_scored,team_id) values (?,?,?)");
                 pst.setBigDecimal(1, new BigDecimal(topScorer.getPlayer_id()));
                 pst.setInt(2, topScorer.getGoals_scored());
                 pst.setBigDecimal(3, new BigDecimal(topScorer.getTeam_id()));
-
 
                 int rowsAffected = pst.executeUpdate();
 
