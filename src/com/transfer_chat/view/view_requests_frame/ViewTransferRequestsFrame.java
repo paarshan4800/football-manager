@@ -4,6 +4,7 @@ import com.components.MyColor;
 import com.components.MyFont;
 import com.components.MyImage;
 import com.components.menu.MyMenuBar;
+import com.components.menu.MyRefreshLabel;
 import com.football_manager.DashboardFrame;
 import com.models.LoanTransfer;
 import com.models.PermanentTransfer;
@@ -13,6 +14,8 @@ import com.sql.SQL;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
 public class ViewTransferRequestsFrame extends JFrame {
@@ -27,7 +30,7 @@ public class ViewTransferRequestsFrame extends JFrame {
     public Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     public HashMap<Class, String> transferTypeMapping = new HashMap<Class, String>();
 
-    public ViewTransferRequestsFrame(String title)  {
+    public ViewTransferRequestsFrame(String title) {
 
         transferTypeMapping.put(PermanentTransfer.class, "Permanent Transfer");
         transferTypeMapping.put(LoanTransfer.class, "Loan Transfer");
@@ -39,14 +42,35 @@ public class ViewTransferRequestsFrame extends JFrame {
         headerLabel.setForeground(myColor.getTextColor());
         headerLabel.setFont(myFont.getFontMedium());
 
-//        // Refresh Label
-//        JLabel refreshLabel = new JLabel();
-//        refreshLabel.setIcon(myImage.getImage());
+        // Refresh Label
+        MyRefreshLabel refreshLabel = new MyRefreshLabel();
+        refreshLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                dispose();
+                if (title == "Outgoing Transfer Requests") {
+                    new OutgoingTransfersFrame();
+                } else {
+                    new IncomingTransfersFrame();
+                }
+            }
+        });
 
         // Header Panel
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(myColor.getBackgroundColor());
-        headerPanel.add(headerLabel);
+
+        headerPanel.setLayout(new GridBagLayout());
+        GridBagConstraints headerGBC = new GridBagConstraints();
+        headerGBC.insets = new Insets(0, 10, 0, 0);
+
+        headerGBC.gridx = 0;
+        headerGBC.gridy = 0;
+        headerPanel.add(headerLabel, headerGBC);
+
+        headerGBC.gridx = 1;
+        headerGBC.gridy = 0;
+        headerPanel.add(refreshLabel, headerGBC);
 
         // Data Panel
         dataPanel = new JPanel();

@@ -3,6 +3,7 @@ package com.components.menu;
 import com.components.MyColor;
 import com.football_manager.DashboardFrame;
 import com.football_manager.PlayersFrame;
+import com.transfer_chat.view.ViewTransfersRequestsTypeDialog;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -60,7 +61,7 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
 
         setBackground(myColor.getBackgroundColor());
 
-        setBorder(new EmptyBorder(10,10,10,10));
+        setBorder(new EmptyBorder(10, 10, 10, 10));
     }
 
     @Override
@@ -80,7 +81,8 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
             currentFrame.dispose();
             new PlayersFrame();
         } else if (e.getSource() == transferRequestsItem) {
-            System.out.println("TRANS");
+            currentFrame.dispose();
+            new ViewTransfersRequestsTypeDialog();
         }
     }
 }
