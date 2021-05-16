@@ -1,6 +1,8 @@
 package com.football_manager;
 
 import com.components.*;
+import com.models.LeagueStandings;
+import com.models.Results;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -24,10 +26,21 @@ public class FinishedMatchesFrame extends JFrame {
         wrapper.setBackground(myColor.getBackgroundColor());
         wrapper.setBorder(new EmptyBorder(50,50,50,50));
         wrapper.setOpaque(true);
-        wrapper.setLayout(new GridLayout(8,2,20,20));
-        for (int i=0;i<15;i++) {
-            wrapper.add(createPanel("City", "Everton"));
+        Object[] rowdata=new Object[100];
+
+        ArrayList<Results> results=getFinishedMatches();
+        wrapper.setLayout(new GridLayout((results.size()/2)+1,2,20,20));
+
+        for (int i=0;i<results.size();i++) {
+            rowdata[0] = results.get(i).getDate();
+            rowdata[1] = results.get(i).getTime();
+            rowdata[2] = results.get(i).getHomeTeam();
+            rowdata[3] = results.get(i).getAwayTeam();
+            rowdata[4] = results.get(i).getHomeTeamScore();
+            rowdata[5] = results.get(i).getAwayTeamScore();
+            wrapper.add(createPanel(results.get(i)));
         }
+
         this.add(wrapper);
         JScrollPane scrollPane = new JScrollPane(wrapper);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -36,39 +49,69 @@ public class FinishedMatchesFrame extends JFrame {
         this.setVisible(true);
 
     }
-    public JPanel createPanel(String hometeam,String awayteam){
+    public static ArrayList<Results> getFinishedMatches() {
+        ArrayList<Results> finishedmatches = new ArrayList<Results>();
+        Results ls;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
+                    "14valentine");
+
+            PreparedStatement pst = con.prepareStatement("select date,time,homeTeam,awayTeam,hometeamScore,awayTeamscore from finishedmatches;");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                ls = new Results(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getInt(5),
+                        rs.getInt(6)
+                );
+                finishedmatches.add(ls);
+            }
+            con.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return finishedmatches;
+    }
+
+    public JPanel createPanel(Results results){
 
         JPanel matches_panel=new JPanel();
 
         //Date label
-        JLabel date = new JLabel("2021-03-01T20:00:00Z");
-        String date_string=date.getText();
-        date_string=ConverttoDateString(date_string);
-        date.setText(date_string);
+        JLabel date = new JLabel();
+        date.setText(results.getDate());
         date.setFont(myFont.getFontPrimary());
         date.setForeground(myColor.getTextColor());
         //time label
-        JLabel time=new JLabel("2021-03-01T20:00:00Z");
-        String time_string=time.getText();
-        time_string=ConverttoTimeString(time_string);
-        time.setText(time_string);
+        JLabel time=new JLabel();
+        time.setText(results.getTime());
         time.setFont(myFont.getFontPrimary());
         time.setForeground(myColor.getTextColor());
         //Home team label
-        JLabel home_team_label = new JLabel("Manchester CIty");
-        home_team_label.setIcon(new ImageIcon(myImage.getImageFromURL("https://apiv2.apifootball.com/badges/2626_manchester-city.png").getScaledInstance(40,40,Image.SCALE_SMOOTH)));
+        JLabel home_team_label = new JLabel();
+        home_team_label.setText(results.getHomeTeam());
+        /*if(home_team_label.getText().contains("Manchester City")) {
+            home_team_label.setIcon(new ImageIcon(myImage.getImageFromURL("https://apiv2.apifootball.com/badges/2626_manchester-city.png").getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
+        }*/
         home_team_label.setFont(myFont.getFontPrimary());
         home_team_label.setForeground(myColor.getTextColor());
         //Away team label
-        JLabel away_team_label = new JLabel("Everton");
+        JLabel away_team_label = new JLabel();
+        away_team_label.setText(results.getAwayTeam());
         away_team_label.setFont(myFont.getFontPrimary());
         away_team_label.setForeground(myColor.getTextColor());
         //Home team score
-        JLabel home_team_score=new JLabel("1");
+        JLabel home_team_score=new JLabel();
+        home_team_score.setText(String.valueOf(results.getHomeTeamScore()));
         home_team_score.setFont(myFont.getFontPrimary());
         home_team_score.setForeground(myColor.getTextColor());
         //Away team score
-        JLabel away_team_score=new JLabel("0");
+        JLabel away_team_score=new JLabel();
+        away_team_score.setText(String.valueOf(results.getAwayTeamScore()));
         away_team_score.setFont(myFont.getFontPrimary());
         away_team_score.setForeground(myColor.getTextColor());
 
@@ -94,24 +137,18 @@ public class FinishedMatchesFrame extends JFrame {
         gbc.gridx=2;
         gbc.gridy=0;
         matches_panel.add(date,gbc);
+        gbc.anchor=GridBagConstraints.CENTER;
+
         gbc.gridx=2;
         gbc.gridy=1;
         matches_panel.add(time,gbc);
         matches_panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         matches_panel.setBackground(myColor.getBoxColor());
-        //matches_panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        //matches_panel.addMouseListener();
+
 
         return  matches_panel;
     }
-    public String ConverttoDateString(String string){
-        string=string.substring(0,10);
-        return string;
-    }
-    public String ConverttoTimeString(String string){
-        string=string.substring(11,19);
-        return string;
-    }
+
 
 }
 

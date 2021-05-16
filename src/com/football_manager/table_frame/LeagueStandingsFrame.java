@@ -48,9 +48,7 @@ public class LeagueStandingsFrame extends TableDataFrame {
 
         for (int i = 0; i < leaguestandings.size(); i++) {
             rowData[0] = leaguestandings.get(i).getPosition();
-
             rowData[1] = leaguestandings.get(i).getTeam_name();
-
             rowData[2] = leaguestandings.get(i).getMatches_played();
             rowData[3] = leaguestandings.get(i).getMatches_won();
             rowData[4] = leaguestandings.get(i).getMatches_drawn();
