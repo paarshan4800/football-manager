@@ -29,7 +29,7 @@ public class Main {
 //        new PlayerExchangeTransferDialog();
 
         // write your code here
-//        new LoginFrame();
+        new LoginFrame();
 //        new DashboardFrame();
 //        new PlayersFrame();
 //        new PlayerDataFrame(new JFrame(),1234);
@@ -50,7 +50,7 @@ public class Main {
 //        System.out.println(screenSize.width + " - " + screenSize.height);
 //        MyToast myToast = new MyToast("Testing Toast", screenSize.width-300, 50);
 //        myToast.showToast();
-        new DashboardFrame(manager);
+//        new DashboardFrame(manager);
     }
 
 }

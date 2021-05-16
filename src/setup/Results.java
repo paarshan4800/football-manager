@@ -1,5 +1,6 @@
 package setup;
 
+import com.api.API;
 import com.sql.SQL;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,7 +29,7 @@ public class Results {
 
         String url = String.format("http://api.football-data.org/v2/competitions/2021/matches?dateFrom=%s&dateTo=%s", fromDate, toDate);
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).setHeader("X-Auth-Token", "be5e8fa7c3b746fd81ed522c955ee399").build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).setHeader("X-Auth-Token", API.getApiFootballDataOrgApiKey()).build();
 
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body)
                 .thenApply(Results::parseResultsJSON).join();

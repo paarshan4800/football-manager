@@ -1,5 +1,6 @@
 package setup;
 
+import com.api.API;
 import com.models.Results;
 import com.sql.SQL;
 import org.json.JSONArray;
@@ -10,7 +11,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,7 +27,7 @@ public class Fixtures {
 
         String url = String.format("http://api.football-data.org/v2/competitions/2021/matches?dateFrom=%s&dateTo=%s", fromDate, toDate);
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).setHeader("X-Auth-Token", "be5e8fa7c3b746fd81ed522c955ee399").build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).setHeader("X-Auth-Token", API.getApiFootballDataOrgApiKey()).build();
 
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body)
                 .thenApply(Fixtures::parseFixturesJSON).join();

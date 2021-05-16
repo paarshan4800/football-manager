@@ -1,22 +1,21 @@
 package com.api;
 
-import com.models.TopScorers;
 import com.models.LeagueStandings;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
+import static com.sql.SQL.getDBConnection;
+
 public class UpdateAPI {
 
-    public void updateLeagueStandings(ArrayList<LeagueStandings> leagueStandings) {
+    public static void updateLeagueStandings(ArrayList<LeagueStandings> leagueStandings) {
         for (LeagueStandings leagueStanding : leagueStandings) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                        "PaarShanDB0408");
+                Connection con = getDBConnection();
 
                 PreparedStatement pst = con.prepareStatement("update standings set position=?,matches_played=?,matches_won=?,matches_drawn=?,matches_lost=?,goals_for=?,goals_against=?,points=? where team_id=?");
                 pst.setInt(1, leagueStanding.getPosition());
@@ -41,8 +40,7 @@ public class UpdateAPI {
     public static void truncateTopScorers() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                    "PaarShanDB0408");
+            Connection con = getDBConnection();
 
             PreparedStatement pst = con.prepareStatement("truncate table topscorers;");
             int rowsAffected = pst.executeUpdate();
@@ -55,8 +53,7 @@ public class UpdateAPI {
     public static void truncateResults() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                    "PaarShanDB0408");
+            Connection con = getDBConnection();
 
             PreparedStatement pst = con.prepareStatement("truncate table finishedmatches;");
             int rowsAffected = pst.executeUpdate();
@@ -69,8 +66,7 @@ public class UpdateAPI {
     public static void truncateFixtures() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                    "PaarShanDB0408");
+            Connection con = getDBConnection();
 
             PreparedStatement pst = con.prepareStatement("truncate table upcomingmatches;");
             int rowsAffected = pst.executeUpdate();

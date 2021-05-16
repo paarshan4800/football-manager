@@ -7,28 +7,28 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/setup_dir/External JAR/json-20210307.jar!/" />
+          <root url="jar://$MODULE_DIR$/External JARs/spring-security-crypto-5.4.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/setup_dir/External JAR/spring-security-crypto-5.4.5.jar!/" />
+          <root url="jar://$MODULE_DIR$/External JARs/mysql-connector-java-8.0.23.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/setup_dir/External JAR/mysql-connector-java-8.0.23.jar!/" />
+          <root url="jar://$MODULE_DIR$/External JARs/json-20210307.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

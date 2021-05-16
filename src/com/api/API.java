@@ -16,17 +16,27 @@ import java.util.ArrayList;
 
 public class API {
 
-    public static final UpdateAPI storeAPI = new UpdateAPI();
+    //    public static final UpdateAPI storeAPI = new UpdateAPI();
+    private final static String API_FOOTBALL_DATA_ORG_API_KEY = "be5e8fa7c3b746fd81ed522c955ee399";
+    private final static String API_FOOTBALL_COM_API_KEY = "707b36608ee5a52c379428e5c13584dc1abc5a063ebad445a3b86421faeac671";
 
     public void getCurrentLeagueStanding() {
 
-        String url = "https://apiv2.apifootball.com/?action=get_standings&league_id=148&APIkey=707b36608ee5a52c379428e5c13584dc1abc5a063ebad445a3b86421faeac671";
+        String url = String.format("https://apiv2.apifootball.com/?action=get_standings&league_id=148&APIkey=%s", getApiFootballComApiKey());
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
 
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body)
                 .thenApply(API::parseLeagueStandingsJSON).join();
 
+    }
+
+    public static String getApiFootballDataOrgApiKey() {
+        return API_FOOTBALL_DATA_ORG_API_KEY;
+    }
+
+    public static String getApiFootballComApiKey() {
+        return API_FOOTBALL_COM_API_KEY;
     }
 
     public void getTopScorers() {
@@ -85,7 +95,7 @@ public class API {
             ));
 
         }
-        storeAPI.updateLeagueStandings(leagueStandings);
+        UpdateAPI.updateLeagueStandings(leagueStandings);
 
         return null;
     }
