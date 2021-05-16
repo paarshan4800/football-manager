@@ -1,26 +1,28 @@
+package setup;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.sql.*;
-
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import static com.sql.SQL.getDBConnection;
 
 public class Players {
-    public static void main(String[] args) {
 
+    public Players() {
         String url = "https://apiv2.apifootball.com/?action=get_teams&league_id=148&APIkey=707b36608ee5a52c379428e5c13584dc1abc5a063ebad445a3b86421faeac671";
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
 
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body)
                 .thenApply(Players::parseJSON).join();
-
     }
 
     public static String Password_Hash(String password) {
@@ -57,17 +59,9 @@ public class Players {
                 String password = "samplepwd";
                 String hash_pwd = Password_Hash(password);
 
-                /*
-                 * System.out.println(player_id + " - " + team_id + " - " + name + " - " +
-                 * shirt_number + " - " + country + " - " + position + " - " + age + " - " +
-                 * matches_played + " - " + goals_scored + " - " + yellow_cards + " - " +
-                 * red_cards + " - " + username + " - " + password + " - " + hash_pwd);
-                 */
-
                 try {
                     Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                            "PaarShanDB0408");
+                    Connection con = getDBConnection();
 
                     PreparedStatement pst = con.prepareStatement(
                             "insert into players (player_id,team_id,name,shirt_number,country,position,age,matches_played,goals_scored,yellow_cards,red_cards,username,password) values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -88,21 +82,11 @@ public class Players {
 
                     pst.executeUpdate();
 
-                    // Statement stmt = con.createStatement();
-
-                }
-
-                catch (Exception e) {
+                } catch (Exception e) {
                     System.out.println(e);
                 }
-
             }
-
         }
-
-        System.out.println("PLAYER COUNT - " + count);
-
-        // Sql
 
         return null;
     }

@@ -1,17 +1,21 @@
+package setup;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.sql.*;
-
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import static com.sql.SQL.getDBConnection;
 
 public class Managers {
-    public static void main(String[] args) {
+
+    public Managers() {
 
         String url = "https://apiv2.apifootball.com/?action=get_teams&league_id=148&APIkey=707b36608ee5a52c379428e5c13584dc1abc5a063ebad445a3b86421faeac671";
         HttpClient client = HttpClient.newHttpClient();
@@ -19,7 +23,6 @@ public class Managers {
 
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body)
                 .thenApply(Managers::parseJSON).join();
-
     }
 
     public static String Password_Hash(String password) {
@@ -49,8 +52,7 @@ public class Managers {
 
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                        "14valentine");
+                Connection con = getDBConnection();
 
                 PreparedStatement pst = con.prepareStatement(
                         "insert into managers (manager_id,name,country,age,username,password) values (?,?,?,?,?,?)");
@@ -64,18 +66,11 @@ public class Managers {
 
                 pst.executeUpdate();
 
-                // Statement stmt = con.createStatement();
-                // stmt.executeUpdate("insert into managers values (102,'Akash')");
-
-            }
-
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println(e);
             }
         }
-
-        // Sql
-
         return null;
     }
+
 }
