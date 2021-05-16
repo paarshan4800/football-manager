@@ -32,20 +32,16 @@ public class PlayersFrame extends JFrame implements ActionListener {
     JButton applyFilter;
 
     JTable table;
-
     Filters filters = new Filters();
-
-    Manager manager;
-
-//    HashMap<String, Boolean> filtersPositionMap;
 
     MyColor myColor = new MyColor();
     MyFont myFont = new MyFont();
-    MyMenuBar menuBar = new MyMenuBar(this);
+    MyMenuBar menuBar;
+    Manager manager;
 
-    public PlayersFrame() {
-
-
+    public PlayersFrame(Manager manager) {
+        this.manager = manager;
+        menuBar = new MyMenuBar(this, new Manager());
 
         // Top Panel Buttons
         positionButton = new MyButton("Position", "/icons/black/icon_position.png");
@@ -79,11 +75,13 @@ public class PlayersFrame extends JFrame implements ActionListener {
         table.setModel(getPlayers()); // setting model to table (model in MVC)
 
         // Table Styling
-        table.getTableHeader().setBackground(myColor.getBackgroundColor()); // set background color to table header
-        table.getTableHeader().setForeground(myColor.getTextColor()); // set font color to table headers
+        table.getTableHeader().setBackground(myColor.getPrimaryColor()); // set background color to table header
+        table.getTableHeader().setForeground(myColor.getBackgroundColor()); // set font color to table headers
         table.getTableHeader().setFont(myFont.getFontMedium().deriveFont(22f)); // set font to table headers
 
-        table.setBackground(Color.white); // set background color to table rows
+        table.setBackground(myColor.getBackgroundColor()); // set background color to table rows
+        table.setForeground(myColor.getTextColor());
+        table.setGridColor(myColor.getBoxColor());
         table.setFont(myFont.getFontPrimary().deriveFont(16f));
         table.setCursor(new Cursor(12));
 

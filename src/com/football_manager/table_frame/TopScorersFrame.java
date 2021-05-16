@@ -1,6 +1,7 @@
 package com.football_manager.table_frame;
 
 import com.components.*;
+import com.models.Manager;
 import com.models.TopScorers;
 
 import javax.swing.*;
@@ -10,12 +11,9 @@ import java.util.ArrayList;
 
 public class TopScorersFrame extends TableDataFrame {
 
-    MyColor myColor = new MyColor();
-    MyFont myFont = new MyFont();
+    public TopScorersFrame(Manager manager) {
 
-    public TopScorersFrame() {
-
-        super("Top Scorers");
+        super("Top Scorers", manager);
 
         table = new JTable() {
 

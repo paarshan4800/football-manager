@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class UpdateAPI {
 
-    public void storeLeagueStandings(ArrayList<LeagueStandings> leagueStandings) {
+    public void updateLeagueStandings(ArrayList<LeagueStandings> leagueStandings) {
         for (LeagueStandings leagueStanding : leagueStandings) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
@@ -38,25 +38,47 @@ public class UpdateAPI {
 
     }
 
-    public void storeTopScorers(ArrayList<TopScorers> topScorers) {
-        for (TopScorers topScorer : topScorers) {
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                        "PaarShanDB0408");
+    public static void truncateTopScorers() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
+                    "PaarShanDB0408");
 
-                PreparedStatement pst = con.prepareStatement("update topscorers set team_id=?,goals_scored=? where player_id=?");
-                pst.setBigDecimal(1, new BigDecimal(topScorer.getTeam_id()));
-                pst.setInt(2, topScorer.getGoals_scored());
-                pst.setBigDecimal(3, new BigDecimal(topScorer.getPlayer_id()));
+            PreparedStatement pst = con.prepareStatement("truncate table topscorers;");
+            int rowsAffected = pst.executeUpdate();
 
-
-                int rowsAffected = pst.executeUpdate();
-
-            } catch (Exception ex) {
-                System.out.println(ex);
-            }
+        } catch (Exception ex) {
+            System.out.println(ex);
         }
+    }
+
+    public static void truncateResults() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
+                    "PaarShanDB0408");
+
+            PreparedStatement pst = con.prepareStatement("truncate table finishedmatches;");
+            int rowsAffected = pst.executeUpdate();
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public static void truncateFixtures() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
+                    "PaarShanDB0408");
+
+            PreparedStatement pst = con.prepareStatement("truncate table upcomingmatches;");
+            int rowsAffected = pst.executeUpdate();
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
     }
 
 }

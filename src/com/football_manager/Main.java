@@ -1,8 +1,8 @@
 package com.football_manager;
 
 
-import com.football_manager.table_frame.LeagueStandingsFrame;
-import com.football_manager.table_frame.TopScorersFrame;
+import com.football_manager.matches_frame.FinishedMatchesFrame;
+import com.football_manager.matches_frame.UpcomingMatchesFrame;
 
 public class Main {
 
@@ -13,7 +13,7 @@ public class Main {
 //        new PlayerExchangeTransferDialog();
 
         // write your code here
-//        LoginFrame loginFrame = new LoginFrame();
+        new LoginFrame();
 //        new DashboardFrame();
 //        new PlayersFrame();
 //        new PlayerDataFrame(new JFrame(),1234);
@@ -24,8 +24,8 @@ public class Main {
 //        new OutgoingTransfersFrame();
 //       new LeagueStandingsFrame();
 //        new TopScorersFrame();
-           // new FinishedMatchesFrame();
-            new UpcomingMatchesFrame();
+//            new FinishedMatchesFrame();
+//            new UpcomingMatchesFrame();
     }
 
 }

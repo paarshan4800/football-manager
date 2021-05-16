@@ -55,10 +55,6 @@ public class Fixtures {
             JSONObject awayTeamObject = match.getJSONObject("awayTeam");
             String awayTeam = awayTeamObject.getString("name");
 
-//            JSONObject scoreObject = match.getJSONObject("score").getJSONObject("fullTime");
-//            long homeTeamScore = scoreObject.getLong("homeTeam");
-//            long awayTeamScore = scoreObject.getLong("awayTeam");
-
             fixtures.add(new com.models.Fixtures(
                     date,
                     time,
@@ -68,7 +64,6 @@ public class Fixtures {
         }
 
         storeFixtures(fixtures);
-
         return null;
 
     }
@@ -78,7 +73,7 @@ public class Fixtures {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                        "14valentine");
+                        "PaarShanDB0408");
 
                 PreparedStatement pst = con.prepareStatement("insert into upcomingmatches (date,time,homeTeam,awayTeam) values (?,?,?,?);");
                 pst.setString(1, fixture.getDate());

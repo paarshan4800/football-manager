@@ -5,6 +5,7 @@ import com.components.MyFont;
 import com.components.MyImage;
 import com.components.menu.MyMenuBar;
 import com.components.menu.MyRefreshLabel;
+import com.models.Manager;
 import com.sql.API;
 
 import javax.swing.*;
@@ -23,9 +24,15 @@ public class TableDataFrame extends JFrame {
     API api = new API();
 
     JTable table;
-    MyMenuBar menuBar = new MyMenuBar(this);
+    MyMenuBar menuBar;
 
-    public TableDataFrame(String heading) {
+    public Manager manager;
+
+    public TableDataFrame(String heading, Manager manager) {
+
+        this.manager = manager;
+        menuBar = new MyMenuBar(this, manager);
+
         // Heading
         JLabel headingLabel = new JLabel();
         headingLabel.setText(heading);
@@ -40,10 +47,10 @@ public class TableDataFrame extends JFrame {
                 dispose();
                 if (heading == "League Standings") {
                     api.getCurrentLeagueStanding();
-                    new LeagueStandingsFrame();
+                    new LeagueStandingsFrame(manager);
                 } else {
                     api.getTopScorers();
-                    new TopScorersFrame();
+                    new TopScorersFrame(manager);
                 }
             }
         });

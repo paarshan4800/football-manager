@@ -5,6 +5,7 @@ import com.components.MyColor;
 import com.components.MyFont;
 import com.components.MyImage;
 import com.football_manager.DashboardFrame;
+import com.models.Manager;
 import com.transfer_chat.view.view_requests_frame.IncomingTransfersFrame;
 import com.transfer_chat.view.view_requests_frame.OutgoingTransfersFrame;
 
@@ -24,18 +25,22 @@ public class ViewTransfersRequestsTypeDialog extends JDialog implements ActionLi
     MyButton incomingTransfersButton;
     MyButton outgoingTransfersButton;
 
-    public ViewTransfersRequestsTypeDialog() {
+    Manager manager;
 
-        incomingTransfersButton = new MyButton("Incoming Transfers","/icons/black/icon_incoming.png");
+    public ViewTransfersRequestsTypeDialog(Manager manager) {
+
+        this.manager = manager;
+
+        incomingTransfersButton = new MyButton("Incoming Transfers", "/icons/black/icon_incoming.png");
         incomingTransfersButton.addActionListener(this);
 
-        outgoingTransfersButton = new MyButton("Outgoing Transfers","/icons/black/icon_outgoing.png");
+        outgoingTransfersButton = new MyButton("Outgoing Transfers", "/icons/black/icon_outgoing.png");
         outgoingTransfersButton.addActionListener(this);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(myColor.getBackgroundColor());
-        buttonPanel.setBorder(new EmptyBorder(50,50,50,50));
-        buttonPanel.setLayout(new GridLayout(1,2,25,0));
+        buttonPanel.setBorder(new EmptyBorder(50, 50, 50, 50));
+        buttonPanel.setLayout(new GridLayout(1, 2, 25, 0));
         buttonPanel.add(incomingTransfersButton);
         buttonPanel.add(outgoingTransfersButton);
 
@@ -53,7 +58,7 @@ public class ViewTransfersRequestsTypeDialog extends JDialog implements ActionLi
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                new DashboardFrame();
+                new DashboardFrame(new Manager());
             }
         });
     }
@@ -61,10 +66,9 @@ public class ViewTransfersRequestsTypeDialog extends JDialog implements ActionLi
     @Override
     public void actionPerformed(ActionEvent e) {
         dispose();
-        if(e.getSource() == incomingTransfersButton) {
+        if (e.getSource() == incomingTransfersButton) {
             new IncomingTransfersFrame();
-        }
-        else if(e.getSource() == outgoingTransfersButton) {
+        } else if (e.getSource() == outgoingTransfersButton) {
             new OutgoingTransfersFrame();
         }
     }

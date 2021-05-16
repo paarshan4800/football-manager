@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 import com.components.*;
+import com.sql.SQL;
 import org.springframework
         .security
         .crypto
@@ -129,7 +130,7 @@ public class LoginFrame extends JFrame implements ActionListener {
                 if (checkPassword(username, password)) {
                     System.out.println(username + " authenticated");
                     this.dispose();
-                    new DashboardFrame();
+                    new DashboardFrame(new SQL().getManagerGivenUsername(username));
                 } else {
                     JOptionPane.showMessageDialog(this, "Invalid Username/Password", "Authentication Failed", JOptionPane.WARNING_MESSAGE);
                 }

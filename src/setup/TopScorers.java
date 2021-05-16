@@ -55,7 +55,7 @@ public class TopScorers {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                        "14valentine");
+                        "PaarShanDB0408");
 
                 PreparedStatement pst = con.prepareStatement("insert into topScorers (player_id,goals_scored,team_id) values (?,?,?)");
                 pst.setBigDecimal(1, new BigDecimal(topScorer.getPlayer_id()));

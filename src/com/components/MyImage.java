@@ -15,7 +15,7 @@ public class MyImage {
     }
 
     public BufferedImage getLogo() {
-        return getImage("/resources/images/pl_logo_original.png");
+        return getImage("/logo.png");
     }
 
     public BufferedImage getImage(String filePath) {

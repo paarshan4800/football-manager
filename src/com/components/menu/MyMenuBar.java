@@ -2,9 +2,13 @@ package com.components.menu;
 
 import com.components.MyColor;
 import com.football_manager.DashboardFrame;
+import com.football_manager.LoginFrame;
 import com.football_manager.PlayersFrame;
+import com.football_manager.matches_frame.FinishedMatchesFrame;
+import com.football_manager.matches_frame.UpcomingMatchesFrame;
 import com.football_manager.table_frame.LeagueStandingsFrame;
 import com.football_manager.table_frame.TopScorersFrame;
+import com.models.Manager;
 import com.transfer_chat.view.ViewTransfersRequestsTypeDialog;
 
 import javax.swing.*;
@@ -12,6 +16,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MyMenuBar extends JMenuBar implements ActionListener {
 
@@ -31,13 +37,34 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
 
     MyColor myColor = new MyColor();
 
-    public MyMenuBar(JFrame currentFrame) {
+    Manager manager;
+
+    public MyMenuBar(JFrame currentFrame, Manager manager) {
+        this.manager = manager;
         this.currentFrame = currentFrame;
 
         // Menu
         gotoMenu = new MyMenu("Goto");
+
         logoutMenu = new MyMenu("Logout");
+        logoutMenu.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("LOGOUTTTTTT");
+                new LoginFrame();
+                currentFrame.dispose();
+            }
+        });
+
         exitMenu = new MyMenu("Exit");
+        exitMenu.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("EXITTTTTTTTTTTT");
+                currentFrame.dispose();
+            }
+        });
+
 
         // Goto Menu Items
         dashboardItem = new MyMenuItem("Dashboard", "/icons/black/icon_dashboard.png", this);
@@ -68,25 +95,23 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println(e.getSource());
         if (e.getSource() == dashboardItem) {
-            currentFrame.dispose();
-            new DashboardFrame();
+            new DashboardFrame(manager);
         } else if (e.getSource() == standingsItem) {
-            currentFrame.dispose();
-            new LeagueStandingsFrame();
+            new LeagueStandingsFrame(manager);
         } else if (e.getSource() == topScorersItem) {
-            currentFrame.dispose();
-            new TopScorersFrame();
+            new TopScorersFrame(manager);
         } else if (e.getSource() == resultsItem) {
-            System.out.println("RESULTS");
+            new FinishedMatchesFrame(manager);
         } else if (e.getSource() == fixturesItem) {
-            System.out.println("FIXTURES");
+            new UpcomingMatchesFrame(manager);
         } else if (e.getSource() == playersItem) {
-            currentFrame.dispose();
-            new PlayersFrame();
+            new PlayersFrame(manager);
         } else if (e.getSource() == transferRequestsItem) {
-            currentFrame.dispose();
-            new ViewTransfersRequestsTypeDialog();
+            new ViewTransfersRequestsTypeDialog(manager);
         }
+        currentFrame.dispose();
+
     }
 }

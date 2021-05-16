@@ -1,6 +1,7 @@
 package com.football_manager.table_frame;
 
 import com.models.LeagueStandings;
+import com.models.Manager;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -10,10 +11,9 @@ import java.util.ArrayList;
 public class LeagueStandingsFrame extends TableDataFrame {
 
 
-    public LeagueStandingsFrame() {
+    public LeagueStandingsFrame(Manager manager) {
 
-        super("League Standings");
-
+        super("League Standings", manager);
 
 //        Table
         table = new JTable() {

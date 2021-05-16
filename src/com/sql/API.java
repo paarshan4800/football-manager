@@ -1,9 +1,11 @@
 package com.sql;
 
-import com.models.TopScorers;
 import com.models.LeagueStandings;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import setup.Fixtures;
+import setup.Results;
+import setup.TopScorers;
 
 import java.math.BigInteger;
 import java.net.URI;
@@ -28,12 +30,27 @@ public class API {
     }
 
     public void getTopScorers() {
-        String url = "https://apiv2.apifootball.com/?action=get_topscorers&league_id=148&APIkey=707b36608ee5a52c379428e5c13584dc1abc5a063ebad445a3b86421faeac671";
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
 
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body)
-                .thenApply(API::parseTopScorersJSON).join();
+        // Truncate
+        UpdateAPI.truncateTopScorers();
+        // Insert
+        new TopScorers();
+
+    }
+
+    public void getResults() {
+
+        // Truncate
+        UpdateAPI.truncateResults();
+        // Insert
+        new Results();
+    }
+
+    public void getFixtures() {
+        // Truncate
+        UpdateAPI.truncateFixtures();
+        // Insert
+        new Fixtures();
     }
 
     private static String parseLeagueStandingsJSON(String response) {
@@ -68,32 +85,10 @@ public class API {
             ));
 
         }
-        storeAPI.storeLeagueStandings(leagueStandings);
+        storeAPI.updateLeagueStandings(leagueStandings);
 
         return null;
     }
 
-    private static String parseTopScorersJSON(String response) {
-        ArrayList<TopScorers> topScorers = new ArrayList<>();
 
-        JSONArray playerStandings = new JSONArray(response);
-
-        for (int i = 0; i < playerStandings.length(); i++) {
-            JSONObject playerStanding = playerStandings.getJSONObject(i);
-
-            BigInteger player_id = playerStanding.getBigInteger("player_key");
-            String goals_scored = playerStanding.getString("goals");
-            String team_id = playerStanding.getString("team_key");
-
-
-            topScorers.add(new TopScorers(
-                    player_id,
-                    Integer.parseInt(goals_scored),
-                    new BigInteger(team_id)
-
-            ));
-        }
-        storeAPI.storeTopScorers(topScorers);
-        return null;
-    }
 }

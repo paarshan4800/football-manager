@@ -2,6 +2,8 @@ package com.football_manager;
 
 import com.components.*;
 import com.components.menu.MyMenuBar;
+import com.football_manager.matches_frame.FinishedMatchesFrame;
+import com.football_manager.matches_frame.UpcomingMatchesFrame;
 import com.football_manager.table_frame.LeagueStandingsFrame;
 import com.football_manager.table_frame.TopScorersFrame;
 import com.models.Manager;
@@ -34,13 +36,14 @@ public class DashboardFrame extends JFrame implements ActionListener {
     MyButton playersButton;
     MyButton transferRequestsButton;
 
-    MyMenuBar menuBar = new MyMenuBar(this);
+    MyMenuBar menuBar;
 
     SQL sql = new SQL();
+    Manager manager;
 
-    public DashboardFrame() { // Manager should come from login
-
-        Manager manager = sql.getManagerGivenUsername("mourinhojose");
+    public DashboardFrame(Manager manager) { // Manager should come from login
+        this.manager = manager;
+        menuBar = new MyMenuBar(this, manager);
 
         // Left Panel -> Details
         managerDataLabels = new ArrayList<>();
@@ -116,55 +119,24 @@ public class DashboardFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Menu Listeners
-
         // Button Listeners
         if (e.getSource() == standingsButton) {
-            new LeagueStandingsFrame();
-            this.dispose();
+            new LeagueStandingsFrame(manager);
         } else if (e.getSource() == topScorersButton) {
-            new TopScorersFrame();
-            this.dispose();
+            new TopScorersFrame(manager);
         } else if (e.getSource() == fixturesButton) {
-
+            new UpcomingMatchesFrame(manager);
         } else if (e.getSource() == resultsButton) {
-
+            new FinishedMatchesFrame(manager);
         } else if (e.getSource() == playersButton) {
-            new PlayersFrame();
-            this.dispose();
+            new PlayersFrame(manager);
         } else if (e.getSource() == transferRequestsButton) {
-            new ViewTransfersRequestsTypeDialog();
-            this.dispose();
+            new ViewTransfersRequestsTypeDialog(manager);
         }
+        this.dispose();
+
 
     }
-
-//    public Manager getManagerDetails(String username) {
-//        Manager manager = null;
-//        try {
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-//                    "PaarShanDB0408");
-//
-//            PreparedStatement pst = con.prepareStatement("select * from managers where username=?");
-//            pst.setString(1, "kloppjurgen");
-//            ResultSet rs = pst.executeQuery();
-//
-//            while (rs.next()) {
-//                int manager_id = rs.getInt("manager_id");
-//                String name = rs.getString("name");
-//                String country = rs.getString("country");
-//                int age = rs.getInt("age");
-//
-//                manager = new Manager(manager_id, name, country, age);
-//            }
-//
-//        } catch (Exception ex) {
-//            System.out.println(ex);
-//        }
-//
-//        return manager;
-//    }
 
 }
 
