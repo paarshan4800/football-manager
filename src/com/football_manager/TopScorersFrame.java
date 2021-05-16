@@ -32,7 +32,6 @@ class TopScorersFrame extends JFrame {
         table.getTableHeader().setBackground(myColor.getBackgroundColor()); // set background color to table header
         table.getTableHeader().setForeground(myColor.getTextColor()); // set font color to table headers
         table.getTableHeader().setFont(myFont.getFontMedium().deriveFont(30f));
-        //table.setBackground(Color.white); // set background color to table rows
         table.setFont(myFont.getFontPrimary().deriveFont(22f));
         table.setCursor(new Cursor(12));
         table.setFillsViewportHeight(true);
@@ -42,7 +41,9 @@ class TopScorersFrame extends JFrame {
         table.setBackground(myColor.getBackgroundColor());
         table.setGridColor(myColor.getBackgroundColor());
         table.setForeground(myColor.getTextColor());
-
+        /*DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        table.setDefaultRenderer(String.class, centerRenderer);*/
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel(); // get table model from table
 
         String[] column_names = {"Name", "Goals Scored"};
@@ -66,11 +67,7 @@ class TopScorersFrame extends JFrame {
         this.setTitle("TopScorers");
         this.setIconImage(new MyImage().getLogo());
         this.setVisible(true);
-
-
-
     }
-
 
     class TopScorers {
         private String name;
@@ -98,8 +95,7 @@ class TopScorersFrame extends JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root", "14valentine");
 
-            PreparedStatement pst = con.prepareStatement("select name,goals_scored from players order by goals_scored desc limit 20;");
-            ResultSet rs = pst.executeQuery();
+            PreparedStatement pst = con.prepareStatement("select players.name,topScorers.goals_scored from players inner join topScorers on players.player_id=topScorers.player_id order by goals_scored desc limit 20;");            ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 ts = new TopScorers(
                         rs.getString(1),

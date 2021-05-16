@@ -20,8 +20,9 @@ public class Main {
 //        new TransferRequestsFrame();
 //        new ViewTransfersRequestsTypeDialog();
 //        new IncomingTransfersFrame();
-        new OutgoingTransfersFrame();
-//        new LeagueStandingsFrame();
+//        new OutgoingTransfersFrame();
+       new LeagueStandingsFrame();
+       // new TopScorersFrame();
     }
 
 }

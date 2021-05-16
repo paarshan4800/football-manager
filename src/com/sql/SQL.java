@@ -667,7 +667,7 @@ public class SQL {
         Manager manager = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root", "PaarShanDB0408");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root", "14valentine");
 
             String sql = "select m.manager_id,m.name,m.country,m.age from teams as t inner join managers as m on t.manager_id=m.manager_id and t.team_id=?;";
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -703,7 +703,7 @@ public class SQL {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                    "PaarShanDB0408");
+                    "14valentine");
 
             PreparedStatement pst = con.prepareStatement("select * from managers where username=?");
             pst.setString(1, username);

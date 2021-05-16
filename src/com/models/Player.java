@@ -15,6 +15,7 @@ public class Player {
     private int yellowCards;
     private int redCards;
 
+
     public Player(BigInteger playerID, Team team, String name, String position) {
         this.playerID = playerID;
         this.team = team;

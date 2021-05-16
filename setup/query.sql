@@ -117,3 +117,10 @@ create table topScorers
     FOREIGN KEY (player_id) REFERENCES players (player_id),
     FOREIGN KEY (team_id) REFERENCES teams (team_id)
 )
+-- date, hometeam, awayteam, hometeamscore, awayteamscore
+create table finishedMatches (
+    match_id BIGINT NOT NULL,
+    hometeam_id BIGINT,
+    hometeam_id BIGINT,
+    PRIMARY KEY(match_id)
+);
