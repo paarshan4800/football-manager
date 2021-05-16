@@ -1,0 +1,3 @@
+send request ping = client -> server
+    - (type,message,playersManager)
+

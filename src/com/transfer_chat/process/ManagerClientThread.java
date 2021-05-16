@@ -63,7 +63,6 @@ public class ManagerClientThread extends Thread {
                 requestMessage = (RequestMessage) objectInputStream.readObject();
             } catch (IOException ioException) {
                 display("Exception at reading from client - " + ioException);
-
                 break;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -86,74 +85,27 @@ public class ManagerClientThread extends Thread {
             else if (type == 2) {
                 display(String.valueOf(manager.getManagerID()) + " logged off");
                 isClientRunning = false;
-            }
-
-            // transfer
-            else if (type == 3 || type == 4 || type == 5) {
-                // get player and player's manager object
-                // BigInteger playerID = BigInteger.valueOf(Long.parseLong(message));
-                BigInteger playerID = BigInteger.valueOf(658607451);
-                Player player = sql.getPlayerGivenPlayerID(playerID); // player object
-                Manager playersManager = sql.getManagerGivenTeamID(player.getTeam().getTeamID()); // player's manager object
-
+            } else if (type == 3) {
+                Manager playersManager = sql.getManagerGivenManagerID(requestMessage.getPlayersManagerID()); // player's manager object
                 int playersManagerIndex = isManagerActive(playersManager.getManagerID());
 
-                //permanent transfer
-                if (type == 3) {
-
-                    //Create Transfer Instance
-                    Transfer transfer = sql.createTransferInstanceOnRequest(
-                            player.getPlayerID(),
-                            player.getTeam().getTeamID(),
-                            sql.getTeamGivenManagerID(manager.getManagerID()).getTeamID(),
-                            1,
-                            "permanenttransfers"
-                    );
-
-                    // Player's Manager is active
-                    if (playersManagerIndex != -1) {
-                        // get player's manager client and send request received notification
-                        ManagerClientThread playersManagerClient = server.getManagerClientThreads().get(playersManagerIndex);
-                        playersManagerClient.sendMessage(new ResponseMessage(
-                                ResponseMessage.NORMAL,
-                                manager.getName() + " is interested in TRANSFER for " + player.getName()
-                        ));
-                    }
-
-                    // send request sent ack message to requested manager
-                    sendMessage(new ResponseMessage(
+                // Player's Manager is active
+                if (playersManagerIndex != -1) {
+                    // get player's manager client and send request received notification
+                    ManagerClientThread playersManagerClient = server.getManagerClientThreads().get(playersManagerIndex);
+                    playersManagerClient.sendMessage(new ResponseMessage(
                             ResponseMessage.NORMAL,
-                            "Sent transfer request to " + playersManager.getName()
-                    ));
-
-                }
-
-                // loan
-                else if (type == 4) {
-
-                    // player exchange
-                } else if (type == 5) {
-
-                }
-            }
-
-            // loan
-            else if (type == 4) {
-                display(String.valueOf(manager.getManagerID()) + " logged off");
-                server.setServerRunning(false);
-            } else if (type == 6) {
-                ArrayList<Transfer> transfers = sql.getAllTransfersGivenTeamIDOfManager(managersTeam.getTeamID());
-                sendMessage(new ResponseMessage(
-                        ResponseMessage.NORMAL,
-                        "--- Transfer Requests ---"
-                ));
-                for (Transfer transfer : transfers) {
-                    sendMessage(new ResponseMessage(
-                            ResponseMessage.NORMAL,
-                            "Request for " + transfer.getPlayer() + " from " + transfer.getToTeam().getManager() + " from " + transfer.getToTeam()
+                            requestMessage.getMessage()
                     ));
                 }
+
+//                // send request sent ack message to requested manager
+//                sendMessage(new ResponseMessage(
+//                        ResponseMessage.NORMAL,
+//                        "Sent transfer request to " + playersManager.getName()
+//                ));
             }
+
         }
         remove(this);
         close();
@@ -180,11 +132,13 @@ public class ManagerClientThread extends Thread {
     }
 
     public int isManagerActive(int managerID) {
+
         for (int i = 0; i < server.getManagerClientThreads().size(); i++) {
             if (Objects.equals(managerID, server.getManagerClientThreads().get(i).manager.getManagerID())) {
                 return i;
             }
         }
+
         return -1;
     }
 
