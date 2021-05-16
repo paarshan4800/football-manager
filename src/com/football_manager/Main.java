@@ -1,7 +1,8 @@
 package com.football_manager;
 
 
-import com.transfer_chat.view.view_requests_frame.OutgoingTransfersFrame;
+import com.football_manager.table_frame.LeagueStandingsFrame;
+import com.football_manager.table_frame.TopScorersFrame;
 
 public class Main {
 
@@ -21,8 +22,8 @@ public class Main {
 //        new ViewTransfersRequestsTypeDialog();
 //        new IncomingTransfersFrame();
 //        new OutgoingTransfersFrame();
-       new LeagueStandingsFrame();
-       // new TopScorersFrame();
+//       new LeagueStandingsFrame();
+        new TopScorersFrame();
     }
 
 }

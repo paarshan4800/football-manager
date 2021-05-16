@@ -2,6 +2,8 @@ package com.football_manager;
 
 import com.components.*;
 import com.components.menu.MyMenuBar;
+import com.football_manager.table_frame.LeagueStandingsFrame;
+import com.football_manager.table_frame.TopScorersFrame;
 import com.models.Manager;
 import com.sql.SQL;
 import com.transfer_chat.view.ViewTransfersRequestsTypeDialog;
@@ -98,7 +100,7 @@ public class DashboardFrame extends JFrame implements ActionListener {
         wrapper.add(rightPanel);
         wrapper.setBorder(new EmptyBorder(100, 100, 100, 100));
         wrapper.setBackground(myColor.getBackgroundColor());
-        
+
 
 //        Frame
         this.setJMenuBar(menuBar);
@@ -118,9 +120,11 @@ public class DashboardFrame extends JFrame implements ActionListener {
 
         // Button Listeners
         if (e.getSource() == standingsButton) {
-
+            new LeagueStandingsFrame();
+            this.dispose();
         } else if (e.getSource() == topScorersButton) {
-
+            new TopScorersFrame();
+            this.dispose();
         } else if (e.getSource() == fixturesButton) {
 
         } else if (e.getSource() == resultsButton) {

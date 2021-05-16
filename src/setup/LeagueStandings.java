@@ -1,43 +1,32 @@
-package com.sql;
+package setup;
 
-import com.models.TopScorers;
-import com.models.LeagueStandings;
+import com.sql.API;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
-public class API {
-
-    public static final UpdateAPI storeAPI = new UpdateAPI();
-
-    public void getCurrentLeagueStanding() {
-
+public class LeagueStandings {
+    public LeagueStandings() {
         String url = "https://apiv2.apifootball.com/?action=get_standings&league_id=148&APIkey=707b36608ee5a52c379428e5c13584dc1abc5a063ebad445a3b86421faeac671";
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
 
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body)
-                .thenApply(API::parseLeagueStandingsJSON).join();
-
-    }
-
-    public void getTopScorers() {
-        String url = "https://apiv2.apifootball.com/?action=get_topscorers&league_id=148&APIkey=707b36608ee5a52c379428e5c13584dc1abc5a063ebad445a3b86421faeac671";
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
-
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body)
-                .thenApply(API::parseTopScorersJSON).join();
+                .thenApply(LeagueStandings::parseLeagueStandingsJSON).join();
     }
 
     private static String parseLeagueStandingsJSON(String response) {
-        ArrayList<LeagueStandings> leagueStandings = new ArrayList<>();
+        ArrayList<com.models.LeagueStandings> leagueStandings = new ArrayList<>();
 
         JSONArray teamStandings = new JSONArray(response);
 
@@ -54,7 +43,7 @@ public class API {
             String goals_for = teamStanding.getString("overall_league_GF");
             String goals_against = teamStanding.getString("overall_league_GA");
             String points = teamStanding.getString("overall_league_PTS");
-            leagueStandings.add(new LeagueStandings(
+            leagueStandings.add(new com.models.LeagueStandings(
                     new BigInteger(team_id),
                     Integer.parseInt(position),
                     team_name,
@@ -68,32 +57,34 @@ public class API {
             ));
 
         }
-        storeAPI.storeLeagueStandings(leagueStandings);
+        storeLeagueStandings(leagueStandings);
 
         return null;
     }
 
-    private static String parseTopScorersJSON(String response) {
-        ArrayList<TopScorers> topScorers = new ArrayList<>();
+    public static void storeLeagueStandings(ArrayList<com.models.LeagueStandings> leagueStandings) {
+        for (com.models.LeagueStandings leagueStanding : leagueStandings) {
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
+                        "PaarShanDB0408");
 
-        JSONArray playerStandings = new JSONArray(response);
+                PreparedStatement pst = con.prepareStatement("insert into standings (team_id,position,matches_played,matches_won,matches_drawn,matches_lost,goals_for,goals_against,points) values (?,?,?,?,?,?,?,?,?)");
+                pst.setBigDecimal(1, new BigDecimal(leagueStanding.getTeam_id()));
+                pst.setInt(2, leagueStanding.getPosition());
+                pst.setInt(3, leagueStanding.getMatches_played());
+                pst.setInt(4, leagueStanding.getMatches_won());
+                pst.setInt(5, leagueStanding.getMatches_drawn());
+                pst.setInt(6, leagueStanding.getMatches_lost());
+                pst.setInt(7, leagueStanding.getGoals_for());
+                pst.setInt(8, leagueStanding.getGoals_against());
+                pst.setInt(9, leagueStanding.getPoints());
 
-        for (int i = 0; i < playerStandings.length(); i++) {
-            JSONObject playerStanding = playerStandings.getJSONObject(i);
+                int rowsAffected = pst.executeUpdate();
 
-            BigInteger player_id = playerStanding.getBigInteger("player_key");
-            String goals_scored = playerStanding.getString("goals");
-            String team_id = playerStanding.getString("team_key");
-
-
-            topScorers.add(new TopScorers(
-                    player_id,
-                    Integer.parseInt(goals_scored),
-                    new BigInteger(team_id)
-
-            ));
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
         }
-        storeAPI.storeTopScorers(topScorers);
-        return null;
     }
 }

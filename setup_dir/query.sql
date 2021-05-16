@@ -118,9 +118,24 @@ create table topScorers
     FOREIGN KEY (team_id) REFERENCES teams (team_id)
 )
 -- date, hometeam, awayteam, hometeamscore, awayteamscore
-create table finishedMatches (
-    match_id BIGINT NOT NULL,
-    hometeam_id BIGINT,
-    hometeam_id BIGINT,
-    PRIMARY KEY(match_id)
+create table finishedMatches
+(
+    match_id      BIGINT NOT NULL AUTO_INCREMENT,
+    date          varchar(255),
+    time          varchar(255),
+    homeTeam      varchar(255),
+    awayTeam     varchar(255),
+    homeTeamScore int,
+    awayTeamScore int,
+    PRIMARY KEY (match_id)
+);
+
+create table upcomingMatches
+(
+    match_id      BIGINT NOT NULL AUTO_INCREMENT,
+    date          varchar(255),
+    time          varchar(255),
+    homeTeam      varchar(255),
+    awayTeam     varchar(255),
+    PRIMARY KEY (match_id)
 );

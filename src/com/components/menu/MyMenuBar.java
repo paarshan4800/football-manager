@@ -3,6 +3,8 @@ package com.components.menu;
 import com.components.MyColor;
 import com.football_manager.DashboardFrame;
 import com.football_manager.PlayersFrame;
+import com.football_manager.table_frame.LeagueStandingsFrame;
+import com.football_manager.table_frame.TopScorersFrame;
 import com.transfer_chat.view.ViewTransfersRequestsTypeDialog;
 
 import javax.swing.*;
@@ -70,9 +72,11 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
             currentFrame.dispose();
             new DashboardFrame();
         } else if (e.getSource() == standingsItem) {
-            System.out.println("STAND");
+            currentFrame.dispose();
+            new LeagueStandingsFrame();
         } else if (e.getSource() == topScorersItem) {
-            System.out.println("TOPS");
+            currentFrame.dispose();
+            new TopScorersFrame();
         } else if (e.getSource() == resultsItem) {
             System.out.println("RESULTS");
         } else if (e.getSource() == fixturesItem) {
