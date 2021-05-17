@@ -43,7 +43,7 @@ create table standings
     points         int,
     PRIMARY KEY (team_id),
     FOREIGN KEY (team_id) REFERENCES teams (team_id)
-)
+);
 
 
 
@@ -116,7 +116,7 @@ create table topScorers
     PRIMARY KEY (player_id, team_id),
     FOREIGN KEY (player_id) REFERENCES players (player_id),
     FOREIGN KEY (team_id) REFERENCES teams (team_id)
-)
+);
 
 
 create table finishedMatches
@@ -147,7 +147,7 @@ create table lastupdated
     table_name varchar(255),
     date_time  varchar(255),
     PRIMARY KEY (table_name)
-)
+);
 
 INSERT INTO lastupdated (table_name) VALUES ('fixtures');
 INSERT INTO lastupdated (table_name) VALUES ('results');

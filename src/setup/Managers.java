@@ -37,13 +37,27 @@ public class Managers {
         for (int i = 0; i < teams.length(); i++) {
             JSONObject team = teams.getJSONObject(i);
             JSONArray coaches = team.getJSONArray("coaches");
-            JSONObject coach = coaches.getJSONObject(0);
 
             int manager_id = i + 1001;
-            String name = coach.getString("coach_name");
-            String country = coach.getString("coach_country");
-            int age = coach.getInt("coach_age");
-            String username = name.toLowerCase().replaceAll("\\s+", "");
+            String name;
+            String country;
+            int age;
+            String username;
+
+            if (coaches.length() == 0) {
+                manager_id = i + 1001;
+                name = "managerName";
+                country = "managerCountry";
+                age = 50;
+                username = name.toLowerCase().replaceAll("\\s+", "");
+            } else {
+                JSONObject coach = coaches.getJSONObject(0);
+                name = coach.getString("coach_name");
+                country = coach.getString("coach_country");
+                age = coach.getInt("coach_age");
+                username = name.toLowerCase().replaceAll("\\s+", "");
+            }
+
 
             String password = "samplepwd";
             String hash_pwd = Password_Hash(password);
