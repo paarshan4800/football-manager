@@ -3,12 +3,11 @@ package com.sql;
 import com.models.Player;
 import com.models.Team;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 import static com.sql.SQL.getDBConnection;
@@ -89,4 +88,61 @@ public class PlayerSQL {
 
         return players;
     }
+
+
+    public static DefaultTableModel getAllPlayersTableModel(
+            StringBuilder positionIN,
+            StringBuilder teamIN,
+            StringBuilder countryIN,
+            int minAge,
+            int maxAge,
+            JFrame parentComponent
+    ) {
+        DefaultTableModel tableModel = new DefaultTableModel(0, 0) { //create default table model
+            // Override default editable cell to uneditable
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        String[] columnHeaders = {"Player ID", "Name", "Team", "Country", "Position", "Age"}; //column names
+        tableModel.setColumnIdentifiers(columnHeaders);// set column names to table model
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = getDBConnection();
+
+            String sql = "select p.player_id,p.name,t.name as team,p.country,p.position,p.shirt_number,p.age,p.matches_played,p.goals_scored,p.red_cards,p.yellow_cards from players as p inner join teams as t on p.team_id=t.team_id and p.position in (position) and t.name in (team) and p.country in (country) and p.age >= ? and p.age <= ? order by p.name asc;";
+            sql = sql.replace("(position)", "(" + positionIN + ")"); // replace (position) with formatted string for SQL IN
+            sql = sql.replace("(team)", "(" + teamIN + ")"); // replace (team) with formatted string for SQL IN
+            sql = sql.replace("(country)", "(" + countryIN + ")"); // replace (country) with formatted string for SQL IN
+
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, minAge);
+            pst.setInt(2, maxAge);
+
+            ResultSet rs = pst.executeQuery();
+
+            if (!rs.isBeforeFirst()) {// If resultset is empty
+                JOptionPane.showMessageDialog(parentComponent, "No players found!", "No players found", JOptionPane.WARNING_MESSAGE);
+            } else {// If resultset is not empty
+                while (rs.next()) {
+                    BigInteger player_id = BigInteger.valueOf(rs.getLong("player_id"));
+                    String name = rs.getString("name");
+                    String team = rs.getString("team");
+                    String country = rs.getString("country");
+                    String position = rs.getString("position");
+                    int age = rs.getInt("age");
+
+                    tableModel.addRow(new Object[]{player_id, name, team, country, position, age});// add row to table model
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return tableModel;
+
+    }
+
 }

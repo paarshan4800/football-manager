@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import static com.sql.SQL.getDBConnection;
+
 public class LeagueStandings {
 
     private BigInteger team_id;
@@ -35,16 +37,16 @@ public class LeagueStandings {
     }
 
     public LeagueStandings(int position, String team_name, int matches_played, int matches_won, int matches_drawn, int matches_lost, int goals_for, int goals_against, int points) {
-            this.team_name = team_name;
-            this.position = position;
-            this.matches_played = matches_played;
-            this.matches_won = matches_won;
-            this.matches_drawn = matches_drawn;
-            this.matches_lost = matches_lost;
-            this.goals_for = goals_for;
-            this.goals_against = goals_against;
-            this.points = points;
-        }
+        this.team_name = team_name;
+        this.position = position;
+        this.matches_played = matches_played;
+        this.matches_won = matches_won;
+        this.matches_drawn = matches_drawn;
+        this.matches_lost = matches_lost;
+        this.goals_for = goals_for;
+        this.goals_against = goals_against;
+        this.points = points;
+    }
 
     public BigInteger getTeam_id() {
         return team_id;
@@ -91,8 +93,7 @@ public class LeagueStandings {
         LeagueStandings ls;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                    "PaarShanDB0408");
+            Connection con = getDBConnection();
 
             PreparedStatement pst = con.prepareStatement("select standings.position,teams.name,standings.matches_played,standings.matches_won,standings.matches_drawn,standings.matches_lost,standings.goals_for,standings.goals_against,standings.points from standings inner join teams on standings.team_id=teams.team_id order by points desc;");
             ResultSet rs = pst.executeQuery();

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class TopScorers {
 
     public TopScorers() {
-        String url = String.format("https://apiv2.apifootball.com/?action=get_topscorers&league_id=148&APIkey=%s",API.getApiFootballComApiKey());
+        String url = String.format("https://apiv2.apifootball.com/?action=get_topscorers&league_id=148&APIkey=%s", API.getApiFootballComApiKey());
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
 
@@ -31,7 +31,7 @@ public class TopScorers {
 
         JSONArray playerStandings = new JSONArray(response);
 
-        for (int i = 0; i < playerStandings.length(); i++) {
+        for (int i = 0; i < playerStandings.length() && i < 25; i++) {
             JSONObject playerStanding = playerStandings.getJSONObject(i);
 
             BigInteger player_id = playerStanding.getBigInteger("player_key");

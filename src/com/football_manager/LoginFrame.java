@@ -16,6 +16,8 @@ import org.springframework
         .bcrypt
         .BCrypt;
 
+import static com.sql.ManagerSQL.managerLogin;
+
 public class LoginFrame extends JFrame implements ActionListener {
 
     MyFont myFont = new MyFont();
@@ -125,17 +127,10 @@ public class LoginFrame extends JFrame implements ActionListener {
             String username = usernameField.getInputField().getText();
             String password = String.valueOf(passwordField.getInputField().getPassword());
 
-            // Check user existence
-            if (checkUsername(username)) {
-                // Check password
-                if (checkPassword(username, password)) {
-                    System.out.println(username + " authenticated");
-                    this.dispose();
-                    new DashboardFrame(ManagerSQL.getManagerGivenUsername(username));
-                } else {
-                    JOptionPane.showMessageDialog(this, "Invalid Username/Password", "Authentication Failed", JOptionPane.WARNING_MESSAGE);
-                }
-
+            if (managerLogin(username, password)) {
+                System.out.println(username + " authenticated");
+                this.dispose();
+                new DashboardFrame(ManagerSQL.getManagerGivenUsername(username));
             } else {
                 // User doesn't exists
                 JOptionPane.showMessageDialog(this, "Invalid Username/Password", "Authentication Failed", JOptionPane.WARNING_MESSAGE);
@@ -144,57 +139,4 @@ public class LoginFrame extends JFrame implements ActionListener {
         }
     }
 
-    public static boolean checkUsername(String username) {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                    "PaarShanDB0408");
-
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("select username from managers");
-
-            while (rs.next()) {
-                // If user exists
-                if (rs.getString("username").equals(username)) {
-                    return true;
-                }
-            }
-
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-
-        return false;
-    }
-
-    public static boolean checkPassword(String username, String password) {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                    "PaarShanDB0408");
-
-            PreparedStatement pst = con.prepareStatement("select username,password from managers where username=?");
-            pst.setString(1, username);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-                // Check correct user and password hash
-                if (rs.getString("username").equals(username) && verifyPasswordHash(password, rs.getString("password"))) {
-                    return true;
-                }
-            }
-
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-
-        return false;
-    }
-
-    public static boolean verifyPasswordHash(
-            String password,
-            String hashed_password) {
-        return BCrypt.checkpw(
-                password, hashed_password);
-    }
 }

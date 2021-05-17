@@ -2,10 +2,11 @@ package com.models;
 
 import java.math.BigInteger;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+
+import static com.sql.SQL.getDBConnection;
 
 public class TopScorers {
 
@@ -47,9 +48,10 @@ public class TopScorers {
         TopScorers ts;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root", "PaarShanDB0408");
+            Connection con = getDBConnection();
 
-            PreparedStatement pst = con.prepareStatement("select players.name,topScorers.goals_scored from players inner join topScorers on players.player_id=topScorers.player_id order by goals_scored desc limit 20;");            ResultSet rs = pst.executeQuery();
+            PreparedStatement pst = con.prepareStatement("select players.name,topScorers.goals_scored from players inner join topScorers on players.player_id=topScorers.player_id order by goals_scored desc limit 20;");
+            ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 ts = new TopScorers(
                         rs.getString(1),

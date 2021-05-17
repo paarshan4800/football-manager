@@ -1,11 +1,11 @@
 package com.football_manager;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.sql.SQL.getDBConnection;
 
 public class Filters {
 
@@ -25,9 +25,6 @@ public class Filters {
 
         // Initialization for positions
         position = getFilterData("select distinct position from players order by position asc", "position");
-//        for (int i = 0; i < positions.length; i++) {
-//            position.put(positions[i], true);
-//        }
 
         // Initialization for age
         age.put("minimumAge", 18);
@@ -46,33 +43,24 @@ public class Filters {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                    "PaarShanDB0408");
+            Connection con = getDBConnection();
 
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 
-            if (!rs.isBeforeFirst()) {// If resultset is empty
-                System.out.println("EMPTY,Hello");
+            if (!rs.isBeforeFirst()) {
+                // If resultset is empty
             } else {// If resultset is not empty
-//                boolean firstTeam = true;
                 while (rs.next()) {
                     String team = rs.getString(columnName);
-
-//                    if(firstTeam) {
-//                        hash.put(team,true);
-//                        firstTeam = false;
-//                    }
-//                    else {
                     hash.put(team, false);
-//                    }
                 }
             }
         } catch (Exception ex) {
             System.out.println(ex);
-        } finally {
-            return hash;
         }
+        return hash;
+
     }
 
 }

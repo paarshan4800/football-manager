@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import static com.sql.SQL.getDBConnection;
+
 public class Results {
     private String date;
     private String time;
@@ -64,8 +66,7 @@ public class Results {
         Results ls;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/footballmanager", "root",
-                    "PaarShanDB0408");
+            Connection con = getDBConnection();
 
             PreparedStatement pst = con.prepareStatement("select date,time,homeTeam,awayTeam,hometeamScore,awayTeamscore from finishedmatches;");
             ResultSet rs = pst.executeQuery();

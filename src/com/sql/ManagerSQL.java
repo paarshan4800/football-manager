@@ -1,6 +1,7 @@
 package com.sql;
 
 import com.models.Manager;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -82,7 +83,6 @@ public class ManagerSQL {
         return manager;
     }
 
-
     // Get a manager object given username
     public static Manager getManagerGivenUsername(String username) {
         Manager manager = null;
@@ -109,4 +109,36 @@ public class ManagerSQL {
 
         return manager;
     }
+
+    public static boolean verifyPasswordHash(
+            String password,
+            String hashed_password) {
+        return BCrypt.checkpw(
+                password, hashed_password);
+    }
+
+    public static boolean managerLogin(String username, String password) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = getDBConnection();
+
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("select username,password from managers");
+
+            while (rs.next()) {
+                // If user exists
+                if (rs.getString("username").equals(username)) {
+                    if (verifyPasswordHash(password, rs.getString("password")))
+                        return true;
+                }
+            }
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return false;
+
+    }
+
 }
