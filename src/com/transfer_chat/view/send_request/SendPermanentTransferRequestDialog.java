@@ -1,11 +1,9 @@
 package com.transfer_chat.view.send_request;
 
-import com.components.*;
+import com.components.MyFormField;
 import com.models.Manager;
 import com.models.PermanentTransfer;
 import com.models.Player;
-import com.transfer_chat.message.RequestMessage;
-import com.transfer_chat.process.Client;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,17 +15,10 @@ import static com.sql.TransferSQL.createTransfer;
 public class SendPermanentTransferRequestDialog extends SendTransferRequestDialog implements ActionListener {
 
     MyFormField transferFeeField;
-    Client client;
 
     public SendPermanentTransferRequestDialog(Player player, Manager manager) {
 
         super("Permanent Transfer", player, manager);
-
-        client = new Client(6500, "localhost", manager.getManagerID());
-        if (!client.startClient()) {
-            return;
-        }
-
         transferFeeField = new MyFormField("Transfer Fee");
 
         // Form Panel
@@ -57,11 +48,6 @@ public class SendPermanentTransferRequestDialog extends SendTransferRequestDialo
                 if (createTransfer(permanentTransfer)) {
                     dispose();
                     JOptionPane.showMessageDialog(this, "Sent Permanent Transfer request to " + player.getTeam().getManager().getName() + " for " + player.getName(), "Sent Request", JOptionPane.INFORMATION_MESSAGE);
-
-                    // Send message
-                    RequestMessage requestMessage = new RequestMessage(RequestMessage.REQUEST_PING, "Test123", player.getTeam().getManager().getManagerID());
-                    client.sendMessage(requestMessage);
-
                 } else {
                     JOptionPane.showMessageDialog(this, "Couldn't send request. Try again later", "Failure", JOptionPane.WARNING_MESSAGE);
                 }
