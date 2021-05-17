@@ -14,8 +14,12 @@ public class MyImage {
 
     }
 
-    public BufferedImage getLogo() {
+    public BufferedImage getLoginLogo() {
         return getImage("/logo.png");
+    }
+
+    public BufferedImage getLogo() {
+        return getImage("/pl_logo_original.png");
     }
 
     public BufferedImage getImage(String filePath) {
@@ -29,6 +33,7 @@ public class MyImage {
             return image;
         }
     }
+
     public BufferedImage getImageFromURL(String _url) {
         BufferedImage image = null;
 

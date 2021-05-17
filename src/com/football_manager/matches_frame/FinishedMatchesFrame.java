@@ -80,11 +80,10 @@ public class FinishedMatchesFrame extends MatchesDataFrame {
         matches_panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-        gbc.insets = new Insets(20, 0, 20, 50);
+        gbc.insets = new Insets(20, 0, 20, 25);
         gbc.gridx = 0;
         gbc.gridy = 0;
         matches_panel.add(home_team_label, gbc);
-        gbc.insets = new Insets(20, 0, 20, 50);
         gbc.gridx = 0;
         gbc.gridy = 1;
         matches_panel.add(away_team_label, gbc);

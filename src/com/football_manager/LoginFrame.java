@@ -50,7 +50,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 
         // Logo Label
         JLabel logoLabel = new JLabel();
-        logoLabel.setIcon(new ImageIcon(new MyImage().getLogo().getScaledInstance(400, 200, Image.SCALE_FAST)));
+        logoLabel.setIcon(new ImageIcon(new MyImage().getLoginLogo().getScaledInstance(400, 200, Image.SCALE_FAST)));
         logoLabel.setFont(myFont.getFontPrimary().deriveFont(40f));
         logoLabel.setVerticalAlignment(SwingConstants.CENTER);
         logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
