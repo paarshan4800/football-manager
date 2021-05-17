@@ -12,7 +12,6 @@ public class MyDataLabel extends JLabel {
     MyFont myFont = new MyFont();
 
     public MyDataLabel(String text, String iconPath, String tooltipText) {
-        System.out.println("hi");
         this.setText(text);
         this.setIcon(new ImageIcon(new MyImage().getImage(iconPath).getScaledInstance(30, 30, Image.SCALE_FAST)));
         this.setFont(myFont.getFontPrimary().deriveFont(18f));

@@ -50,7 +50,6 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
         logoutMenu.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("LOGOUTTTTTT");
                 new LoginFrame();
                 currentFrame.dispose();
             }
@@ -60,7 +59,6 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
         exitMenu.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("EXITTTTTTTTTTTT");
                 currentFrame.dispose();
             }
         });

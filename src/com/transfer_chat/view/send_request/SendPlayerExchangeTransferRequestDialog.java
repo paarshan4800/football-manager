@@ -107,8 +107,6 @@ public class SendPlayerExchangeTransferRequestDialog extends SendTransferRequest
                 JOptionPane.showMessageDialog(this, "Invalid Transfer Fee", "Enter valid Transfer fee", JOptionPane.WARNING_MESSAGE);
             }
 
-            System.out.println(transferFee);
-            System.out.println("SUB" + comboBox.getSelectedItem());
         }
     }
 

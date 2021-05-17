@@ -39,13 +39,11 @@ public class Results {
     }
 
     private static String parseResultsJSON(String response) {
-        System.out.println(response);
 
         ArrayList<com.models.Results> results = new ArrayList<>();
 
         JSONObject object = new JSONObject(response);
         JSONArray matches = object.getJSONArray("matches");
-        System.out.println(matches.length() + "Size");
         for (int i = 0; i < matches.length(); i++) {
             JSONObject match = matches.getJSONObject(i);
             String utcDate = match.getString("utcDate");

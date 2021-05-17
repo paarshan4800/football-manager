@@ -48,9 +48,6 @@ public class Managers {
             String password = "samplepwd";
             String hash_pwd = Password_Hash(password);
 
-            System.out.println(
-                    name + " - " + country + " - " + age + " - " + manager_id + " - " + username + " - " + hash_pwd);
-
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection con = getDBConnection();

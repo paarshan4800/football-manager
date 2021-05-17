@@ -37,8 +37,6 @@ public class Teams {
             String name = team.getString("team_name");
             String badge = team.getString("team_badge");
 
-            System.out.println(team_id + " - " + manager_id + " - " + name + " - " + badge);
-
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection con = getDBConnection();

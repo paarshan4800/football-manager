@@ -158,7 +158,6 @@ public class TransferSQL {
         } catch (SQLException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }
-        System.out.println(transfers);
         return transfers;
 
     }

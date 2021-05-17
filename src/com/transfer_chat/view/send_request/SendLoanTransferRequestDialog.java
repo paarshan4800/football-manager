@@ -78,7 +78,6 @@ public class SendLoanTransferRequestDialog extends SendTransferRequestDialog imp
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitTransferButton) {
-            System.out.println(wageSplitPercentage + " - " + durationInMonths);
             LoanTransfer loanTransfer = new LoanTransfer(
                     player,
                     player.getTeam(),
