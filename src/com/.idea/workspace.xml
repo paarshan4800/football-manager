@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d1bf2246-f945-4494-934c-08b8635923d1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../out/production/football-manager/com/football_manager/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../out/production/football-manager/com/football_manager/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/football-manager/com/football_manager/TopScorersFrame$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../out/production/football-manager/com/football_manager/TopScorersFrame$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/football-manager/com/football_manager/TopScorersFrame$TopScorers.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../out/production/football-manager/com/football_manager/TopScorersFrame$TopScorers.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/football-manager/com/football_manager/TopScorersFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../out/production/football-manager/com/football_manager/TopScorersFrame.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../setup/Managers.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../setup/Managers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/football_manager/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/football_manager/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/football_manager/TopScorersFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/football_manager/TopScorersFrame.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="1rhQ09sGktDEz9ZWnswNSkSpDUD" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d1bf2246-f945-4494-934c-08b8635923d1" name="Default Changelist" comment="" />
+      <created>1619425616098</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1619425616098</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>

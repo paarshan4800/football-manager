@@ -30,10 +30,10 @@ public class PlayerDataDialog extends JDialog implements ActionListener {
     Manager manager;
     Player player;
 
-    public PlayerDataDialog(JFrame owner, BigInteger playerID) {
+    public PlayerDataDialog(JFrame owner, BigInteger playerID,Manager manager) {
 
         player = PlayerSQL.getPlayerGivenPlayerID(playerID);
-        manager = getManagerGivenManagerID(1013);
+        this.manager = manager;
 
         // Team Logo
         JLabel teamLabel = new JLabel();

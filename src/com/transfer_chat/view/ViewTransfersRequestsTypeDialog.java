@@ -25,7 +25,7 @@ public class ViewTransfersRequestsTypeDialog extends JDialog implements ActionLi
     MyButton incomingTransfersButton;
     MyButton outgoingTransfersButton;
 
-    Manager manager;
+    public Manager manager;
 
     public ViewTransfersRequestsTypeDialog(Manager manager) {
 

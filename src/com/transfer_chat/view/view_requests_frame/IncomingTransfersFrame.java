@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.sql.TeamSQL.getTeamGivenManagerID;
 import static com.sql.TransferSQL.getAllTransfersGivenTeamIDOfManagerAndType;
 
 public class IncomingTransfersFrame extends ViewTransferRequestsFrame {
@@ -31,7 +32,7 @@ public class IncomingTransfersFrame extends ViewTransferRequestsFrame {
         MyLoader myLoader = new MyLoader();
         dataPanel.add(myLoader);
 
-        ArrayList<Transfer> incomingTransfers = getAllTransfersGivenTeamIDOfManagerAndType(BigInteger.valueOf(2627), "incoming");
+        ArrayList<Transfer> incomingTransfers = getAllTransfersGivenTeamIDOfManagerAndType(getTeamGivenManagerID(manager.getManagerID()).getTeamID(), "incoming");
 
         dataPanel.remove(myLoader);
 
