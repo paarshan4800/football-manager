@@ -13,7 +13,7 @@ public class LeagueStandingsFrame extends TableDataFrame {
 
     public LeagueStandingsFrame(Manager manager) {
 
-        super("League Standings", manager);
+        super("League Standings", manager, "standings");
 
 //        Table
         table = new JTable() {

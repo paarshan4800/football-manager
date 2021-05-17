@@ -12,7 +12,7 @@ public class UpcomingMatchesFrame extends MatchesDataFrame {
 
     public UpcomingMatchesFrame(Manager manager) {
 
-        super("Fixtures", manager);
+        super("Fixtures", manager,"fixtures");
         ArrayList<Fixtures> fixtures = Fixtures.getUpcomingMatches();
 
         matchesPanel.setLayout(new GridLayout((fixtures.size() / 2) + 1, 2, 20, 20));

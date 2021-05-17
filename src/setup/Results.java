@@ -19,6 +19,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 
+import static com.api.UpdateAPI.updateLastUpdatedDateTime;
+
 public class Results {
 
     public Results() {
@@ -72,6 +74,7 @@ public class Results {
         }
 
         storeResults(results);
+        updateLastUpdatedDateTime("results");
 
         return null;
     }

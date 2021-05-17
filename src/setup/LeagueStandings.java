@@ -15,6 +15,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
+import static com.api.UpdateAPI.updateLastUpdatedDateTime;
+
 public class LeagueStandings {
     public LeagueStandings() {
         String url = String.format("https://apiv2.apifootball.com/?action=get_standings&league_id=148&APIkey=%s", API.getApiFootballComApiKey());
@@ -58,6 +60,7 @@ public class LeagueStandings {
 
         }
         storeLeagueStandings(leagueStandings);
+        updateLastUpdatedDateTime("standings");
 
         return null;
     }

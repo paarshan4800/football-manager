@@ -117,14 +117,15 @@ create table topScorers
     FOREIGN KEY (player_id) REFERENCES players (player_id),
     FOREIGN KEY (team_id) REFERENCES teams (team_id)
 )
--- date, hometeam, awayteam, hometeamscore, awayteamscore
+
+
 create table finishedMatches
 (
     match_id      BIGINT NOT NULL AUTO_INCREMENT,
     date          varchar(255),
     time          varchar(255),
     homeTeam      varchar(255),
-    awayTeam     varchar(255),
+    awayTeam      varchar(255),
     homeTeamScore int,
     awayTeamScore int,
     PRIMARY KEY (match_id)
@@ -132,10 +133,23 @@ create table finishedMatches
 
 create table upcomingMatches
 (
-    match_id      BIGINT NOT NULL AUTO_INCREMENT,
-    date          varchar(255),
-    time          varchar(255),
-    homeTeam      varchar(255),
-    awayTeam     varchar(255),
+    match_id BIGINT NOT NULL AUTO_INCREMENT,
+    date     varchar(255),
+    time     varchar(255),
+    homeTeam varchar(255),
+    awayTeam varchar(255),
     PRIMARY KEY (match_id)
 );
+
+-- Standings, Top Scorers, Results, Fixtures
+create table lastupdated
+(
+    table_name varchar(255),
+    date_time  varchar(255),
+    PRIMARY KEY (table_name)
+)
+
+INSERT INTO lastupdated (table_name) VALUES ('fixtures');
+INSERT INTO lastupdated (table_name) VALUES ('results');
+INSERT INTO lastupdated (table_name) VALUES ('topscorers');
+INSERT INTO lastupdated (table_name) VALUES ('standings');

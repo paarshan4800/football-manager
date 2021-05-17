@@ -13,7 +13,7 @@ public class TopScorersFrame extends TableDataFrame {
 
     public TopScorersFrame(Manager manager) {
 
-        super("Top Scorers", manager);
+        super("Top Scorers", manager, "topscorers");
 
         table = new JTable() {
 

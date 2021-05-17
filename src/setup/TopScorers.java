@@ -15,6 +15,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
+import static com.api.UpdateAPI.updateLastUpdatedDateTime;
+
 public class TopScorers {
 
     public TopScorers() {
@@ -47,6 +49,7 @@ public class TopScorers {
             ));
         }
         storeTopScorers(topScorers);
+        updateLastUpdatedDateTime("topscorers");
         return null;
     }
 

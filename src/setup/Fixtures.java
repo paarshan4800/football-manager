@@ -17,6 +17,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 
+import static com.api.UpdateAPI.updateLastUpdatedDateTime;
+
 public class Fixtures {
 
     public Fixtures() {
@@ -65,6 +67,7 @@ public class Fixtures {
         }
 
         storeFixtures(fixtures);
+        updateLastUpdatedDateTime("fixtures");
         return null;
 
     }

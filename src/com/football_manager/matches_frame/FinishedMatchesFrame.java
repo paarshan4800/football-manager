@@ -20,7 +20,7 @@ public class FinishedMatchesFrame extends MatchesDataFrame {
 
     public FinishedMatchesFrame(Manager manager) {
 
-        super("Results",manager);
+        super("Results", manager, "results");
 
         ArrayList<Results> results = Results.getFinishedMatches();
         matchesPanel.setLayout(new GridLayout((results.size() / 2) + 1, 2, 20, 20));

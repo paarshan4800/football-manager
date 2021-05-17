@@ -16,6 +16,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static com.api.UpdateAPI.getLastUpdatedDateTime;
+
 public class TableDataFrame extends JFrame {
 
     public MyColor myColor = new MyColor();
@@ -28,7 +30,7 @@ public class TableDataFrame extends JFrame {
 
     public Manager manager;
 
-    public TableDataFrame(String heading, Manager manager) {
+    public TableDataFrame(String heading, Manager manager, String lastUpdatedName) {
 
         this.manager = manager;
         menuBar = new MyMenuBar(this, manager);
@@ -55,6 +57,12 @@ public class TableDataFrame extends JFrame {
             }
         });
 
+        // Last update time label
+        JLabel lastUpdateLabel = new JLabel();
+        lastUpdateLabel.setText(String.format("Last Updated at %s", getLastUpdatedDateTime(lastUpdatedName)));
+        lastUpdateLabel.setForeground(myColor.getTextColor());
+        lastUpdateLabel.setFont(myFont.getFontMedium().deriveFont(Font.ITALIC, 14f));
+
         //        Top Panel
         JPanel topPanel = new JPanel();
         topPanel.setBackground(new MyColor().getBackgroundColor()); //set background for panel
@@ -70,6 +78,10 @@ public class TableDataFrame extends JFrame {
         headerGBC.gridx = 1;
         headerGBC.gridy = 0;
         topPanel.add(refreshLabel, headerGBC);
+
+        headerGBC.gridx = 2;
+        headerGBC.gridy = 0;
+        topPanel.add(lastUpdateLabel, headerGBC);
 
         scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(1150, 400));// set dimension to jscrollpane

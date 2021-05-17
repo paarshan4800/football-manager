@@ -15,6 +15,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
+import static com.api.UpdateAPI.getLastUpdatedDateTime;
+
 public class MatchesDataFrame extends JFrame {
 
     public MyColor myColor = new MyColor();
@@ -30,7 +32,7 @@ public class MatchesDataFrame extends JFrame {
 
     public Manager manager;
 
-    public MatchesDataFrame(String heading, Manager manager) {
+    public MatchesDataFrame(String heading, Manager manager, String lastUpdatedName) {
 
         this.manager = manager;
         menuBar = new MyMenuBar(this, manager);
@@ -78,6 +80,12 @@ public class MatchesDataFrame extends JFrame {
             }
         });
 
+        // Last update time label
+        JLabel lastUpdateLabel = new JLabel();
+        lastUpdateLabel.setText(String.format("Last Updated at %s", getLastUpdatedDateTime(lastUpdatedName)));
+        lastUpdateLabel.setForeground(myColor.getTextColor());
+        lastUpdateLabel.setFont(myFont.getFontMedium().deriveFont(Font.ITALIC, 14f));
+
         //        Top Panel
         JPanel topPanel = new JPanel();
         topPanel.setBackground(new MyColor().getBackgroundColor()); //set background for panel
@@ -93,6 +101,10 @@ public class MatchesDataFrame extends JFrame {
         headerGBC.gridx = 1;
         headerGBC.gridy = 0;
         topPanel.add(refreshLabel, headerGBC);
+
+        headerGBC.gridx = 2;
+        headerGBC.gridy = 0;
+        topPanel.add(lastUpdateLabel, headerGBC);
 
         matchesPanel = new JPanel();
         matchesPanel.setBackground(myColor.getBackgroundColor());
