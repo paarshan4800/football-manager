@@ -93,7 +93,6 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.getSource());
         if (e.getSource() == dashboardItem) {
             new DashboardFrame(manager);
         } else if (e.getSource() == standingsItem) {

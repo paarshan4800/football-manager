@@ -58,7 +58,7 @@ public class ViewTransfersRequestsTypeDialog extends JDialog implements ActionLi
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                new DashboardFrame(new Manager());
+                new DashboardFrame(manager);
             }
         });
     }
