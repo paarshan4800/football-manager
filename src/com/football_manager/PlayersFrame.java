@@ -95,8 +95,8 @@ public class PlayersFrame extends JFrame implements ActionListener {
             public void mouseClicked(MouseEvent e) {
                 JTable source = (JTable) e.getSource();
                 int row = source.getSelectedRow();
-                new PlayerDataDialog(getThisFrame(), (BigInteger) source.getValueAt(row, 0),manager);
-                disableFrame();
+                new PlayerDataDialog(getThisFrame(), (BigInteger) source.getValueAt(row, 0), manager);
+//                disableFrame();
             }
         });
 
@@ -148,6 +148,10 @@ public class PlayersFrame extends JFrame implements ActionListener {
 
     public void disableFrame() {
         this.setEnabled(false);
+    }
+
+    public void enableFrame() {
+        this.setEnabled(true);
     }
 
     public JFrame getThisFrame() {

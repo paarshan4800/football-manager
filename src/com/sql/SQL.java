@@ -1,5 +1,8 @@
 package com.sql;
 
+import com.models.Transfer;
+
+import java.math.BigInteger;
 import java.sql.*;
 
 
@@ -9,7 +12,7 @@ public class SQL {
     private final static String portNo = "3306";
     private final static String database = "footballmanager";
     private final static String user = "root";
-    private final static String password = "14valentine";
+    private final static String password = "PaarShanDB0408";
 
     public SQL() {
     }
@@ -23,6 +26,14 @@ public class SQL {
             sqlException.printStackTrace();
         }
         return connection;
+    }
+
+    public static void main(String[] args) {
+//        System.out.println(TransferSQL.getTransferTypeGivenTransferID(TransferSQL.getTransferGivenTransferID(BigInteger.valueOf(1))));
+        Transfer transfer = TransferSQL.getTransferGivenTransferID(BigInteger.valueOf(3));
+        TransferSQL.transferRequestAction(transfer);
+
+
     }
 
     // Get all transfer objects given a team id (team of the manager)

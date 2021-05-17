@@ -29,8 +29,8 @@ public class Main {
 //        new PlayerExchangeTransferDialog();
 
         // write your code here
-        new LoginFrame();
-//        new DashboardFrame();
+//        new LoginFrame();
+        new DashboardFrame(manager);
 //        new PlayersFrame();
 //        new PlayerDataFrame(new JFrame(),1234);
 

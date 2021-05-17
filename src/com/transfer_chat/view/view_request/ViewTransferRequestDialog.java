@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-import static com.transfer_chat.view.send_request.SendPlayerExchangeTransferRequestDialog.transferRequestAction;
+import static com.sql.TransferSQL.transferRequestAction;
 
 public class ViewTransferRequestDialog extends JDialog implements ActionListener {
 

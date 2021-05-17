@@ -14,8 +14,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static com.sql.ManagerSQL.getManagerGivenManagerID;
+import static com.sql.TeamSQL.getTeamGivenManagerID;
 
 public class PlayerDataDialog extends JDialog implements ActionListener {
 
@@ -30,7 +32,7 @@ public class PlayerDataDialog extends JDialog implements ActionListener {
     Manager manager;
     Player player;
 
-    public PlayerDataDialog(JFrame owner, BigInteger playerID,Manager manager) {
+    public PlayerDataDialog(JFrame owner, BigInteger playerID, Manager manager) {
 
         player = PlayerSQL.getPlayerGivenPlayerID(playerID);
         this.manager = manager;
@@ -52,9 +54,14 @@ public class PlayerDataDialog extends JDialog implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == transferBtn) {
-                    dispose();
-                    owner.dispose();
-                    new SendTransferTypeDialog(player,manager);
+                    if (Objects.equals(player.getTeam().getTeamID(), getTeamGivenManagerID(manager.getManagerID()).getTeamID())) {
+                        JOptionPane.showMessageDialog(getCurrentDialog(), "Cannot transfer player from your own team.", "Invalid Transfer", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        dispose();
+                        owner.dispose();
+                        new SendTransferTypeDialog(player, manager);
+                    }
+
                 }
             }
         });
@@ -64,7 +71,7 @@ public class PlayerDataDialog extends JDialog implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == closeBtn) {
-                    owner.setEnabled(true);
+                    new PlayersFrame(manager);
                     dispose();
                 }
             }
@@ -153,6 +160,10 @@ public class PlayerDataDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+    }
+
+    public JDialog getCurrentDialog() {
+        return this;
     }
 
     public JLabel getPlayerDataLabel(String text, String iconPath, String tooltipText) {

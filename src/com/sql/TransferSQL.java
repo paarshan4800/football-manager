@@ -4,6 +4,7 @@ import com.models.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.security.cert.TrustAnchor;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -364,7 +365,6 @@ public class TransferSQL {
     }
 
 
-
     // Permanent Transfer
     public static boolean createTransfer(PermanentTransfer permanentTransfer) {
         Transfer transferInstance = createTransferInstanceOnRequest(
@@ -396,6 +396,81 @@ public class TransferSQL {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    public static String getTransferTypeGivenTransferID(Transfer transfer) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = getDBConnection();
+            String sql = "select type from transfers where transfer_id=?;";
+
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setBigDecimal(1, new BigDecimal(transfer.getTransferID()));
+
+            ResultSet rs = ps.executeQuery();
+
+            if (!rs.isBeforeFirst()) {// If resultset is empty
+                return null;
+            } else {// If resultset is not empty
+                while (rs.next()) {
+                    return rs.getString("type");
+                }
+            }
+        } catch (SQLException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+
+    // Accepting or rejecting transfer Request
+    public static boolean transferRequestAction(Transfer transfer) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = getDBConnection();
+            String sql = "update transfers set status=? where transfer_id=?;";
+
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setInt(1, transfer.getStatus());
+            ps.setBigDecimal(2, new BigDecimal(transfer.getTransferID()));
+
+
+            int rowsAffected = ps.executeUpdate();
+
+        } catch (SQLException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        transferPlayer(transfer.getPlayer().getPlayerID(), transfer.getToTeam().getTeamID());
+
+        if (Objects.equals(getTransferTypeGivenTransferID(transfer), "playerexchangetransfers")) {
+            // Player Exc Trans
+            PlayerExchangeTransfer playerExchangeTransfer = getPlayerExchangeTransferGivenTransferID(transfer.getTransferID());
+            transferPlayer(playerExchangeTransfer.getExchangePlayer().getPlayerID(), transfer.getFromTeam().getTeamID());
+        }
+
+        return true;
+    }
+
+    // Loan, Permanent
+    public static void transferPlayer(BigInteger playerId, BigInteger toTeamId) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = getDBConnection();
+
+            String sql = "update players set team_id=? where player_id=?;";
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setBigDecimal(1, new BigDecimal(toTeamId));
+            ps.setBigDecimal(2, new BigDecimal(playerId));
+
+            int rowsAffected = ps.executeUpdate();
+
+        } catch (SQLException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
     }
 
 

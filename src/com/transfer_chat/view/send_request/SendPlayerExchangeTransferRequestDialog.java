@@ -110,27 +110,5 @@ public class SendPlayerExchangeTransferRequestDialog extends SendTransferRequest
         }
     }
 
-    // Accepting or rejecting transfer Request
-    public static boolean transferRequestAction(Transfer transfer) {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = getDBConnection();
-            String sql = "update transfers set status=? where transfer_id=?;";
 
-            PreparedStatement ps = connection.prepareStatement(sql);
-
-            ps.setInt(1, transfer.getStatus());
-            ps.setBigDecimal(2, new BigDecimal(transfer.getTransferID()));
-
-
-            int rowsAffected = ps.executeUpdate();
-
-            if (rowsAffected == 1) {
-                return true;
-            }
-        } catch (SQLException | ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
 }
