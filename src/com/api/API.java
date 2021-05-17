@@ -7,7 +7,6 @@ import setup.TopScorers;
 
 public class API {
 
-    //    public static final UpdateAPI storeAPI = new UpdateAPI();
     private final static String API_FOOTBALL_DATA_ORG_API_KEY = "be5e8fa7c3b746fd81ed522c955ee399";
     private final static String API_FOOTBALL_COM_API_KEY = "707b36608ee5a52c379428e5c13584dc1abc5a063ebad445a3b86421faeac671";
 

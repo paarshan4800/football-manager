@@ -1,16 +1,11 @@
 package com.football_manager.matches_frame;
 
 import com.components.*;
-import com.components.menu.MyMenuBar;
-import com.models.LeagueStandings;
 import com.models.Manager;
 import com.models.Results;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.*;
 import java.awt.*;
-import java.sql.*;
 import java.util.ArrayList;
 
 public class FinishedMatchesFrame extends MatchesDataFrame {

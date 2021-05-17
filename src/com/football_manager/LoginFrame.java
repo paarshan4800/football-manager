@@ -5,16 +5,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
 
 import com.components.*;
 import com.sql.ManagerSQL;
-import com.sql.SQL;
-import org.springframework
-        .security
-        .crypto
-        .bcrypt
-        .BCrypt;
 
 import static com.sql.ManagerSQL.managerLogin;
 

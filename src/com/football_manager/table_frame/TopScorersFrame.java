@@ -1,6 +1,5 @@
 package com.football_manager.table_frame;
 
-import com.components.*;
 import com.models.Manager;
 import com.models.TopScorers;
 

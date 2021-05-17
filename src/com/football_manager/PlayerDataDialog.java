@@ -5,7 +5,7 @@ import com.models.Manager;
 import com.models.Player;
 import com.sql.PlayerSQL;
 import com.sql.SQL;
-import com.transfer_chat.view.SendTransferTypeDialog;
+import com.player_transfer.SendTransferTypeDialog;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,7 +16,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static com.sql.ManagerSQL.getManagerGivenManagerID;
 import static com.sql.TeamSQL.getTeamGivenManagerID;
 
 public class PlayerDataDialog extends JDialog implements ActionListener {

@@ -1,6 +1,5 @@
 package com.football_manager.matches_frame;
 
-import com.components.MyColor;
 import com.models.Fixtures;
 import com.models.Manager;
 

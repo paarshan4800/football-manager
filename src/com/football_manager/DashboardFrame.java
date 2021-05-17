@@ -7,7 +7,7 @@ import com.football_manager.matches_frame.UpcomingMatchesFrame;
 import com.football_manager.table_frame.LeagueStandingsFrame;
 import com.football_manager.table_frame.TopScorersFrame;
 import com.models.Manager;
-import com.transfer_chat.view.ViewTransfersRequestsTypeDialog;
+import com.player_transfer.ViewTransfersRequestsTypeDialog;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
