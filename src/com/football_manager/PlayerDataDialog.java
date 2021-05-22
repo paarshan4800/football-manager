@@ -71,6 +71,7 @@ public class PlayerDataDialog extends JDialog implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == closeBtn) {
                     new PlayersFrame(manager);
+                    owner.dispose();
                     dispose();
                 }
             }

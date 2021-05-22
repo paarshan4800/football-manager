@@ -8,11 +8,11 @@ import java.sql.*;
 
 public class SQL {
 
-    private final static String host = "localhost";
-    private final static String portNo = "3306";
+    private final static String host = "";
+    private final static String portNo = "";
     private final static String database = "footballmanager";
-    private final static String user = "root";
-    private final static String password = "PaarShanDB0408";
+    private final static String user = "";
+    private final static String password = "";
 
     public SQL() {
     }
